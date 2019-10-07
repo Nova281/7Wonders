@@ -1,3 +1,4 @@
 # 7Wonders
 
-WE ARE GODS
+Rules: 
+https://www.fgbradleys.com/rules/rules2/7Wonders-quickrules.pdf
