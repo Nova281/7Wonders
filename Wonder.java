@@ -1,4 +1,8 @@
 
-public class Wonder {
-
+public class Wonder 
+{
+  public Wonder()
+  {
+    
+  }
 }
