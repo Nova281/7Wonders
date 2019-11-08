@@ -1,12 +1,22 @@
 import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import javax.swing.*;
+import javax.imageio.ImageIO;
 
 public class GamePanel extends JPanel {
-	private Wonder currentBoard = null; 
+	private Wonder currentBoard;
+	private BufferedImage wonderImg;
 	
-	if (currentBoard.getName().equals("Alexandria"))
+	public GamePanel()
 	{
-		
+		currentBoard = null;
+		wonderImg = ImageIO.read(getClass().getResource(currentBoard.getName()));
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		g.drawImage(wonderImg, 0, 0, 1920, 1080, this);
 	}
 	
 	public Wonder updateCurrentBoard(Player currentPlayer)
