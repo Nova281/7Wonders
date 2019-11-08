@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.ArrayList;
 
 public abstract class Card implements Comparable {
 	String name;
@@ -8,41 +8,26 @@ public abstract class Card implements Comparable {
 	String color;
 	String freeCard;
 	
-	public Card(String nam,int ag,ArrayList<String> cos,String colr,ArrayList<String> chai, String freeCar)
+	public Card(String name, int age, ArrayList<String> cost, String color, ArrayList<String> chain, String freeCard)
 	{
-		name = nam;
-		age = ag;
-		cost = cos;
-		color = colr;
-		chain = chai;
-		freeCard = freeCar;
+		this.name = name;
+		this.age = age;
+		this.cost = cost;
+		this.color = color;
+		this.chain = chain;
+		this.freeCard = freeCard;
 	}
-	public String getName()
+	
+	public String getName() { return name; }
+	public int getAge() { return age; }
+	public ArrayList<String> getCost() 	{ return cost; }
+	public ArrayList<String> getChain() { return chain; }
+	public String getColor() { return color; }
+	public String getFree() { return freeCard; }
+	
+	public int compareTo(Object o)
 	{
-		 return name;
-	}
-	public int getAge()
-	{
-		 return age;
-	}
-	public ArrayList<String> getCost()
-	{
-		 return cost;
-	}
-	public ArrayList<String> getChain()
-	{
-		 return chain;
-	}
-	public String getColor()
-	{
-		 return color;
-	}
-	public String getFree()
-	{
-		return freeCard;
-	}
-	public int compareTo(Card card)
-	{
+		Card card = (Card) o;
 		int num1 = 0;
 		int num2 = 0;
 		if(color.equals("brown"))
@@ -75,11 +60,6 @@ public abstract class Card implements Comparable {
 		else
 			num2 = 6;
 		
-		if(num1 < num2)
-			return -1;
-		else if(num1 > num2)
-			return 1;
-		else
-			return 0;
+		return num1-num2;
 	}
 }
