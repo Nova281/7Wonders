@@ -35,7 +35,7 @@ public class ResourceCard extends Card {
 				resources.add("ore");
 				isChoice = true;
 			}
-			else {	//Timber Yard
+			else {	//Timber Yards
 				resources.add("stone");
 				resources.add("wood");
 				isChoice = true;
