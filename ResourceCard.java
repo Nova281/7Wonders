@@ -13,24 +13,24 @@ public class ResourceCard extends Card {
 	
 	private void assignResource() {
 		resources = new ArrayList<>();
-		if(color.equals("silver")) {
-			if(name.equals("Press"))
+		if(getColor().equals("silver")) {
+			if(getName().equals("Press"))
 				resources.add("papyrus");
-			else if(name.equals("Glassworks"))
+			else if(getName().equals("Glassworks"))
 				resources.add("glass");
 			else
 				resources.add("loom");
 		}
-		else if(age == 1){
-			if(name.equals("Lumber Yard"))
+		else if(getAge() == 1){
+			if(getName().equals("Lumber Yard"))
 				resources.add("wood");
-			else if(name.equals("Stone Pit"))
+			else if(getName().equals("Stone Pit"))
 				resources.add("stone");
-			else if(name.equals("Clay Pool"))
+			else if(getName().equals("Clay Pool"))
 				resources.add("clay");
-			else if(name.equals("Ore Vein"))
+			else if(getName().equals("Ore Vein"))
 				resources.add("ore");
-			else if(name.equals("Clay Pit")) {
+			else if(getName().equals("Clay Pit")) {
 				resources.add("clay");
 				resources.add("ore");
 				isChoice = true;
@@ -42,21 +42,34 @@ public class ResourceCard extends Card {
 			}
 		}
 		else {
-			if(name.equals("Sawmill")) {
+			if(getName().equals("Sawmill")) {
 				resources.add("wood");
 				resources.add("wood");
 			}
-			else if(name.equals("Quarry")) {
+			else if(getName().equals("Quarry")) {
 				resources.add("stone");
 				resources.add("stone");
 			}
-			else if(name.equals("Brickyard")) {
+			else if(getName().equals("Brickyard")) {
 				resources.add("stone");
 				resources.add("stone");
 			}
-			else {	//Foundry
+			else if(getName().equals("Foundry")) {
 				resources.add("ore");
 				resources.add("ore");
+			}
+			else if(getName().equals("Forum")) {
+				resources.add("clay");
+				resources.add("stone");
+				resources.add("ore");
+				resources.add("wood");
+				isChoice = true;
+			}
+			else if(getName().equals("Caravansery")) {
+				resources.add("loom");
+				resources.add("glass");
+				resources.add("papyrus");
+				isChoice = true;
 			}
 		}
 	}
