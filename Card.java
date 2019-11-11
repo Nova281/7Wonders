@@ -2,27 +2,31 @@ import java.util.ArrayList;
 
 public abstract class Card implements Comparable {
 	
-	private String name;
 	private int age;
 	private ArrayList<String> cost;
-	private ArrayList<String> chain;
-	private String color;
-	private String freeCard;
+	private String name, color, freeCard, chain1, chain2, effect;
 	
-	public Card(String name, int age, ArrayList<String> cost, String color, ArrayList<String> chain, String freeCard)
+	public Card(String name, String age, String cost, String color, String chain1, String chain2, String freeCard)
 	{
 		this.name = name;
-		this.age = age;
-		this.cost = cost;
+		this.age = Integer.parseInt(age);
+		this.cost = new ArrayList<>();
+		String[] c = cost.split(", ");
+		for(String k: c)
+			this.cost.add(k);
 		this.color = color;
-		this.chain = chain;
+		this.chain1 = chain1;
+		this.chain2 = chain2;
 		this.freeCard = freeCard;
+		if(color.equals("brown"))
+			effect = "resource";
 	}
 	
 	public String getName() { return name; }
 	public int getAge() { return age; }
 	public ArrayList<String> getCost() 	{ return cost; }
-	public ArrayList<String> getChain() { return chain; }
+	public String getChain1() { return chain1; }
+	public String getChain2() { return chain2; }
 	public String getColor() { return color; }
 	public String getFree() { return freeCard; }
 	
