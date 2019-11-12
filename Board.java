@@ -13,9 +13,17 @@ public class Board {
 		while(br.ready()) {
 			st = new StringTokenizer(br.readLine(), ";");
 			String name = st.nextToken();
-			String age = st.nextToken();
 			String color = st.nextToken();
-			deck.add(new Card(name, age, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
+			if(color.equals("brown") || color.equals("silver") || name.equals("caravansery") || name.equals("Forum"))
+				deck.add(new ResourceCard(name, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
+			else if(color.equals("blue"))
+				deck.add(new BlueCard(name, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
+			else if(color.equals("red"))
+				deck.add(new RedCard(name, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
+			else if(color.equals("green"))
+				deck.add(new GreenCard(name, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
+			else
+				deck.add(new ActionCard(name, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
 		}
 	}
 }

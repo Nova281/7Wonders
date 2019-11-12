@@ -1,12 +1,9 @@
 import java.util.ArrayList;
 
 public class ActionCard extends Card{
-	private String effect;
 	
-	public ActionCard(String name,int age,ArrayList<String> cost,String color,ArrayList<String> chain, String freeCard, String effect)
-	{
-		super(name,age,cost,color,chain,freeCard);
-		this.effect = effect;
+	public ActionCard(String name, String color, String age, String cost, String chain, String freeCard) {
+		super(name, color, age, cost, chain, freeCard);
 	}
 //	private void setEffect()
 //	{

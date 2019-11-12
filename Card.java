@@ -4,9 +4,9 @@ public abstract class Card implements Comparable {
 	
 	private int age;
 	private ArrayList<String> cost;
-	private String name, color, freeCard, chain1, chain2, effect;
+	private String name, color, freeCard, chain;
 	
-	public Card(String name, String age, String cost, String color, String chain1, String chain2, String freeCard)
+	public Card(String name, String color, String age, String cost, String chain, String freeCard)
 	{
 		this.name = name;
 		this.age = Integer.parseInt(age);
@@ -15,18 +15,14 @@ public abstract class Card implements Comparable {
 		for(String k: c)
 			this.cost.add(k);
 		this.color = color;
-		this.chain1 = chain1;
-		this.chain2 = chain2;
+		this.chain = chain;
 		this.freeCard = freeCard;
-		if(color.equals("brown"))
-			effect = "resource";
 	}
 	
 	public String getName() { return name; }
 	public int getAge() { return age; }
 	public ArrayList<String> getCost() 	{ return cost; }
-	public String getChain1() { return chain1; }
-	public String getChain2() { return chain2; }
+	public String getChain1() { return chain; }
 	public String getColor() { return color; }
 	public String getFree() { return freeCard; }
 	

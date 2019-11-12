@@ -5,8 +5,8 @@ public class ResourceCard extends Card {
 	private ArrayList<String> resources;
 	private boolean isChoice;
 	
-	public ResourceCard(String name, int age, ArrayList<String> cost, String color, ArrayList<String> chain, String freeCard) {
-		super(name, age, cost, color, chain, freeCard);
+	public ResourceCard(String name, String color, String age, String cost, String chain, String freeCard) {
+		super(name, color, age, cost, chain, freeCard);
 		isChoice = false;
 		assignResource();
 	}
