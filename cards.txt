@@ -1,0 +1,16 @@
+Lumber Yard;brown;1; ; ; 
+Stone Pit;brown;1; ; ; 
+Clay Pool;brown;1; ; ; 
+Ore Vein;brown;1; ; ; 
+Clay Pit;brown;1; ; ; 
+Timber Yard;brown;1; ; ; 
+Sawmill;brown;2; ; ; 
+Quarry;brown;2; ; ; 
+Brickyard;brown;2; ; ; 
+Foundry;brown;2; ; ; 
+Loom;silver;1; ; ; 
+Glassworks;silver;1; ; ; 
+Press;silver;1; ; ; 
+Loom;silver;2; ; ; 
+Glassworks;silver;2; ; ; 
+Press;silver;2; ; ; 
