@@ -19,7 +19,7 @@ public class ResourceCard extends Card {
 			else if(getName().equals("Glassworks"))
 				resources.add("glass");
 			else
-				resources.add("loom");
+				resources.add("cloth");
 		}
 		else if(getAge() == 1){
 			if(getName().equals("Lumber Yard"))
@@ -66,7 +66,7 @@ public class ResourceCard extends Card {
 				isChoice = true;
 			}
 			else if(getName().equals("Caravansery")) {
-				resources.add("loom");
+				resources.add("cloth");
 				resources.add("glass");
 				resources.add("papyrus");
 				isChoice = true;
