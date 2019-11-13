@@ -5,25 +5,45 @@ import java.util.ArrayList;
 
 public class Board {
 	
-	private ArrayList<Card> deck = new ArrayList<>();
-	
+	private ArrayList<Card> age1 = new ArrayList<>();
+	private ArrayList<Card> age2 = new ArrayList<>();
+	private ArrayList<Card> age3 = new ArrayList<>();
+	private ArrayList<ArrayList<Card>> ages;
 	public Board() throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader("cards.txt"));
 		StringTokenizer st, i;
+		age1 = new ArrayList<>();
+		age2 = new ArrayList<>();
+		age3 = new ArrayList<>();
+		ages = new ArrayList<>();
+		
+		ages.add(age1);
+		ages.add(age2);
+		ages.add(age3);
+		
 		while(br.ready()) {
 			st = new StringTokenizer(br.readLine(), ";");
 			String name = st.nextToken();
 			String color = st.nextToken();
+			String age = st.nextToken();
 			if(color.equals("brown") || color.equals("silver") || name.equals("caravansery") || name.equals("Forum"))
-				deck.add(new ResourceCard(name, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
+				ages.get(Integer.parseInt(age) - 1).add(new ResourceCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
 			else if(color.equals("blue"))
-				deck.add(new BlueCard(name, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
+				ages.get(Integer.parseInt(age) - 1).add(new BlueCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
 			else if(color.equals("red"))
-				deck.add(new RedCard(name, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
+				ages.get(Integer.parseInt(age) - 1).add(new RedCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
 			else if(color.equals("green"))
-				deck.add(new GreenCard(name, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
+				ages.get(Integer.parseInt(age) - 1).add(new GreenCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
 			else
-				deck.add(new ActionCard(name, color, st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()));
+				ages.get(Integer.parseInt(age) - 1).add(new ActionCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
+			
 		}
 	}
+	
+	public void printDeck() {
+		age1.sort(null);
+		for(Card c: age1)
+			System.out.println(c);
+	}
+	
 }
