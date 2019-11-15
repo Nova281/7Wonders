@@ -14,3 +14,23 @@ Press;silver;1; ; ;
 Loom;silver;2; ; ; 
 Glassworks;silver;2; ; ; 
 Press;silver;2; ; ; 
+Workers Guild;purple;3;ore, ore, clay, stone, wood; ; 
+Craftsmens Guild;purple;3;ore, ore, stone, stone; ; 
+Traders Guild;purple;3;cloth, papyrus, glass; ; 
+Philosophers Guild;purple;3;clay, clay, clay, cloth, papyrus; ; 
+Spies Guild;purple;3;clay, clay, clay, glass; ; 
+Strategists Guild;purple;3;ore, ore, stone, cloth; ; 
+Shopowners Guild;purple;3;wood, wood, wood, papyrus, glass; ; 
+Scientists Guild;purple;3;wood, wood, ore, ore, papyrus; ; 
+Magistrates Guild;purple;3;wood, wood, wood, stone, cloth; ; 
+Builders Guild;purple;3;stone, stone, clay, clay, glass; ; 
+Baths;blue;1;stone;Aqueduct; 
+Aqueduct;blue;2;stone, stone, stone; ;Baths
+Altar;blue;1; ;Temple; 
+Temple;blue;2;wood, clay, glass;Pantheon;Altar
+Pantheon;blue;3;clay, clay, ore, papyrus, cloth, glass; ;Temple
+Theater;blue;1; ;Statue; 
+Statue;blue;2;wood, ore, ore;Gardens;Theater
+Gardens;blue;3;wood, clay, clay; ;Statue
+Town Hall;blue;3;glass, ore, stone, stone; ; 
+Palace;blue;3;glass, papyrus, cloth, clay, wood, ore, stone; ; 
