@@ -34,15 +34,25 @@ public class Board {
 				ages.get(Integer.parseInt(age) - 1).add(new RedCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
 			else if(color.equals("green"))
 				ages.get(Integer.parseInt(age) - 1).add(new GreenCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
-			else
+			else {
 				ages.get(Integer.parseInt(age) - 1).add(new ActionCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
+			}
 			
 		}
 	}
 	
 	public void printDeck() {
 		age1.sort(null);
+		age2.sort(null);
+		age3.sort(null);
+		System.out.println("Age 1");
 		for(Card c: age1)
+			System.out.println(c);
+		System.out.println("----------------------------\nAge 2");
+		for(Card c: age2)
+			System.out.println(c);
+		System.out.println("----------------------------\nAge 3");
+		for(Card c: age3)
 			System.out.println(c);
 	}
 	
