@@ -34,3 +34,35 @@ Statue;blue;2;wood, ore, ore;Gardens;Theater
 Gardens;blue;3;wood, clay, clay; ;Statue
 Town Hall;blue;3;glass, ore, stone, stone; ; 
 Palace;blue;3;glass, papyrus, cloth, clay, wood, ore, stone; ; 
+Courthouse;blue;2;clay, clay, cloth; ;Scriptorium
+Senate;blue;3;ore, stone, wood, wood; ;Library
+Stockade;red;1;wood; ; 
+Barracks;red;1;ore; ; 
+Guard Tower;red;1;clay; ; 
+Walls;red;2;stone, stone, stone;Fortifications; 
+Fortifications;red;3;stone, ore, ore, ore; ;Walls
+Arsenal;red;3;ore, wood, wood, cloth; ; 
+Stables;red;2;ore, clay, wood; ;Apothecary
+Archery Range;red;2;wood, wood, ore; ;Workshop
+Siege Workshop;red;3;wood, clay, clay, clay; ;Laboratory
+East Trading Post;gold;1; ;Forum; 
+West Trading Post;gold;1; ;Forum; 
+Marketplace;gold;1; ;Caravansery; 
+Caravansery;gold;2;wood, wood;Lighthouse;Marketplace
+Forum;gold;2;clay, clay;Haven;East Trading Post, West Trading Post
+Vineyard;gold;2; ; ; 
+Haven;gold;3;cloth, ore, wood; ;Forum
+Lighthouse;gold;3;glass, stone; ;Caravansery
+Arena;gold;3;ore, stone, stone; ;Dispensary
+Apothecary;green;1;cloth;Stables, Dispensary; 
+Workshop;green;1;glass;Archery Range, Laboratory; 
+Scriptorium;green;1;papyrus;Courthouse, Library; 
+Dispensary;green;2;ore, ore, glass;Arena, Lodge;Apothecary
+Laboratory;green;2;clay, clay, papyrus;Siege Workshop, Observatory;Workshop
+Library;green;2;stone, stone, cloth;Senate, University;Scriptorium
+School;green;2;wood, papyrus;Academy, Study; 
+Lodge;green;3;clay, clay, cloth, papyrus; ;Dispensary
+Observatory;green;3;ore, ore, glass, cloth; ;Laboratory
+University;green;3;wood, wood, papyrus, glass; ;Library
+Academy;green;3;stone, stone, stone, glass; ;School
+Study;green;3;wood, papyrus, cloth; ;School
