@@ -6,6 +6,7 @@ public class Player {
 	private int warP = 0;
 	private int loss = 0;
 	private TreeMap<String,Integer> resources;
+	private ArrayList<ResourceCard> choiceRes;
 	private int warSheilds = 0;
 	private TreeMap<String,Integer> sciences;
 	private int wins = 0;
@@ -75,89 +76,14 @@ public class Player {
 			ArrayList<String> resources = c.getResources();
 			for(int i = 0; i < resources.size(); i++){
 				String resource = resources.get(i);
-				if(resource.equals("wood"))
+				if(this.resources.get(resource) == null)
 				{
-					if(this.resources.get(resource) == null)
-					{
-						this.resources.put(resource, 1);
-					}
-					else
-					{
-						int num = this.resources.get(resource) + 1;
-						this.resources.put(resource, num);
-					}
+					this.resources.put(resource,1);
 				}
-				else if(resource.equals("clay"))
+				else
 				{
-					if(this.resources.get(resource) == null)
-					{
-						this.resources.put(resource, 1);
-					}
-					else
-					{
-						int num = this.resources.get(resource) + 1;
-						this.resources.put(resource, num);
-					}
-				}
-				else if(resource.equals("ore"))
-				{
-					if(this.resources.get(resource) == null)
-					{
-						this.resources.put(resource, 1);
-					}
-					else
-					{
-						int num = this.resources.get(resource) + 1;
-						this.resources.put(resource, num);
-					}
-				}
-				else if(resource.equals("stone"))
-				{
-					if(this.resources.get(resource) == null)
-					{
-						this.resources.put(resource, 1);
-					}
-					else
-					{
-						int num = this.resources.get(resource) + 1;
-						this.resources.put(resource, num);
-					}
-				}
-				else if(resource.equals("glass"))
-				{
-					if(this.resources.get(resource) == null)
-					{
-						this.resources.put(resource, 1);
-					}
-					else
-					{
-						int num = this.resources.get(resource) + 1;
-						this.resources.put(resource, num);
-					}
-				}
-				else if(resource.equals("papyrus"))
-				{
-					if(this.resources.get(resource) == null)
-					{
-						this.resources.put(resource, 1);
-					}
-					else
-					{
-						int num = this.resources.get(resource) + 1;
-						this.resources.put(resource, num);
-					}
-				}
-				else if(resource.equals("loom"))
-				{
-					if(this.resources.get(resource) == null)
-					{
-						this.resources.put(resource, 1);
-					}
-					else
-					{
-						int num = this.resources.get(resource) + 1;
-						this.resources.put(resource, num);
-					}
+					int num = this.resources.get(resource);
+					this.resources.put(resource,(num+1));
 				}
 			}
 		}
@@ -166,6 +92,61 @@ public class Player {
 			RedCard c = (RedCard) card;
 			warSheilds += c.getMP();
 		}
-		else if()
+		else if(color.equals("green"))
+		{
+			GreenCard c = (GreenCard)card;
+			String science = c.getScience();
+			if(cards.get(science) == null)
+			{
+				sciences.put(science, 1);
+			}
+			else
+			{
+				int num = sciences.get(science);
+				sciences.put(science, (num + 1));
+			}
+		}
+		//else if(color.equals("blue"))
+	}
+	private boolean checkRes(Card card)
+	{
+		 ArrayList<String> res = card.getCost();
+		 TreeMap<String, Integer> resM = new TreeMap<String, Integer>();
+		 ArrayList<String> reso = new ArrayList<String>();
+		 boolean ret = true;
+		 for(int i = 0; i < res.size(); i++)
+		 {
+			 String re = res.get(i);
+			 if(resM.get(re) == null)
+			 {
+				 resM.put(re,1);
+			 }
+			 else
+			 {
+				 int num = resM.get(re);
+				 resM.put(re,(num+1));
+			 }
+		 }
+		 Set<String> keys = resM.keySet();
+		 for(String key : keys)
+		 {
+			 int num = resM.get(key);
+			 if(resources.get(key) >= num && ret == true)
+				 ret = true;
+			 else
+			 {
+				 int no = num - resources.get(key);
+				 if(no > 0)
+				 {
+					 resources.put(key, no);
+				     ret = false;
+				 }
+			 }
+		 }
+		 return ret;
+	}
+	public int getShields()
+	{
+		return warSheilds;
 	}
 }
