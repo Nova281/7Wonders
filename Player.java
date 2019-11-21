@@ -73,19 +73,27 @@ public class Player {
 		if(color.equals("brown") || color.equals("silver"))
 		{
 			ResourceCard  c = (ResourceCard) card;
-			ArrayList<String> resources = c.getResources();
-			for(int i = 0; i < resources.size(); i++){
-				String resource = resources.get(i);
-				if(this.resources.get(resource) == null)
-				{
-					this.resources.put(resource,1);
-				}
-				else
-				{
-					int num = this.resources.get(resource);
-					this.resources.put(resource,(num+1));
+			if(c.isChoice())
+			{
+				choiceRes.add(c);
+			}
+			else
+			{
+				ArrayList<String> resources = c.getResources();
+				for(int i = 0; i < resources.size(); i++){
+					String resource = resources.get(i);
+					if(this.resources.get(resource) == null)
+					{
+						this.resources.put(resource,1);
+					}
+					else
+					{
+						int num = this.resources.get(resource);
+						this.resources.put(resource,(num+1));
+					}
 				}
 			}
+			
 		}
 		else if(color.equals("red"))
 		{
@@ -140,13 +148,56 @@ public class Player {
 				 {
 					 resources.put(key, no);
 				     ret = false;
+				     for(int i = 0; i < no; i++)
+				     {
+				    	 reso.add(key);
+				     }
 				 }
 			 }
 		 }
+		 ArrayList<String> resou = new ArrayList<String>();
+		 for(int i = 0; i < choiceRes.size(); i++)
+		 {
+			 resou.addAll(choiceRes.get(i).getResources());
+		 }
+		 while(reso.size() > 0)
+		 {
+			 String word = reso.get(0);
+			 if(resou.contains(word))
+			 {
+				 reso.remove(0);
+			 }
+			 else
+				 break;
+		 }
+		 if(reso.size() == 0)
+			 ret = true;
 		 return ret;
 	}
 	public int getShields()
 	{
 		return warSheilds;
+	}
+	public boolean hasCard(Card card)
+	{
+		String cardName = card.getName();
+		Set<String> keys = cards.keySet();
+		boolean has = false;
+		for(String key : keys)
+		{
+			TreeSet<Card> cardss = cards.get(key);
+			for(Card crd : cardss)
+			{
+				if(crd.getName().equalsIgnoreCase(cardName))
+				{
+					has = true;
+				}
+			}
+		}
+		return has;
+	}
+	public void addCoins(int value)
+	{
+		coins+= value;
 	}
 }
