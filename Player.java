@@ -9,16 +9,16 @@ public class Player {
 	private ArrayList<ResourceCard> choiceRes;
 	private int warSheilds = 0;
 	private TreeMap<String,Integer> sciences;
-	private int wins = 0;
+	private int wins = 0; 
 	private boolean brownLeft = false;
 	private boolean brownRight = false;
 	private boolean silverBoth = false;
 	private int coins;
 	
-	public Player()
+	public Player(Wonder won)
 	{
 		cards = new TreeMap<String,TreeSet<Card>>();
-		wonder = new Wonder();
+		setWonder(won);
 		resources = new TreeMap<String,Integer>();
 		sciences = new TreeMap<String,Integer>();
 	}
@@ -200,4 +200,19 @@ public class Player {
 	{
 		coins+= value;
 	}
+	public void setWonder(Wonder wonder)
+	{
+		this.wonder = wonder;
+	}
+	/*public void buildWonder()
+	{
+		
+	}
+	private void wonderRes(int stage)
+	{
+		if(!wonder.getPhaseState(stage))
+		{
+			
+		}
+	}*/
 }
