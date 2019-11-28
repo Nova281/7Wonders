@@ -3,24 +3,9 @@ public class Ephesus extends Wonder
 	private String name, resource;
 	public Ephesus()
 	{
-		setName();
-		setResource();
-	}
-	public void setName()
-	{
-		name = "Ephesus";
-	}
-	public void setResource()
-	{
-		resource = "Papyrus";
-	}
-	public String getName()
-	{
-		return name;
-	}
-	public String getResource()
-	{
-		return resource;
+		super();
+		super.setName("Ephesus");
+		super.setRes("papyrus");
 	}
 	public boolean getPhaseState(int stage)
 	{
