@@ -4,7 +4,7 @@ public class Alexandria extends Wonder
 	public Alexandria()
 	{
 		super();
-		super.setName("Alexandria);
+		super.setName("Alexandria");
 		super.setRes("glass");
 	}
 	public boolean getPhaseState(int stage)
