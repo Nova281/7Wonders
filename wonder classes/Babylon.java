@@ -3,24 +3,9 @@ public class Babylon extends Wonder
 	private String name, resource;
 	public Babylon()
 	{
-		setName();
-		setResource();
-	}
-	public void setName()
-	{
-		name = "Babylon";
-	}
-	public void setResource()
-	{
-		resource = "Clay";
-	}
-	public String getName()
-	{
-		return name;
-	}
-	public String getResource()
-	{
-		return resource;
+		super();
+		super.setName("Babylon");
+		super.setRes("clay");
 	}
 	public boolean getPhaseState(int stage)
 	{
