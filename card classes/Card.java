@@ -3,28 +3,34 @@ import java.util.ArrayList;
 public abstract class Card implements Comparable {
 	
 	private int age;
-	private ArrayList<String> cost;
-	private String name, color, freeCard, chain;
+	private ArrayList<String> cost, freeCard, chain;
+	private String name, color;
 	
 	public Card(String name, String color, String age, String cost, String chain, String freeCard)
 	{
 		this.name = name;
 		this.age = Integer.parseInt(age);
 		this.cost = new ArrayList<>();
+		this.chain = new ArrayList<>();
+		this.freeCard = new ArrayList<>();
 		String[] c = cost.split(", ");
 		for(String k: c)
 			this.cost.add(k);
 		this.color = color;
-		this.chain = chain;
-		this.freeCard = freeCard;
+		String[] ch = chain.split(", ");
+		for(String k: ch)
+			this.chain.add(k);
+		String[] fc = freeCard.split(", ");
+		for(String k: fc)
+			this.freeCard.add(k);
 	}
 	
 	public String getName() { return name; }
 	public int getAge() { return age; }
 	public ArrayList<String> getCost() 	{ return cost; }
-	public String getChain1() { return chain; }
+	public ArrayList<String> getChain() { return chain; }
 	public String getColor() { return color; }
-	public String getFree() { return freeCard; }
+	public ArrayList<String> getFree() { return freeCard; }
 	
 	public int compareTo(Object o)
 	{
@@ -67,5 +73,18 @@ public abstract class Card implements Comparable {
 			return name.compareTo(card.getName());
 	}
 	
-	public String toString() { return name + "; " + color + "; " + age + "; " + cost + "; " + chain + "; " + freeCard; }
+	public String toString() { 
+		String cos = "";
+		for(int i = 0; i < cost.size()-1; i++)
+			cos+=cost.get(i) + ", ";
+		cos+=cost.get(cost.size()-1);
+		String ch = "";
+		for(int i = 0; i < chain.size()-1; i++)
+			ch+=chain.get(i) + ", ";
+		ch+=chain.get(chain.size()-1);
+		String fc = "";
+		for(int i = 0; i < freeCard.size()-1; i++)
+			fc+=freeCard.get(i) + ", ";
+		fc+=freeCard.get(freeCard.size()-1);
+		return name + ";" + color + ";" + age + ";" + cos + ";" + ch + ";" + fc; }
 }
