@@ -1,26 +1,11 @@
-public class Halicarnassus extends Wonder 	
+public class Halikarnassos extends Wonder 	
 {
 	private String name, resource;
-	public Halicarnassus()
+	public Halikarnassos()
 	{
-		setName();
-		setResource();
-	}
-	public void setName()
-	{
-		name = "Halicarnassus";
-	}
-	public void setResource()
-	{
-		resource = "Loom";
-	}
-	public String getName()
-	{
-		return name;
-	}
-	public String getResource()
-	{
-		return resource;
+		super();
+		super.setName("Halikarnassos");
+		super.setRes("loom");
 	}
 	public boolean getPhaseState(int stage)
 	{
