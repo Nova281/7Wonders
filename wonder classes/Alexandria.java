@@ -11,9 +11,26 @@ public class Alexandria extends Wonder
 	{
 		return super.getPhaseState(stage);
 	}
+	public String getResWonder(int stage)
+	{
+		String resReq = "";
+		if(stage == 1)
+		{
+			resReq = "stone stone";
+		}
+		else if(stage == 2)
+		{
+			resReq = "ore ore";
+		}
+		else if(stage == 3)
+		{
+			resReq = "glass glass";
+		}
+		return resReq;
+	}
 	public String getPhase1()
 	{
-		 return "3 victory points";
+		 return "3";
 	}
 	public String getPhase2()
 	{
@@ -21,7 +38,7 @@ public class Alexandria extends Wonder
 	}
 	public String getPhase3()
 	{
-		return "7 victory points";
+		return "7";
 	}
 	
 	
