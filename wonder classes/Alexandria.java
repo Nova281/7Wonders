@@ -12,7 +12,7 @@ public class Alexandria extends Wonder
 	}
 	public void setResource()
 	{
-		resource = "Glass";
+		resource = "glass";
 	}
 	public String getName()
 	{
