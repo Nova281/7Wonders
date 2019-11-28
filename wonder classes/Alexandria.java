@@ -3,24 +3,9 @@ public class Alexandria extends Wonder
 	private String name, resource;
 	public Alexandria()
 	{
-		setName();
-		setResource();
-	}
-	public void setName()
-	{
-		name = "Alexandria";
-	}
-	public void setResource()
-	{
-		resource = "glass";
-	}
-	public String getName()
-	{
-		return name;
-	}
-	public String getResource()
-	{
-		return resource;
+		super();
+		super.setName("Alexandria);
+		super.setRes("glass");
 	}
 	public boolean getPhaseState(int stage)
 	{
