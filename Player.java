@@ -6,7 +6,7 @@ public class Player {
 	private int warP = 0;
 	private int loss = 0;
 	private TreeMap<String,Integer> resources;
-	private ArrayList<ResourceCard> choiceRes;
+	private ArrayList<ArrayList<String>> choiceRes;
 	private int warSheilds = 0;
 	private TreeMap<String,Integer> sciences;
 	private int wins = 0; 
@@ -15,12 +15,19 @@ public class Player {
 	private boolean silverBoth = false;
 	private int coins;
 	
+	public Player() {
+		cards = new TreeMap<String,TreeSet<Card>>();
+		resources = new TreeMap<String,Integer>();
+		sciences = new TreeMap<String,Integer>();
+	}
+	
 	public Player(Wonder won)
 	{
 		cards = new TreeMap<String,TreeSet<Card>>();
 		setWonder(won);
 		resources = new TreeMap<String,Integer>();
 		sciences = new TreeMap<String,Integer>();
+		resources.put(won.getResource(), 1);
 	}
 	public void setWar(int age, boolean win)
 	{
@@ -75,7 +82,7 @@ public class Player {
 			ResourceCard  c = (ResourceCard) card;
 			if(c.isChoice())
 			{
-				choiceRes.add(c);
+				choiceRes.add(c.getResources());
 			}
 			else
 			{
@@ -158,7 +165,7 @@ public class Player {
 		 ArrayList<String> resou = new ArrayList<String>();
 		 for(int i = 0; i < choiceRes.size(); i++)
 		 {
-			 resou.addAll(choiceRes.get(i).getResources());
+			 resou.addAll(choiceRes.get(i));
 		 }
 		 while(reso.size() > 0)
 		 {
@@ -215,4 +222,8 @@ public class Player {
 			
 		}
 	}*/
+	
+	public void addChoiceRes(ArrayList<String> list) {
+		choiceRes.add(list);
+	}
 }
