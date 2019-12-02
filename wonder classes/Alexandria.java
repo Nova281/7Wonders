@@ -1,16 +1,15 @@
+import java.util.ArrayList;
+
 public class Alexandria extends Wonder	
 {
 	private String name, resource;
 	public Alexandria()
 	{
 		super();
-		super.setName("Alexandria");
-		super.setRes("glass");
+		name = "Alexandria";
+		resource = "Glass";
 	}
-	public boolean getPhaseState(int stage)
-	{
-		return super.getPhaseState(stage);
-	}
+	
 	public String getResWonder(int stage)
 	{
 		String resReq = "";
@@ -28,25 +27,35 @@ public class Alexandria extends Wonder
 		}
 		return resReq;
 	}
-	public String getPhase1()
+	public String getName()
 	{
-		 return "3";
+		return name;
 	}
-	public String getPhase2()
+	public String getResource()
 	{
-		return "gain resource(Stone, Clay, Wood, Ore) of your choice every turn(cannot be sold through commerce)";
+		return resource;
 	}
-	public String getPhase3()
+	public boolean getPhaseState(int stage)
 	{
-		return "7";
+		return super.getPhaseState(stage);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+	public int getPhase1()
+	{
+		 return super.getPhase1();
 	}
+	public void runPhase2(Player p)
+	{
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("stone");
+		list.add("clay");
+		list.add("wood");
+		list.add("ore");
+		p.addChoiceRes(list);
+	}
+	public int getPhase3()
+	{
+		return super.getPhase3();
+	}
+
+}
 	

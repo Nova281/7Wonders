@@ -11,6 +11,23 @@ public class Gizah extends Wonder
 	{
 		return super.getPhaseState(stage);
 	}
+	public String getResWonder(int stage)
+	{
+		String resReq = "";
+		if(stage == 1)
+		{
+			resReq = "stone stone";
+		}
+		else if(stage == 2)
+		{
+			resReq = "wood wood wood";
+		}
+		else if(stage == 3)
+		{
+			resReq = "stone stone stone stone";
+		}
+		return resReq;
+	}
 	public String getPhase1()
 	{	
 		 return "3 victory points";
