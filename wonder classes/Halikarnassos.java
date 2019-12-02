@@ -11,6 +11,7 @@ public class Halikarnassos extends Wonder
 	{
 		return super.getPhaseState(stage);
 	}
+	
 	public String getPhase1()
 	{	
 		 return "3 victory points";
