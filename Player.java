@@ -27,7 +27,7 @@ public class Player {
 		setWonder(won);
 		resources = new TreeMap<String,Integer>();
 		sciences = new TreeMap<String,Integer>();
-		resources.put(won.getResource(), 1);
+		resources.put(won.getRes(), 1);
 	}
 	public void setWar(int age, boolean win)
 	{
@@ -162,10 +162,10 @@ public class Player {
 				 }
 			 }
 		 }
-		 ArrayList<String> resou = new ArrayList<String>();
+		 ArrayList<ArrayList<String>> resou = new ArrayList<ArrayList<String>>();
 		 for(int i = 0; i < choiceRes.size(); i++)
 		 {
-			 resou.addAll(choiceRes.get(i));
+			 resou.add(choiceRes.get(i));
 		 }
 		 while(reso.size() > 0)
 		 {
@@ -225,12 +225,5 @@ public class Player {
 	
 	public void addChoiceRes(ArrayList<String> list) {
 		choiceRes.add(list);
-	}
-	
-	public void addScience(String s) {
-		if(sciences.containsKey(s)) 
-			sciences.put(s, sciences.get(s) + 1);
-		else
-			sciences.put(s, 1);
 	}
 }
