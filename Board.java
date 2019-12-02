@@ -2,14 +2,15 @@ import java.io.*;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 
 public class Board {
 	
 	private ArrayList<Card> deck = new ArrayList<>();
+	private LinkedHashMap<Player, ArrayList<Card>> players;
 	
 	public Board() throws IOException {
 		createDeck(3);
-		
 	}
 	
 	public void createDeck(int a ) throws IOException {
@@ -55,7 +56,7 @@ public class Board {
 	}
 	
 	public void deal(Player p1, Player p2, Player p3) {
-		
+		Collections.shuffle(deck);
 	}
 	
 }
