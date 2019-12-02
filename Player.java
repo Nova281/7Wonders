@@ -226,4 +226,10 @@ public class Player {
 	public void addChoiceRes(ArrayList<String> list) {
 		choiceRes.add(list);
 	}
+	public void addScience(String s) {
+		if(sciences.containsKey(s)) 
+			sciences.put(s, sciences.get(s) + 1);
+		else
+			sciences.put(s, 1);
+	}
 }
