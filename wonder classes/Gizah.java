@@ -1,26 +1,11 @@
-public class Giza extends Wonder 	
+public class Gizah extends Wonder 	
 {
 	private String name, resource;
-	public Giza()
+	public Gizah()
 	{
-		setName();
-		setResource();
-	}
-	public void setName()
-	{
-		name = "Giza";
-	}
-	public void setResource()
-	{
-		resource = "Stone";
-	}
-	public String getName()
-	{
-		return name;
-	}
-	public String getResource()
-	{
-		return resource;
+		super();
+		super.setName("Gizah");
+		super.setRes("stone");
 	}
 	public boolean getPhaseState(int stage)
 	{

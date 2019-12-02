@@ -3,24 +3,9 @@ public class Olympia extends Wonder
 	private String name, resource;
 	public Olympia()
 	{
-		setName();
-		setResource();
-	}
-	public void setName()
-	{
-		name = "Olympia";
-	}
-	public void setResource()
-	{
-		resource = "Wood";
-	}
-	public String getName()
-	{
-		return name;
-	}
-	public String getResource()
-	{
-		return resource;
+		super();
+		super.setName("Olympia");
+		super.setRes("wood");
 	}
 	public boolean getPhaseState(int stage)
 	{

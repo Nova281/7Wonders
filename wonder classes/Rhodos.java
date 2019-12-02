@@ -1,26 +1,11 @@
-public class Rhodes extends Wonder 	
+public class Rhodos extends Wonder 	
 {
 	private String name, resource;
-	public Rhodes()
+	public Rhodos()
 	{
-		setName();
-		setResource();
-	}
-	public void setName()
-	{
-		name = "Rhodes";
-	}
-	public void setResource()
-	{
-		resource = "Ore";
-	}
-	public String getName()
-	{
-		return name;
-	}
-	public String getResource()
-	{
-		return resource;
+		super();
+		super.setName("Rhodos");
+		super.setRes("ore");
 	}
 	public boolean getPhaseState(int stage)
 	{
