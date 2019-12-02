@@ -3,13 +3,16 @@ public class Alexandria extends Wonder
 	private String name, resource;
 	public Alexandria()
 	{
-		super();
-		super.setName("Alexandria");
-		super.setRes("glass");
+		setName();
+		setResource();
 	}
-	public boolean getPhaseState(int stage)
+	public void setName()
 	{
-		return super.getPhaseState(stage);
+		name = "Alexandria";
+	}
+	public void setResource()
+	{
+		resource = "Glass";
 	}
 	public String getResWonder(int stage)
 	{
@@ -28,25 +31,30 @@ public class Alexandria extends Wonder
 		}
 		return resReq;
 	}
-	public String getPhase1()
+	public String getName()
 	{
-		 return "3";
+		return name;
+	}
+	public String getResource()
+	{
+		return resource;
+	}
+	public boolean getPhaseState(int stage)
+	{
+		return super.getPhaseState(stage);
+	}
+	public int getPhase1()
+	{
+		 return super.getPhase1();
 	}
 	public String getPhase2()
 	{
 		return "gain resource(Stone, Clay, Wood, Ore) of your choice every turn(cannot be sold through commerce)";
 	}
-	public String getPhase3()
+	public int getPhase3()
 	{
-		return "7";
+		return super.getPhase3();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	}
+
+}
 	
