@@ -16,15 +16,15 @@ public class Babylon extends Wonder
 		String resReq = "";
 		if(stage == 1)
 		{
-			resReq = "stone stone";
+			resReq = "clay clay";
 		}
 		else if(stage == 2)
 		{
-			resReq = "ore ore";
+			resReq = "wood wood wood";
 		}
 		else if(stage == 3)
 		{
-			resReq = "glass glass";
+			resReq = "clay clay clay clay";
 		}
 		return resReq;
 	}
