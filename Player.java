@@ -1,103 +1,90 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.TreeMap;
+import java.util.Set;
+import static java.lang.System.*;
 
 public class Player {
-	private TreeMap<String,TreeSet<Card>> cards;
+	
+	private TreeMap<String, ArrayList<Card>> cards;
 	private Wonder wonder;
-	private int warP = 0;
-	private int loss = 0;
-	private TreeMap<String,Integer> resources;
+	private int coins;
+	private int vp;
+	
+	private int warPoints;
+	private int wins; 
+	private int loss;
+	
+	private TreeMap<String, Integer> resources;
 	private ArrayList<ArrayList<String>> choiceRes;
-	private int warSheilds = 0;
+	private int mp; //military points
 	private TreeMap<String,Integer> sciences;
-	private int wins = 0; 
+	
 	private boolean brownLeft = false;
 	private boolean brownRight = false;
-	private boolean silverBoth = false;
-	private int coins;
+	private boolean silverBoth = false; //what is this stuff
+	
 	
 	public Player() {
-		cards = new TreeMap<String,TreeSet<Card>>();
+		vp = 0;
+		warPoints = 0;
+		wins = 0;
+		loss = 0;
+		coins = 0;
+		cards = new TreeMap<String, ArrayList<Card>>();
+		String[] colors = {"brown", "silver", "blue", "red", "gold", "green", "purple" };
+		for(String k: colors)
+			cards.put(k, new ArrayList<>());
 		resources = new TreeMap<String,Integer>();
+		choiceRes = new ArrayList<>();
 		sciences = new TreeMap<String,Integer>();
 	}
-	
-	public Player(Wonder won)
-	{
-		cards = new TreeMap<String,TreeSet<Card>>();
-		setWonder(won);
-		resources = new TreeMap<String,Integer>();
-		sciences = new TreeMap<String,Integer>();
-		resources.put(won.getRes(), 1);
-	}
+	//sets war points, takes in age and if won
 	public void setWar(int age, boolean win)
 	{
-		if(age == 1)
+		if(win == false) {
+			loss++;
+			warPoints-=1;
+		}
+		else if(age == 1)
 		{
-			if(win == true)
-			{
-				warP += 1;
-				wins++;
-			}
-			else
-			{
-				warP -= 1;
-				loss++;
-			}
+			warPoints += 1;
+			wins++;
 		}
 		else if(age == 2)
 		{
-			if(win == true)
-			{
-				warP += 3;
-				wins++;
-			}
-			else
-			{
-				warP -= 1;
-				loss++;
-			}
+			warPoints += 3;
+			wins++;
 		}
-		else if(age == 3)
+		else
 		{
-			if(win == true)
-			{
-				warP += 5;
-				wins++;
-			}
-			else
-			{
-				warP -= 1;
-				loss++;
-			}
+			warPoints += 5;
+			wins++;
 		}
 	}
+	
 	public void addCard(Card card)
 	{
 		String color = card.getColor();
-		TreeSet<Card> crd = cards.get(color);
+		ArrayList<Card> crd = cards.get(color);
 		crd.add(card);
+		Collections.sort(crd);
 		cards.put(color, crd);
+		
 		if(color.equals("brown") || color.equals("silver"))
 		{
 			ResourceCard  c = (ResourceCard) card;
 			if(c.isChoice())
-			{
 				choiceRes.add(c.getResources());
-			}
 			else
 			{
 				ArrayList<String> resources = c.getResources();
 				for(int i = 0; i < resources.size(); i++){
 					String resource = resources.get(i);
-					if(this.resources.get(resource) == null)
-					{
-						this.resources.put(resource,1);
-					}
+					if(this.resources.containsKey(resource))
+						this.resources.put(resource, this.resources.get(resource) + 1);
 					else
-					{
-						int num = this.resources.get(resource);
-						this.resources.put(resource,(num+1));
-					}
+						this.resources.put(resource, 1);
 				}
 			}
 			
@@ -105,85 +92,99 @@ public class Player {
 		else if(color.equals("red"))
 		{
 			RedCard c = (RedCard) card;
-			warSheilds += c.getMP();
+			mp += c.getMP();
 		}
 		else if(color.equals("green"))
 		{
-			GreenCard c = (GreenCard)card;
+			GreenCard c = (GreenCard) card;
 			String science = c.getScience();
-			if(cards.get(science) == null)
-			{
-				sciences.put(science, 1);
-			}
+			if(cards.containsKey(science))
+				sciences.put(science, (sciences.get(science) + 1));
 			else
-			{
-				int num = sciences.get(science);
-				sciences.put(science, (num + 1));
-			}
+				sciences.put(science, 1);
 		}
-		//else if(color.equals("blue"))
+		else if(color.equals("blue"))
+		{
+			BlueCard c = (BlueCard) card;
+			vp+=c.getVP();
+		}
+		//idk about action card
 	}
-	private boolean checkRes(Card card)
+	
+	public boolean canBuild(Card card)
 	{
-		 ArrayList<String> res = card.getCost();
-		 TreeMap<String, Integer> resM = new TreeMap<String, Integer>();
-		 ArrayList<String> reso = new ArrayList<String>();
-		 boolean ret = true;
-		 for(int i = 0; i < res.size(); i++)
-		 {
-			 String re = res.get(i);
-			 if(resM.get(re) == null)
-			 {
-				 resM.put(re,1);
-			 }
-			 else
-			 {
-				 int num = resM.get(re);
-				 resM.put(re,(num+1));
-			 }
-		 }
-		 Set<String> keys = resM.keySet();
-		 for(String key : keys)
-		 {
-			 int num = resM.get(key);
-			 if(resources.get(key) >= num && ret == true)
-				 ret = true;
-			 else
-			 {
-				 int no = num - resources.get(key);
-				 if(no > 0)
-				 {
-					 resources.put(key, no);
-				     ret = false;
-				     for(int i = 0; i < no; i++)
-				     {
-				    	 reso.add(key);
-				     }
-				 }
-			 }
-		 }
-		 ArrayList<ArrayList<String>> resou = new ArrayList<ArrayList<String>>();
-		 for(int i = 0; i < choiceRes.size(); i++)
-		 {
-			 resou.add(choiceRes.get(i));
-		 }
-		 while(reso.size() > 0)
-		 {
-			 String word = reso.get(0);
-			 if(resou.contains(word))
-			 {
-				 reso.remove(0);
-			 }
-			 else
-				 break;
-		 }
-		 if(reso.size() == 0)
-			 ret = true;
-		 return ret;
+		if(card.getCost().size() == 1 && card.getCost().get(0).equals(" "))
+			return true;
+		ArrayList<String> cost = card.getCost();
+		System.out.println(cost);
+		for(String resource: resources.keySet()) {
+			for(int i = 0; i < resources.get(resource); i++)
+				if(cost.contains(resource))
+					cost.remove(resource);
+				else
+					break;
+		}
+		System.out.println(cost);
+		return false; //finish later
+//		 ArrayList<String> res = card.getCost();
+//		 TreeMap<String, Integer> resM = new TreeMap<String, Integer>();
+//		 ArrayList<String> reso = new ArrayList<String>();
+//		 boolean ret = true;
+//		 for(int i = 0; i < res.size(); i++)
+//		 {
+//			 String re = res.get(i);
+//			 if(resM.get(re) == null)
+//			 {
+//				 resM.put(re,1);
+//			 }
+//			 else
+//			 {
+//				 int num = resM.get(re);
+//				 resM.put(re,(num+1));
+//			 }
+//		 }
+//		 Set<String> keys = resM.keySet();
+//		 for(String key : keys)
+//		 {
+//			 int num = resM.get(key);
+//			 if(resources.get(key) >= num && ret == true)
+//				 ret = true;
+//			 else
+//			 {
+//				 int no = num - resources.get(key);
+//				 if(no > 0)
+//				 {
+//					 resources.put(key, no);
+//				     ret = false;
+//				     for(int i = 0; i < no; i++)
+//				     {
+//				    	 reso.add(key);
+//				     }
+//				 }
+//			 }
+//		 }
+//		 ArrayList<ArrayList<String>> resou = new ArrayList<ArrayList<String>>();
+//		 for(int i = 0; i < choiceRes.size(); i++)
+//		 {
+//			 resou.add(choiceRes.get(i));
+//		 }
+//		 while(reso.size() > 0)
+//		 {
+//			 String word = reso.get(0);
+//			 if(resou.contains(word))
+//			 {
+//				 reso.remove(0);
+//			 }
+//			 else
+//				 break;
+//		 }
+//		 if(reso.size() == 0)
+//			 ret = true;
+//		 return ret;
 	}
-	public int getShields()
+	public int getMP()
 	{
-		return warSheilds;
+		return mp;
 	}
 	public boolean hasCard(Card card)
 	{
@@ -192,7 +193,7 @@ public class Player {
 		boolean has = false;
 		for(String key : keys)
 		{
-			TreeSet<Card> cardss = cards.get(key);
+			ArrayList<Card> cardss = cards.get(key);
 			for(Card crd : cardss)
 			{
 				if(crd.getName().equalsIgnoreCase(cardName))
@@ -232,4 +233,6 @@ public class Player {
 		else
 			sciences.put(s, 1);
 	}
+	
+	public String toString() { return cards.toString(); }
 }
