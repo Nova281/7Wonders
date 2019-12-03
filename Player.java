@@ -1,81 +1,243 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.TreeMap;
+import java.util.Set;
+import static java.lang.System.*;
 
-public class ActionCard extends Card{
-	private String effect;
+public class Player {
 	
-	public ActionCard(String name,String color,String age,String cost,String chain, String freeCard)
-	{
-		super(name,color,age,cost,chain,freeCard);
-		setEffect();
+	private TreeMap<String, ArrayList<Card>> cards;
+	private Wonder wonder;
+	private int coins;
+	private int vp;
+	
+	private int warPoints;
+	private int wins; 
+	private int loss;
+	
+	private TreeMap<String, Integer> resources;
+	private ArrayList<ArrayList<String>> choiceRes;
+	private int mp; //military points
+	private TreeMap<String,Integer> sciences;
+	
+	private boolean brownLeft = false;
+	private boolean brownRight = false;
+	private boolean silverBoth = false; //what is this stuff
+	
+	
+	public Player() {
+		vp = 0;
+		warPoints = 0;
+		wins = 0;
+		loss = 0;
+		coins = 0;
+		cards = new TreeMap<String, ArrayList<Card>>();
+		String[] colors = {"brown", "silver", "blue", "red", "gold", "green", "purple" };
+		for(String k: colors)
+			cards.put(k, new ArrayList<>());
+		resources = new TreeMap<String,Integer>();
+		choiceRes = new ArrayList<>();
+		sciences = new TreeMap<String,Integer>();
 	}
-	public ActionCard(String inp)
+	//sets war points, takes in age and if won
+	public void setWar(int age, boolean win)
 	{
-		super(inp);
-		setEffect();
-	}
-	private void setEffect()
-	{
-		if(getAge() == 1)
-		{
-			if(getName().equals("East Trading Post"))
-				effect = "right 1";
-			else if(getName().equals("West Trading Post"))
-				effect = "left 1";
-			else
-				effect = "both 1";
+		if(win == false) {
+			loss++;
+			warPoints-=1;
 		}
-		else if(getAge() == 2)
+		else if(age == 1)
 		{
-			if(getName().equals("Vineyard"))
-				effect = "Brown 1";
-			else if(getName().equals("Forum"))
-			{
-				effect = "loom glass papyrus";
-			}
-			else if(getName().equals("Caravansery"))
-				effect = "clay stone ore wood";
+			warPoints += 1;
+			wins++;
 		}
-		else if(getAge() == 3 && getColor().equals("gold"))
+		else if(age == 2)
 		{
-			if(getName().equals("Haven"))
-				effect = "1 brown";
-			else if(getName().equals("Lighthouse"))
-				effect = "1 gold";
-			else if(getName().equals("Arena"))
-				effect = "3 1 wonder";
+			warPoints += 3;
+			wins++;
 		}
 		else
 		{
-			if(getColor().contentEquals("purple"))
-			{
-				if(getName().equals("Workers Guild"))
-					effect = "1 Brown";
-				else if(getName().equals("Craftsmens Guild"))
-					effect = "1 Silver";
-				else if(getName().equals("Traders Guild"))
-					effect = "1 Gold";
-				else if(getName().equals("Philosophers Guild"))
-					effect = "1 Green";
-				else if(getName().equals("Spies Guild"))
-					effect = "1 Red";
-				else if(getName().equals("Strategists Guild"))
-					effect = "1 Loss";
-				else if(getName().equals("Shipowners Guild"))
-					effect = "1 Brown Purple Silver";
-				else if(getName().equals("Scientists Guild"))
-					effect = "1 Science";
-				else if(getName().equals("Magistrates Guild"))
-					effect = "1 Blue";
-				else if(getName().equals("Builders Guild"))
-					effect = "1 Wonder";
-			}
+			warPoints += 5;
+			wins++;
 		}
 	}
-	public String getEffect()
+	
+	public void addCard(Card card)
 	{
-		return effect;
+		String color = card.getColor();
+		ArrayList<Card> crd = cards.get(color);
+		crd.add(card);
+		Collections.sort(crd);
+		cards.put(color, crd);
+		
+		if(color.equals("brown") || color.equals("silver"))
+		{
+			ResourceCard  c = (ResourceCard) card;
+			if(c.isChoice())
+				choiceRes.add(c.getResources());
+			else
+			{
+				ArrayList<String> resources = c.getResources();
+				for(int i = 0; i < resources.size(); i++){
+					String resource = resources.get(i);
+					if(this.resources.containsKey(resource))
+						this.resources.put(resource, this.resources.get(resource) + 1);
+					else
+						this.resources.put(resource, 1);
+				}
+			}
+			
+		}
+		else if(color.equals("red"))
+		{
+			RedCard c = (RedCard) card;
+			mp += c.getMP();
+		}
+		else if(color.equals("green"))
+		{
+			GreenCard c = (GreenCard) card;
+			String science = c.getScience();
+			if(cards.containsKey(science))
+				sciences.put(science, (sciences.get(science) + 1));
+			else
+				sciences.put(science, 1);
+		}
+		else if(color.equals("blue"))
+		{
+			BlueCard c = (BlueCard) card;
+			vp+=c.getVP();
+		}
+		//idk about action card
+		else if(color.equals("gold")|| color.equals("purple"))
+		{
+			ActionCard c = (ActionCard)card;
+			if(c.getS)
+		}
 	}
-	public int compareTo(Object o) {
-		return super.compareTo(o);
+	
+	public boolean canBuild(Card card)
+	{
+		if(card.getCost().size() == 1 && card.getCost().get(0).equals(" "))
+			return true;
+		ArrayList<String> cost = card.getCost();
+		System.out.println(cost);
+		for(String resource: resources.keySet()) {
+			for(int i = 0; i < resources.get(resource); i++)
+				if(cost.contains(resource))
+					cost.remove(resource);
+				else
+					break;
+		}
+		System.out.println(cost);
+		return false; //finish later
+//		 ArrayList<String> res = card.getCost();
+//		 TreeMap<String, Integer> resM = new TreeMap<String, Integer>();
+//		 ArrayList<String> reso = new ArrayList<String>();
+//		 boolean ret = true;
+//		 for(int i = 0; i < res.size(); i++)
+//		 {
+//			 String re = res.get(i);
+//			 if(resM.get(re) == null)
+//			 {
+//				 resM.put(re,1);
+//			 }
+//			 else
+//			 {
+//				 int num = resM.get(re);
+//				 resM.put(re,(num+1));
+//			 }
+//		 }
+//		 Set<String> keys = resM.keySet();
+//		 for(String key : keys)
+//		 {
+//			 int num = resM.get(key);
+//			 if(resources.get(key) >= num && ret == true)
+//				 ret = true;
+//			 else
+//			 {
+//				 int no = num - resources.get(key);
+//				 if(no > 0)
+//				 {
+//					 resources.put(key, no);
+//				     ret = false;
+//				     for(int i = 0; i < no; i++)
+//				     {
+//				    	 reso.add(key);
+//				     }
+//				 }
+//			 }
+//		 }
+//		 ArrayList<ArrayList<String>> resou = new ArrayList<ArrayList<String>>();
+//		 for(int i = 0; i < choiceRes.size(); i++)
+//		 {
+//			 resou.add(choiceRes.get(i));
+//		 }
+//		 while(reso.size() > 0)
+//		 {
+//			 String word = reso.get(0);
+//			 if(resou.contains(word))
+//			 {
+//				 reso.remove(0);
+//			 }
+//			 else
+//				 break;
+//		 }
+//		 if(reso.size() == 0)
+//			 ret = true;
+//		 return ret;
 	}
+	public int getMP()
+	{
+		return mp;
+	}
+	public boolean hasCard(Card card)
+	{
+		String cardName = card.getName();
+		Set<String> keys = cards.keySet();
+		boolean has = false;
+		for(String key : keys)
+		{
+			ArrayList<Card> cardss = cards.get(key);
+			for(Card crd : cardss)
+			{
+				if(crd.getName().equalsIgnoreCase(cardName))
+				{
+					has = true;
+				}
+			}
+		}
+		return has;
+	}
+	public void addCoins(int value)
+	{
+		coins+= value;
+	}
+	public void setWonder(Wonder wonder)
+	{
+		this.wonder = wonder;
+	}
+	/*public void buildWonder()
+	{
+		
+	}
+	private void wonderRes(int stage)
+	{
+		if(!wonder.getPhaseState(stage))
+		{
+			
+		}
+	}*/
+	
+	public void addChoiceRes(ArrayList<String> list) {
+		choiceRes.add(list);
+	}
+	public void addScience(String s) {
+		if(sciences.containsKey(s)) 
+			sciences.put(s, sciences.get(s) + 1);
+		else
+			sciences.put(s, 1);
+	}
+	
+	public String toString() { return cards.toString(); }
 }
