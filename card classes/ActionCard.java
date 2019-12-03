@@ -71,4 +71,11 @@ public class ActionCard extends Card{
 			}
 		}
 	}
+	public String getEffect()
+	{
+		return effect;
+	}
+	public int compareTo(Object o) {
+		return super.compareTo(o);
+	}
 }
