@@ -9,6 +9,7 @@ public abstract class Card implements Comparable {
 	public Card(String name, String color, String age, String cost, String chain, String freeCard)
 	{
 		this.name = name;
+		this.color = color;
 		this.age = Integer.parseInt(age);
 		this.cost = new ArrayList<>();
 		this.chain = new ArrayList<>();
@@ -16,11 +17,33 @@ public abstract class Card implements Comparable {
 		String[] c = cost.split(", ");
 		for(String k: c)
 			this.cost.add(k);
-		this.color = color;
 		String[] ch = chain.split(", ");
 		for(String k: ch)
 			this.chain.add(k);
 		String[] fc = freeCard.split(", ");
+		for(String k: fc)
+			this.freeCard.add(k);
+	}
+	public Card(String input)
+	{
+		String[] arr = input.split(";");
+		this.name = arr[0];
+		this.color = arr[1];
+		this.age = Integer.parseInt(arr[2]);
+		
+		this.cost = new ArrayList<>();
+		this.chain = new ArrayList<>();
+		this.freeCard = new ArrayList<>();
+		
+		String[] c = arr[3].split(", ");
+		for(String k: c)
+			this.cost.add(k);
+		
+		String[] ch = arr[4].split(", ");
+		for(String k: ch)
+			this.chain.add(k);
+		
+		String[] fc = arr[5].split(", ");
 		for(String k: fc)
 			this.freeCard.add(k);
 	}
