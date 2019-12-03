@@ -3,11 +3,12 @@ import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.Iterator;
+import static java.lang.System.*;
 
 public class Board {
 	
 	private ArrayList<Card> deck = new ArrayList<>();
-	private LinkedHashMap<Player, ArrayList<Card>> players;
 	
 	public Board() {
 		try {
@@ -61,8 +62,25 @@ public class Board {
 		return deck;
 	}
 	
-	public void deal(Player p1, Player p2, Player p3) {
+	public void deal(LinkedHashMap<Player, ArrayList<Card>> playerMap) {
 		Collections.shuffle(deck);
+		Iterator<Player> iter = playerMap.keySet().iterator();
+		for(int i = 0; i < 3; i++) {
+			Player cp = iter.next();
+			ArrayList<Card> cc = playerMap.get(cp);
+			for(int j = 6; j >= 0; j--) {
+				cc.add(deck.remove(j));
+				playerMap.put(cp, cc);
+			}
+			Collections.sort(playerMap.get(cp));
+		}
+	}
+	//p can be 1, 2, or 3
+	public void printPlayerHand(LinkedHashMap<Player, ArrayList<Card>> playerMap, int p) {
+		Iterator<Player> iter = playerMap.keySet().iterator();
+		for(int i = 0; i < p; i++)
+			Player cp = iter.next();
+		out.println(playerMap.get(p));
 	}
 	
 }
