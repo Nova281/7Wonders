@@ -10,6 +10,11 @@ public class ResourceCard extends Card {
 		isChoice = false;
 		assignResource();
 	}
+	public ResourceCard(String inp) {
+		super(inp);
+		isChoice = false;
+		assignResource();
+	}
 	
 	private void assignResource() {
 		resources = new ArrayList<>();
