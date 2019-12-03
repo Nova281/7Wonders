@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize.width, screenSize.height);
-		String[] wonderAr = {"Olympia", "Giza", "Rhodos"};
+		String[] wonderAr = {"Gizah", "Olympia", "Rhodos"};
 		panel = new GamePanel();
 		panel.setWonderImages(wonderAr);
 		panel.updateCurrentBoard("Rhodos");

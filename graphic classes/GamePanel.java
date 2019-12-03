@@ -23,6 +23,9 @@ public class GamePanel extends JPanel {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		//wonderImg = ImageIO.read(getClass().getResource(currentBoard+".jpg"));
+		wonderImage1 = ImageIO.read(getClass().getResource("Gizah.jpg"));
+		wonderImage2 = ImageIO.read(getClass().getResource("Olympia.jpg"));
+		wonderImage3 = ImageIO.read(getClass().getResource("Rhodos.jpg"));
 	}
 	
 	public void paintComponent(Graphics g)
@@ -30,6 +33,12 @@ public class GamePanel extends JPanel {
 		super.paintComponent(g);
 		
 		g.drawImage(currentWonder, 0, 0, 1920, 1080, this);
+		
+		g.setColor(new Color(145, 127, 107, 200));
+		g.drawRect(0, 780, 1920, 1080);
+		
+		g.drawImage(wonderImage1, 0, 0 , 960, 150, 0, 360, 1920, 720,  this);
+		g.drawImage(wonderImage2, 960, 0 , 1920, 150, 0, 360, 1920, 720,  this);
 	}
 	
 	public void updateCurrentBoard(String wonder) throws IOException
@@ -46,7 +55,6 @@ public class GamePanel extends JPanel {
 		for (int i = 0; i < wonderList.length; i++)
 		{
 			wonderList[i] = wonderAr[i];
-			//imgList[i] = ImageIO.read(getClass().getResource(wonderList[i]+".jpg"));
 		}
 	}
 	
