@@ -6,7 +6,10 @@ public class RedCard extends Card {
 		super(name, color, age, cost, chain, freeCard);
 		assignMP();
 	}
-	
+	public RedCard(String inp) {
+		super(inp);
+		assignMP();
+	}
 	private void assignMP() {
 		mp = getAge();
 	}
