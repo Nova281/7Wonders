@@ -20,7 +20,7 @@ Traders Guild;purple;3;cloth, papyrus, glass; ;
 Philosophers Guild;purple;3;clay, clay, clay, cloth, papyrus; ; 
 Spies Guild;purple;3;clay, clay, clay, glass; ; 
 Strategists Guild;purple;3;ore, ore, stone, cloth; ; 
-Shopowners Guild;purple;3;wood, wood, wood, papyrus, glass; ; 
+Shipowners Guild;purple;3;wood, wood, wood, papyrus, glass; ; 
 Scientists Guild;purple;3;wood, wood, ore, ore, papyrus; ; 
 Magistrates Guild;purple;3;wood, wood, wood, stone, cloth; ; 
 Builders Guild;purple;3;stone, stone, clay, clay, glass; ; 
