@@ -7,8 +7,8 @@ public class BoardTester {
 
 	public static void main(String[] args) throws IOException {
 		Scanner input = new Scanner(System.in);
-		Board b = new Board();
-		b.printDeck();
+		GameState gs = new GameState();
+		gs.run();
 	}
 
 }
