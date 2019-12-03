@@ -8,7 +8,10 @@ public class BlueCard extends Card {
 		super(name, color, age, cost, chain, freeCard);
 		assignVP();
 	}
-	
+	public BlueCard(String inp) {
+		super(inp);
+		assignVP();
+	}
 	private void assignVP() {
 		if(getAge() == 1) {
 			if(getName().equals("Baths"))
