@@ -14,10 +14,9 @@ public abstract class Wonder
 	{
 		return name;
 	}
-	public boolean getPhaseState(int stage)
-	{
-		return Phases.get(stage);
-	}
+	
+	public boolean getPhaseState(int stage) { return Phases.get(stage); }
+	
 	public int getPhase1()
 	{
 		return 3;
