@@ -9,11 +9,13 @@ public class Board {
 	private ArrayList<Card> deck = new ArrayList<>();
 	private LinkedHashMap<Player, ArrayList<Card>> players;
 	
-	public Board() throws IOException {
-		createDeck(3);
+	public Board() {
+		try {
+			createDeck(1);
+		} catch (IOException e) {}
 	}
 	
-	public void createDeck(int a ) throws IOException {
+	public void createDeck(int a) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader("age" + a + ".txt"));
 		StringTokenizer st;
 		deck = new ArrayList<>();
@@ -45,7 +47,7 @@ public class Board {
 			for(Card c: guildCards)
 				deck.add(c);
 		}
-			
+		Collections.shuffle(deck);
 	}
 	
 	public void printDeck() {
@@ -53,6 +55,10 @@ public class Board {
 		System.out.println("DECK:");
 		for(Card c: deck)
 			System.out.println(c);
+	}
+	
+	public ArrayList<Card> getDeck() {
+		return deck;
 	}
 	
 	public void deal(Player p1, Player p2, Player p3) {
