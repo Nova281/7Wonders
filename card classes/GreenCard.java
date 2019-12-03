@@ -6,6 +6,10 @@ public class GreenCard extends Card {
 		super(name, color, age, cost, chain, freeCard);
 		assignScience();
 	}
+	public GreenCard(String inp) {
+		super(inp);
+		assignScience();
+	}
 	
 	private void assignScience() {
 		if(getName().equals("Apothecary") || getName().equals("Dispensary") || getName().equals("Lodge") || getName().equals("Academy")) {
