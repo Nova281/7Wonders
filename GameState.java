@@ -18,10 +18,8 @@ public class GameState {
 	}
 	//playerNum can be 1, 2, or 3
 	public void setWonder(int playerNum, Wonder wonder) {
-		Iterator<Player> iter = players.keySet().iterator();
-		for(int i = 0; i < playerNum-1; i++)
-			iter.next();
-		iter.next().setWonder(wonder);
+		Player p = getPlayer(playerNum);
+		p.setWonder(wonder);
 	}
 	
 	public void deal() {
@@ -39,7 +37,7 @@ public class GameState {
 	
 	public Board getBoard() { return board; }
 	//playerNum can be 1, 2, 3
-	public Player getplayer(int playerNum) {
+	public Player getPlayer(int playerNum) {
 		Iterator<Player> iter = players.keySet().iterator();
 		Player p = new Player();
 		for(int i = 0; i < 3; i++)
@@ -48,27 +46,21 @@ public class GameState {
 	}
 	//playerNum can be 1, 2, 3
 	public void discard(int playerNum, Card choice) {
-		Iterator<Player> iter = players.keySet().iterator();
-		Player p = new Player();
-		for(int i = 0; i < 3; i++)
-			p = iter.next();
+		Player p = getPlayer(playerNum);
 		board.discard(p, players.get(p), choice);
 	}
 	
 	public void build(int playerNum, Card choice) {
-		Iterator<Player> iter = players.keySet().iterator();
-		Player p = new Player();
-		for(int i = 0; i < 3; i++)
-			p = iter.next();
+		Player p = getPlayer(playerNum);
 		board.build(p, players.get(p), choice);
 	}
 	
 	public void sacrifice(int playerNum, Card choice) {
-		Iterator<Player> iter = players.keySet().iterator();
-		Player p = new Player();
-		for(int i = 0; i < 3; i++)
-			p = iter.next();
+		Player p = getPlayer(playerNum);
 		board.sacrifice(p, players.get(p), choice);
 	}
 	public LinkedHashMap<Player, ArrayList<Card>> getPlayerMap() { return players; }
+	public boolean canBuildWonder(int playerNum) {
+		return 
+	}
 }
