@@ -236,48 +236,10 @@ public class Player {
 //			 ret = true;
 //		 return ret;
 	}
-	private boolean check(ArrayList<String> list)
+	/*private boolean check(ArrayList<String> list)
 	{
-		boolean ret = false;
-		TreeMap<String, Integer> res = new TreeMap<String, Integer>();
-		for(int i = 0; i < list.size(); i++)
-		{
-			if(res.get(list.get(i)) == null)
-			{
-				res.put(list.get(i),1);
-			}
-			else
-			{
-				int num = res.get(list.get(i));
-				res.put(list.get(i), (num+1));
-			}
-		}
-		Set<String> keys = res.keySet();
-		for(String key : keys)
-		{
-			int no = res.get(key) - resources.get(key);
-			if(no > 0)
-			{
-				res.put(key,no);
-			}
-			else if(no <= 0 && ret == true)
-			{
-				ret = true;
-			}
-		}
-		if(ret == true)
-			return true;
-		keys = res.keySet();
-		ArrayList<String> re = new ArrayList<String>();
-		for(String key : keys)
-		{
-			for(int i = 0; i < res.get(key); i++)
-			{
-				re.add(key);
-			}
-		}
-		for(ArrayList)
-	}
+		
+	}*/
 	public int getMP()
 	{
 		return mp;
@@ -304,6 +266,8 @@ public class Player {
 	{
 		coins+= value;
 	}
+	
+	public int getCoins() { return coins; };
 	public void setWonder(Wonder wonder)
 	{
 		this.wonder = wonder;
