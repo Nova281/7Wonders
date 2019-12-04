@@ -21,7 +21,7 @@ public class ActionCard extends Card{
 				effect = "right 1";
 			else if(getName().equals("West Trading Post"))
 				effect = "left 1";
-			else
+			else if(getName().equals("Marketplace"))
 				effect = "both 1";
 		}
 		else if(getAge() == 2)
