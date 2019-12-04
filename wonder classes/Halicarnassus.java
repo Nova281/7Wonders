@@ -1,30 +1,27 @@
 
-public class Halicarnassus extends Wonder 	
-{
+public class Halicarnassus extends Wonder {
 	private String name, resource;
-	public Halikarnassos()
-	{
+
+	public Halicarnassus() {
 		super();
 		name = "Halicarnassus";
 		resource = "loom";
 	}
-	
-	public String getResWonder(int stage)
-	{
-		if(stage == 1)
+
+	public String getResWonder(int stage) {
+		if (stage == 1)
 			return "clay clay";
-		else if(stage == 2)
+		else if (stage == 2)
 			return "ore ore ore";
 		else
 			return "loom loom";
 	}
-	
-	public String getPhase2()
-	{
+
+	public String getPhase2() {
 		return "at the end of the round look through discard pile and build a card for free";
 	}
-	public String getName()
-	{
+
+	public String getName() {
 		return name;
 	}
 }
