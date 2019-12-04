@@ -61,6 +61,6 @@ public class GameState {
 	}
 	public LinkedHashMap<Player, ArrayList<Card>> getPlayerMap() { return players; }
 	public boolean canBuildWonder(int playerNum) {
-		return 
+		return getPlayer(playerNum).canBuildWonder();
 	}
 }
