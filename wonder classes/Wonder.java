@@ -1,5 +1,5 @@
 import java.util.*;
-public abstract class Wonder
+public class Wonder
 {
 	private TreeMap<Integer, Boolean> Phases;
 	private String name, resource;
@@ -29,5 +29,4 @@ public abstract class Wonder
 	public String getResource() {
 		return resource;
 	}
-	
 }
