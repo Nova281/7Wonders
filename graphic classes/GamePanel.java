@@ -61,11 +61,8 @@ public class GamePanel extends JPanel {
 	public void updateCurrentBoard(String playerName) throws IOException {
 		for (int i = 1; i <= imgList.length; i++) {
 			int playerNum = Integer.parseInt(playerName);
-			if (i == playerNum) {
-				currentWonder = imgList[i - 1];
+			if (i == playerNum) 
 				currentPlayer = i;
-			}
-
 		}
 	}
 

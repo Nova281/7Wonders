@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -26,13 +27,18 @@ public class MainFrame extends JFrame {
 		Halicarnassus h = new Halicarnassus();
 		Olympia o = new Olympia();
 		Rhodos r = new Rhodos();
-		Wonder[] wonderAr = {a, b, e, g, h, o ,r};
-		one.setWonder(wonderAr[(int)(Math.random()*wonderAr.length)]);
-		two.setWonder(wonderAr[(int)(Math.random()*wonderAr.length)]);
-		three.setWonder(wonderAr[(int)(Math.random()*wonderAr.length)]);
+		ArrayList<Wonder> wonderAr = new ArrayList<>(); 
+		wonderAr.add(a); wonderAr.add(b); wonderAr.add(e); wonderAr.add(g); 
+		wonderAr.add(h); wonderAr.add(o); wonderAr.add(r);
+		one.setWonder(wonderAr.remove((int)(Math.random()*wonderAr.size())));
+		two.setWonder(wonderAr.remove((int)(Math.random()*wonderAr.size())));
+		three.setWonder(wonderAr.remove((int)(Math.random()*wonderAr.size())));
+		/*one.setWonder(wonderAr.get(3));
+		two.setWonder(wonderAr.get(5));
+		three.setWonder(wonderAr.get(6));*/
 		Player[] playerAr = {one, two, three};
 		panel.setWonderImages(playerAr);
-		panel.updateCurrentBoard("3");
+		panel.updateCurrentBoard("1");
 		panel.updateCurrentAge(2);
 		add(panel);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
