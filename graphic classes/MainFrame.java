@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
 		String[] wonderAr = {"Gizah", "Olympia", "Rhodos"};
 		panel = new GamePanel();
 		panel.setWonderImages(wonderAr);
-		panel.updateCurrentBoard("Rhodos");
+		panel.updateCurrentBoard("3");
 		panel.updateCurrentAge(2);
 		add(panel);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);

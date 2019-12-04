@@ -11,28 +11,30 @@ public class GamePanel extends JPanel {
 	private String[] wonderList;
 	//private String wonderP1, wonderP2, wonderP3;
 	private BufferedImage[] imgList;
-	private BufferedImage wonderImage1, wonderImage2, wonderImage3, currentWonder, currentAgeCard;
+	private BufferedImage currentWonder, currentAgeCard;
 	private Font font;
-	private int currentAge;
+	private String currentAgeStr;
+	private int currentPlayer;
 	
 	
 	public GamePanel() throws IOException, FontFormatException
 	{
 		wonderList = new String[3];
 		imgList = new BufferedImage[3];
+		currentAgeStr = "";
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize.width, screenSize.height);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-		//wonderImg = ImageIO.read(getClass().getResource(currentBoard+".jpg"));
+		/*wonderImg = ImageIO.read(getClass().getResource(currentBoard+".jpg"));
 		wonderImage1 = ImageIO.read(getClass().getResource("Gizah.jpg"));
 		wonderImage2 = ImageIO.read(getClass().getResource("Olympia.jpg"));
-		wonderImage3 = ImageIO.read(getClass().getResource("Rhodos.jpg"));
+		wonderImage3 = ImageIO.read(getClass().getResource("Rhodos.jpg"));*/
 		String fName = "PossumSaltareNF.ttf";
 	    InputStream is = GamePanel.class.getResourceAsStream(fName);
 	    font = Font.createFont(Font.TRUETYPE_FONT, is);
 	    font = font.deriveFont(Font.BOLD, 20);
-	    //currentAgeCard = ImageIO.read(getClass().getResource("age"+currentAge+".jpg"));
+	    
 	}
 	
 	public void paintComponent(Graphics g)
@@ -48,35 +50,44 @@ public class GamePanel extends JPanel {
 		
 		g.setFont(font);
 		g.setColor(Color.WHITE);
-		g.drawString("Player 3", 900, 778);
+		g.drawString("Player " + currentPlayer, 900, 778);
 		g.drawImage(currentAgeCard, 0, 780, this);
 		
-		g.drawImage(wonderImage1, 0, 0 , 960, 150, 0, 360, 1920, 720,  this);
-		g.drawString("Player 2", 440, 150);
-		g.drawImage(wonderImage2, 960, 0 , 1920, 150, 0, 360, 1920, 720,  this);
-		g.drawString("Player 1", 1400, 150);
+		g.drawImage(imgList[currentPlayer-3], 0, 0 , 960, 150, 0, 360, 1920, 720,  this);
+		g.drawString("Player " + (currentPlayer-2), 440, 150);
+		g.drawImage(imgList[currentPlayer-2], 960, 0 , 1920, 150, 0, 360, 1920, 720,  this);
+		g.drawString("Player " + (currentPlayer-1), 1400, 150);
 	}
 	
-	public void updateCurrentBoard(String wonder) throws IOException
+	// updated currentWonder onto graphics
+	public void updateCurrentBoard(String playerName) throws IOException
 	{
-		for (int i = 0; i < wonderList.length; i++)
+		for (int i = 1; i <= imgList.length; i++)
 		{
-			if (wonderList[i].equals(wonder))
-				currentWonder = ImageIO.read(getClass().getResource(wonder+".jpg"));
+			int playerNum = Integer.parseInt(playerName);
+			if (i == playerNum)
+			{
+				currentWonder = imgList[i-1];
+				currentPlayer = i;
+			}
+			
 		}
 	}
-	
-	public void setWonderImages(String[] wonderAr) throws IOException
+	// receive list of players & get each player's wonder name to set image
+	public void setWonderImages(String[] wonderAr) throws IOException 
 	{
 		for (int i = 0; i < wonderList.length; i++)
 		{
 			wonderList[i] = wonderAr[i];
+			imgList[i] = ImageIO.read(getClass().getResource(wonderAr[i]+".jpg"));
 		}
 	}
 	
+	// sets current age w/ age card
 	public void updateCurrentAge(int i) throws IOException
 	{
-		currentAgeCard = ImageIO.read(getClass().getResource("age"+i+".png"));
+		currentAgeStr = "age"+i+".png";
+		currentAgeCard = ImageIO.read(getClass().getResource(currentAgeStr));
 	}
 	
 	
