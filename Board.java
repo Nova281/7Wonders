@@ -75,12 +75,28 @@ public class Board {
 			Collections.sort(playerMap.get(cp));
 		}
 	}
+	public ArrayList<Card> discard(Player p, ArrayList<Card> currentHand, Card c) {
+		p.addCoins(3);
+		currentHand.remove(c);
+		return currentHand;
+	}
+	public ArrayList<Card> build(Player p, ArrayList<Card> currentHand, Card c) {
+		p.addCoins(3);
+		p.addCard(c);
+		currentHand.remove(c);
+		return currentHand;
+	}
+	public ArrayList<Card> sacrifice(Player p, ArrayList<Card> currentHand, Card c) {
+//		p.buildWonder();
+		currentHand.remove(c);
+		return currentHand;
+	}
 	//p can be 1, 2, or 3
 	public void printPlayerHand(LinkedHashMap<Player, ArrayList<Card>> playerMap, int p) {
 		Iterator<Player> iter = playerMap.keySet().iterator();
+		Player cp = new Player();
 		for(int i = 0; i < p; i++)
-			Player cp = iter.next();
-		out.println(playerMap.get(p));
+			cp = iter.next();
+		out.println(playerMap.get(cp));
 	}
-	
 }
