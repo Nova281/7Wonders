@@ -112,7 +112,56 @@ public class Player {
 		else if(color.equals("gold")|| color.equals("purple"))
 		{
 			ActionCard c = (ActionCard)card;
-			if(c.getS)
+			if(c.getEffect().equals("right 1"))
+				brownRight = true;
+			else if(c.getEffect().equals("left 1"))
+				brownLeft = true;
+			else if(c.getEffect().equals("both 1"))
+				silverBoth = true;
+			else if(c.getEffect().equals("loom glass papyrus"))
+			{
+				String[] array = c.getEffect().split(" ");
+				ArrayList<String> re = new ArrayList<String>();
+				for(int i = 0; i < array.length; i++)
+				{
+					re.add(array[i]);
+				}
+				choiceRes.add(re);
+			}
+			else if(c.getEffect().equals("clay stone ore wood"))
+			{
+				String[] array = c.getEffect().split(" ");
+				ArrayList<String> re = new ArrayList<String>();
+				for(int i = 0; i < array.length; i++)
+				{
+					re.add(array[i]);
+				}
+				choiceRes.add(re);
+			}
+			else if(c.getEffect().equals("1 brown"))
+			{
+				int num = cards.get("brown");
+				coins += num;
+				vp += num;
+			}
+			else if(c.getEffect().equals("1 gold"))
+			{
+				int num = cards.get("gold");
+				coins += num;
+				vp += num;
+			}
+			else if(c.getEffect().equals("3 1 wonder"))
+			{
+				int num = 0;
+				if(wonder.getPhaseState(1) == true)
+					num++;
+				else if(wonder.getPhaseState(2) == true)
+					num++;
+				else if(wonder.getPhaseState(3) == true)
+					num++;
+				coins += (3 * num);
+				vp += num;
+			}
 		}
 	}
 	
@@ -240,4 +289,5 @@ public class Player {
 	}
 	
 	public String toString() { return cards.toString(); }
+	public int getWP() { return warPoints; }
 }
