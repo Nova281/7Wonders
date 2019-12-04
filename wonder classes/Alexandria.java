@@ -30,4 +30,9 @@ public class Alexandria extends Wonder {
 		list.add("ore");
 		p.addChoiceRes(list);
 	}
+
+	public String getName()
+	{
+		return name;
+	}
 }

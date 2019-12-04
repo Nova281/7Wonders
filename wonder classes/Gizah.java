@@ -22,4 +22,8 @@ public class Gizah extends Wonder
 	{
 		return "5 victory points";
 	}	
+	public String getName()
+	{
+		return name;
+	}
 }

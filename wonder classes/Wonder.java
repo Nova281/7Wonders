@@ -2,7 +2,7 @@ import java.util.*;
 public class Wonder
 {
 	private TreeMap<Integer, Boolean> Phases;
-	private String name, resource;
+	private String name, resource, effect;
 	
 	public Wonder()
 	{
@@ -28,5 +28,8 @@ public class Wonder
 	}
 	public String getResource() {
 		return resource;
+	}
+	public String getEffect() {
+		return effect;
 	}
 }

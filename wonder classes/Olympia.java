@@ -23,4 +23,8 @@ public class Olympia extends Wonder
 	{
 		return "once per age, build structure of choice for free";
 	}
+	public String getName()
+	{
+		return name;
+	}
 }

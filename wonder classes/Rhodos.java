@@ -22,4 +22,8 @@ public class Rhodos extends Wonder
 	{
 		return "add 2 shields";
 	}
+	public String getName()
+	{
+		return name;
+	}
 }

@@ -1,11 +1,11 @@
 
-public class Halikarnassos extends Wonder 	
+public class Halicarnassus extends Wonder 	
 {
 	private String name, resource;
 	public Halikarnassos()
 	{
 		super();
-		name = "Halikarnassos";
+		name = "Halicarnassus";
 		resource = "loom";
 	}
 	
@@ -22,5 +22,9 @@ public class Halikarnassos extends Wonder
 	public String getPhase2()
 	{
 		return "at the end of the round look through discard pile and build a card for free";
+	}
+	public String getName()
+	{
+		return name;
 	}
 }

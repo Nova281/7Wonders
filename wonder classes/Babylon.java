@@ -23,5 +23,9 @@ public class Babylon extends Wonder
 	{
 		return "gain extra scientific symbol of their choice at the end of the game";
 	}
+	public String getName()
+	{
+		return name;
+	}
 }
 	

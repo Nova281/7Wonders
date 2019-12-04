@@ -22,4 +22,8 @@ public class Ephesus extends Wonder
 	{
 		return "immediately take 9 coins from bank";
 	}
+	public String getName()
+	{
+		return name;
+	}
 }
