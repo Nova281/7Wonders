@@ -10,14 +10,16 @@ public class GamePanel extends JPanel {
 	private Wonder[] wonderList;
 	// private String wonderP1, wonderP2, wonderP3;
 	private BufferedImage[] imgList;
-	private BufferedImage currentWonder, currentAgeCard;
+	private BufferedImage currentWonder, currentAgeCard, coin1;
 	private Font font;
 	private String currentAgeStr;
 	private int currentPlayer;
+	private Player[] playerList;
 
 	public GamePanel() throws IOException, FontFormatException {
 		wonderList = new Wonder[3];
 		imgList = new BufferedImage[3];
+		playerList = new Player[3];
 		currentAgeStr = "";
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize.width, screenSize.height);
@@ -29,6 +31,8 @@ public class GamePanel extends JPanel {
 		 * wonderImage2 = ImageIO.read(getClass().getResource("Olympia.jpg"));
 		 * wonderImage3 = ImageIO.read(getClass().getResource("Rhodos.jpg"));
 		 */
+		coin1 = ImageIO.read(getClass().getResource("coin1.png"));
+		
 		String fName = "PossumSaltareNF.ttf";
 		InputStream is = GamePanel.class.getResourceAsStream(fName);
 		font = Font.createFont(Font.TRUETYPE_FONT, is);
@@ -53,8 +57,25 @@ public class GamePanel extends JPanel {
 
 		g.drawImage(imgList[(currentPlayer + 3) % 3], 0, 0, 960, 150, 0, 360, 1920, 720, this);
 		g.drawString("Player " + ((currentPlayer + 3) % 3 + 1), 440, 150);
+		g.drawImage(coin1, 10, 10, 40, 40, this);
+		if (playerList[(currentPlayer + 3) % 3].getWonder().getName().equals("Olympia"))
+		{
+			g.setColor(Color.BLACK);
+			g.drawString(": " + playerList[(currentPlayer + 3) % 3].getCoins(), 55, 35);
+			g.setColor(Color.WHITE);
+		}
+		g.drawString(": " + playerList[(currentPlayer + 3) % 3].getCoins(), 55, 35);
+		
 		g.drawImage(imgList[(currentPlayer + 4) % 3], 960, 0, 1920, 150, 0, 360, 1920, 720, this);
 		g.drawString("Player " + ((currentPlayer + 4) % 3 + 1), 1400, 150);
+		g.drawImage(coin1, 970, 10, 40, 40, this);
+		if (playerList[(currentPlayer + 4) % 3].getWonder().getName().equals("Olympia"))
+		{
+			g.setColor(Color.BLACK);
+			g.drawString(": " + playerList[(currentPlayer + 4) % 3].getCoins(), 1015, 35);
+			g.setColor(Color.WHITE);
+		}
+		g.drawString(": " + playerList[(currentPlayer + 4) % 3].getCoins(), 1015, 35);
 	}
 
 	// updated currentWonder onto graphics from Player
@@ -72,6 +93,7 @@ public class GamePanel extends JPanel {
 			wonderList[i] = players[i].getWonder();
 			imgList[i] = ImageIO.read(getClass().getResource(players[i].getWonder().getName() + ".jpg"));
 		}
+		playerList = players;
 	}
 
 	// sets current age w/ age card
@@ -79,5 +101,7 @@ public class GamePanel extends JPanel {
 		currentAgeStr = "age" + i + ".png";
 		currentAgeCard = ImageIO.read(getClass().getResource(currentAgeStr));
 	}
+	
+	
 
 }

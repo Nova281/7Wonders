@@ -33,6 +33,9 @@ public class MainFrame extends JFrame {
 		one.setWonder(wonderAr.remove((int)(Math.random()*wonderAr.size())));
 		two.setWonder(wonderAr.remove((int)(Math.random()*wonderAr.size())));
 		three.setWonder(wonderAr.remove((int)(Math.random()*wonderAr.size())));
+		one.addCoins(2);
+		two.addCoins(1);
+		three.addCoins(5);
 		/*one.setWonder(wonderAr.get(3));
 		two.setWonder(wonderAr.get(5));
 		three.setWonder(wonderAr.get(6));*/
