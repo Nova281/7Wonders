@@ -140,13 +140,13 @@ public class Player {
 			}
 			else if(c.getEffect().equals("1 brown"))
 			{
-				int num = cards.get("brown");
+				int num = cards.get("brown").size();
 				coins += num;
 				vp += num;
 			}
 			else if(c.getEffect().equals("1 gold"))
 			{
-				int num = cards.get("gold");
+				int num = cards.get("gold").size();
 				coins += num;
 				vp += num;
 			}
@@ -236,6 +236,10 @@ public class Player {
 //			 ret = true;
 //		 return ret;
 	}
+	private boolean check(ArrayList<String> list)
+	{
+		
+	}
 	public int getMP()
 	{
 		return mp;
@@ -290,4 +294,5 @@ public class Player {
 	
 	public String toString() { return cards.toString(); }
 	public int getWP() { return warPoints; }
+	public Wonder getWonder() { return wonder; }
 }
