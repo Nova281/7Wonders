@@ -36,6 +36,7 @@ public class MainFrame extends JFrame {
 		one.addCoins(2);
 		two.addCoins(1);
 		three.addCoins(5);
+		
 		/*one.setWonder(wonderAr.get(3));
 		two.setWonder(wonderAr.get(5));
 		three.setWonder(wonderAr.get(6));*/
@@ -43,6 +44,7 @@ public class MainFrame extends JFrame {
 		panel.setWonderImages(playerAr);
 		panel.updateCurrentBoard("1");
 		panel.updateCurrentAge(2);
+		panel.updateCoins();
 		add(panel);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(true);
