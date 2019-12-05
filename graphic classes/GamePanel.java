@@ -16,16 +16,19 @@ public class GamePanel extends JPanel {
 	private Wonder[] wonderList;
 	// private String wonderP1, wonderP2, wonderP3;
 	private BufferedImage[] imgList;
-	private BufferedImage currentWonder, currentAgeCard, coin1;
+	private BufferedImage currentWonder, currentAgeCard, coin1, coin3;
 	private Font font;
 	private String currentAgeStr;
-	private int currentPlayer;
+	private int currentPlayer, coinOne, coinThree;
 	private Player[] playerList;
+	private int[] coin1List, coin3List;
 
 	public GamePanel() throws IOException, FontFormatException {
 		wonderList = new Wonder[3];
 		imgList = new BufferedImage[3];
 		playerList = new Player[3];
+		coin1List = new int[3];
+		coin3List = new int[3];
 		currentAgeStr = "";
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize.width, screenSize.height);
@@ -38,7 +41,8 @@ public class GamePanel extends JPanel {
 		 * wonderImage3 = ImageIO.read(getClass().getResource("Rhodos.jpg"));
 		 */
 		coin1 = ImageIO.read(getClass().getResource("coin1.png"));
-
+		coin3 = ImageIO.read(getClass().getResource("coin3.png"));
+		
 		String fName = "PossumSaltareNF.ttf";
 		InputStream is = GamePanel.class.getResourceAsStream(fName);
 		font = Font.createFont(Font.TRUETYPE_FONT, is);
@@ -61,30 +65,45 @@ public class GamePanel extends JPanel {
 		g.setColor(Color.WHITE);
 		g.drawString("Player " + currentPlayer, 900, 778);
 		g.drawImage(currentAgeCard, 0, 780, this);
-		g.drawImage(coin1, 1700, 1000, 40, 40, this);
-		g.drawString(":  " + playerList[(currentPlayer + 2) % 3].getCoins(), 1745, 1025);
+		g.drawImage(coin1, 1700, 950, 40, 40, this);
+		g.drawImage(coin3, 1700, 1000, 40, 40, this);
+		g.drawString(": " + coin1List[(currentPlayer + 2) % 3], 1745, 1025);
+		g.drawString(": " + coin3List[(currentPlayer + 2) % 3], 1745, 1125);
 
-		// Player before
+		// Player after
 		g.drawImage(imgList[(currentPlayer + 3) % 3], 0, 0, 960, 150, 0, 360, 1920, 720, this);
 		g.drawString("Player " + ((currentPlayer + 3) % 3 + 1), 440, 150);
 		g.drawImage(coin1, 10, 10, 40, 40, this);
+		g.drawImage(coin3, 10, 60, 40, 40, this);
 		if (playerList[(currentPlayer + 3) % 3].getWonder().getName().equals("Olympia")) {
 			g.setColor(Color.BLACK);
-			g.drawString(": " + playerList[(currentPlayer + 3) % 3].getCoins(), 55, 35);
+			g.drawString(": " + coin1List[(currentPlayer + 3) % 3], 55, 35);
+			g.drawString(": " + coin3List[(currentPlayer + 3) % 3], 55, 85);
 			g.setColor(Color.WHITE);
 		}
-		g.drawString(":  " + playerList[(currentPlayer + 3) % 3].getCoins(), 55, 35);
+		else
+		{
+			g.drawString(":  " + coin1List[(currentPlayer + 3) % 3], 55, 35);
+			g.drawString(":  " + coin3List[(currentPlayer + 3) % 3], 55, 85);
+		}
+		
 
-		// Player after
+		// Player before
 		g.drawImage(imgList[(currentPlayer + 4) % 3], 960, 0, 1920, 150, 0, 360, 1920, 720, this);
 		g.drawString("Player " + ((currentPlayer + 4) % 3 + 1), 1400, 150);
 		g.drawImage(coin1, 970, 10, 40, 40, this);
+		g.drawImage(coin3, 970, 60, 40, 40, this);
 		if (playerList[(currentPlayer + 4) % 3].getWonder().getName().equals("Olympia")) {
 			g.setColor(Color.BLACK);
-			g.drawString(": " + playerList[(currentPlayer + 4) % 3].getCoins(), 1015, 35);
+			g.drawString(": " + coin1List[(currentPlayer + 4) % 3], 1015, 50);
+			g.drawString(": " + coin3List[(currentPlayer + 4) % 3], 1015, 100);
 			g.setColor(Color.WHITE);
 		}
-		g.drawString(":  " + playerList[(currentPlayer + 4) % 3].getCoins(), 1015, 35);
+		else	
+		{
+			g.drawString(": " + coin1List[(currentPlayer + 4) % 3], 1015, 50);
+			g.drawString(": " + coin3List[(currentPlayer + 4) % 3], 1015, 100);
+		}
 	}
 
 	// updated currentWonder onto graphics from Player
@@ -109,6 +128,18 @@ public class GamePanel extends JPanel {
 	public void updateCurrentAge(int i) throws IOException {
 		currentAgeStr = "age" + i + ".png";
 		currentAgeCard = ImageIO.read(getClass().getResource(currentAgeStr));
+	}
+	
+	public void updateCoins()
+	{
+		int totalCoins = 0;
+		for (int i = 0; i < playerList.length; i++)
+		{
+			totalCoins = playerList[i].getCoins();
+			coin3List[i] = totalCoins%3;
+			totalCoins-=totalCoins%3;
+			coin1List[i] = totalCoins;
+		}
 	}
 
 }
