@@ -167,79 +167,17 @@ public class Player {
 	
 	public boolean canBuild(Card card)
 	{
-		if(card.getCost().size() == 1 && card.getCost().get(0).equals(" "))
+		ArrayList<String> list = card.getCost();
+		if(check(list) == true)
 			return true;
-		ArrayList<String> cost = card.getCost();
-		System.out.println(cost);
-		for(String resource: resources.keySet()) {
-			for(int i = 0; i < resources.get(resource); i++)
-				if(cost.contains(resource))
-					cost.remove(resource);
-				else
-					break;
-		}
-		System.out.println(cost);
-		return false; //finish later
-//		 ArrayList<String> res = card.getCost();
-//		 TreeMap<String, Integer> resM = new TreeMap<String, Integer>();
-//		 ArrayList<String> reso = new ArrayList<String>();
-//		 boolean ret = true;
-//		 for(int i = 0; i < res.size(); i++)
-//		 {
-//			 String re = res.get(i);
-//			 if(resM.get(re) == null)
-//			 {
-//				 resM.put(re,1);
-//			 }
-//			 else
-//			 {
-//				 int num = resM.get(re);
-//				 resM.put(re,(num+1));
-//			 }
-//		 }
-//		 Set<String> keys = resM.keySet();
-//		 for(String key : keys)
-//		 {
-//			 int num = resM.get(key);
-//			 if(resources.get(key) >= num && ret == true)
-//				 ret = true;
-//			 else
-//			 {
-//				 int no = num - resources.get(key);
-//				 if(no > 0)
-//				 {
-//					 resources.put(key, no);
-//				     ret = false;
-//				     for(int i = 0; i < no; i++)
-//				     {
-//				    	 reso.add(key);
-//				     }
-//				 }
-//			 }
-//		 }
-//		 ArrayList<ArrayList<String>> resou = new ArrayList<ArrayList<String>>();
-//		 for(int i = 0; i < choiceRes.size(); i++)
-//		 {
-//			 resou.add(choiceRes.get(i));
-//		 }
-//		 while(reso.size() > 0)
-//		 {
-//			 String word = reso.get(0);
-//			 if(resou.contains(word))
-//			 {
-//				 reso.remove(0);
-//			 }
-//			 else
-//				 break;
-//		 }
-//		 if(reso.size() == 0)
-//			 ret = true;
-//		 return ret;
-	}*/
+		else
+			return false;
+	}
+	//PLEASE DONT REMOVE THIS METHOD A.K.A Check
 	private boolean check(ArrayList<String> list)
 	{
 
-		boolean ret = false;
+		boolean ret = true;
 		TreeMap<String, Integer> res = new TreeMap<String, Integer>();
 		for(int i = 0; i < list.size(); i++)
 		{
@@ -260,14 +198,13 @@ public class Player {
 			if(no > 0)
 			{
 				res.put(key,no);
+				ret = false;
 			}
 			else if(no <= 0 && ret == true)
 			{
 				ret = true;
 			}
 		}
-		if(ret == true)
-			return true;
 		keys = res.keySet();
 		ArrayList<String> re = new ArrayList<String>();
 		for(String key : keys)
@@ -277,7 +214,21 @@ public class Player {
 				re.add(key);
 			}
 		}
-		for(ArrayList)
+		for(ArrayList<String> cho : choiceRes)
+		{
+			String resour = re.get(0);
+			if(cho.contains(resour))
+			{
+				re.remove(0);
+			}
+		}
+		if(re.size() == 0)
+		{
+			ret = true;
+			return true;
+		}
+		else
+			return false;
 	}
 	public int getMP()
 	{
