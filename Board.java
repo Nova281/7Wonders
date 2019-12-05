@@ -81,7 +81,6 @@ public class Board {
 		return currentHand;
 	}
 	public ArrayList<Card> build(Player p, ArrayList<Card> currentHand, Card c) {
-		p.addCoins(3);
 		p.addCard(c);
 		currentHand.remove(c);
 		return currentHand;
@@ -98,5 +97,25 @@ public class Board {
 		for(int i = 0; i < p; i++)
 			cp = iter.next();
 		out.println(playerMap.get(cp));
+	}
+	public LinkedHashMap<Player, ArrayList<Card>> passCards(int age, LinkedHashMap<Player, ArrayList<Card>> players) {
+		Iterator<Player> iter = players.keySet().iterator();
+		ArrayList<Card> temp;
+		Player p1 = iter.next();
+		Player p2 = iter.next();
+		Player p3 = iter.next();
+		if(age == 2) {
+			temp = players.get(p1);
+			players.put(p1, players.get(p2));
+			players.put(p2, players.get(p3));
+			players.put(p3, temp);
+		}
+		else {
+			temp = players.get(p1);
+			players.put(p1, players.get(p3));
+			players.put(p3, players.get(p2));
+			players.put(p2, temp);
+		}
+		return players;
 	}
 }

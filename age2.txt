@@ -18,3 +18,4 @@ Stables;red;2;ore, clay, wood; ;Apothecary
 Walls;red;2;stone, stone, stone;Fortifications; 
 Caravansery;gold;2;wood, wood;Lighthouse;Marketplace
 Forum;gold;2;clay, clay;Haven;East Trading Post, West Trading Post
+Vineyard;gold;2; ; ; 
