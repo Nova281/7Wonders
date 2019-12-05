@@ -30,7 +30,7 @@ public class Player {
 		warPoints = 0;
 		wins = 0;
 		loss = 0;
-		coins = 0;
+		coins = 3;
 		cards = new TreeMap<String, ArrayList<Card>>();
 		String[] colors = {"brown", "silver", "blue", "red", "gold", "green", "purple" };
 		for(String k: colors)
@@ -173,6 +173,10 @@ public class Player {
 		else
 			return false;
 	}
+	public TreeMap<String,Integer> getResources()
+	{
+		return resources;
+	}
 	//PLEASE DONT REMOVE THIS METHOD A.K.A Check
 	private boolean check(ArrayList<String> list)
 	{
@@ -287,4 +291,38 @@ public class Player {
 	public String toString() { return cards.toString(); }
 	public int getWP() { return warPoints; }
 	public Wonder getWonder() { return wonder; }
+	public void trade(Player one, Player two, ArrayList<String> re)
+	{
+		TreeMap<String,Integer> res = new TreeMap<String,Integer>();
+		for(int i = 0; i < re.size(); i++)
+		{
+			if(res.containsKey(re.get(i)))
+			{
+				int num = res.get(re.get(i));
+				res.put(re.get(i),(num+1));
+			}
+			else
+				res.put(re.get(i),1);
+		}
+		TreeMap<String, Integer> on = one.getResources();
+		TreeMap<String, Integer> to = two.getResources();
+		Set<String> keys = res.keySet();
+		for(String key : keys)
+		{
+			int num = res.get(key);
+			int non = num - on.get(key);
+			int not = num - to.get(key);
+			if(non <= 0)
+			{
+				if(coins >= num)
+				{
+					if()
+				}
+			}
+		}
+	}
+	public int getV()
+	{
+		return vp;
+	}
 }
