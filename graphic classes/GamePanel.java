@@ -70,15 +70,15 @@ public class GamePanel extends JPanel {
 		g.drawString(": " + coin1List[(currentPlayer + 2) % 3], 1745, 1025);
 		g.drawString(": " + coin3List[(currentPlayer + 2) % 3], 1745, 1125);
 
-		// Player after
+		// Player after (testing Player 2)
 		g.drawImage(imgList[(currentPlayer + 3) % 3], 0, 0, 960, 150, 0, 360, 1920, 720, this);
 		g.drawString("Player " + ((currentPlayer + 3) % 3 + 1), 440, 150);
 		g.drawImage(coin1, 10, 10, 40, 40, this);
 		g.drawImage(coin3, 10, 60, 40, 40, this);
 		if (playerList[(currentPlayer + 3) % 3].getWonder().getName().equals("Olympia")) {
 			g.setColor(Color.BLACK);
-			g.drawString(": " + coin1List[(currentPlayer + 3) % 3], 55, 35);
-			g.drawString(": " + coin3List[(currentPlayer + 3) % 3], 55, 85);
+			g.drawString(":  " + coin1List[(currentPlayer + 3) % 3], 55, 35);
+			g.drawString(":  " + coin3List[(currentPlayer + 3) % 3], 55, 85);
 			g.setColor(Color.WHITE);
 		}
 		else
@@ -88,21 +88,21 @@ public class GamePanel extends JPanel {
 		}
 		
 
-		// Player before
+		// Player before (testing Player 3)
 		g.drawImage(imgList[(currentPlayer + 4) % 3], 960, 0, 1920, 150, 0, 360, 1920, 720, this);
 		g.drawString("Player " + ((currentPlayer + 4) % 3 + 1), 1400, 150);
 		g.drawImage(coin1, 970, 10, 40, 40, this);
 		g.drawImage(coin3, 970, 60, 40, 40, this);
 		if (playerList[(currentPlayer + 4) % 3].getWonder().getName().equals("Olympia")) {
 			g.setColor(Color.BLACK);
-			g.drawString(": " + coin1List[(currentPlayer + 4) % 3], 1015, 50);
-			g.drawString(": " + coin3List[(currentPlayer + 4) % 3], 1015, 100);
+			g.drawString(":  " + coin1List[(currentPlayer + 4) % 3], 1015, 35);
+			g.drawString(":  " + coin3List[(currentPlayer + 4) % 3], 1015, 85);
 			g.setColor(Color.WHITE);
 		}
 		else	
 		{
-			g.drawString(": " + coin1List[(currentPlayer + 4) % 3], 1015, 50);
-			g.drawString(": " + coin3List[(currentPlayer + 4) % 3], 1015, 100);
+			g.drawString(":  " + coin1List[(currentPlayer + 4) % 3], 1015, 35);
+			g.drawString(":  " + coin3List[(currentPlayer + 4) % 3], 1015, 85);
 		}
 	}
 
@@ -136,8 +136,8 @@ public class GamePanel extends JPanel {
 		for (int i = 0; i < playerList.length; i++)
 		{
 			totalCoins = playerList[i].getCoins();
-			coin3List[i] = totalCoins%3;
-			totalCoins-=totalCoins%3;
+			coin3List[i] = totalCoins/3;
+			totalCoins=totalCoins-(totalCoins/3);
 			coin1List[i] = totalCoins;
 		}
 	}
