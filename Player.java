@@ -306,17 +306,24 @@ public class Player {
 		}
 		TreeMap<String, Integer> on = one.getResources();
 		TreeMap<String, Integer> to = two.getResources();
+		int not = num - to.get(key);
 		Set<String> keys = res.keySet();
 		for(String key : keys)
 		{
 			int num = res.get(key);
 			int non = num - on.get(key);
-			int not = num - to.get(key);
 			if(non <= 0)
 			{
-				if(coins >= num)
+				if(coins >= (num * 2))
 				{
-					if()
+					if(key.equals("wood") || key.equals("ore") || key.equals("stone") || key.equals("clay"))
+					{
+						if(brownLeft == true)
+						{
+							int cos = num;
+							one.addCoins(cos);
+							coins -= cos
+						}
 				}
 			}
 		}
