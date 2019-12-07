@@ -5,6 +5,7 @@ import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,7 +17,7 @@ public class GamePanel extends JPanel {
 	private Wonder[] wonderList;
 	// private String wonderP1, wonderP2, wonderP3;
 	private BufferedImage[] imgList;
-	private BufferedImage currentWonder, currentAgeCard, coin1, coin3;
+	private BufferedImage currentWonder, currentAgeCard, coin1, coin3, stage1, stage2, stage3;
 	private Font font;
 	private String currentAgeStr;
 	private int currentPlayer, coinOne, coinThree;
@@ -42,7 +43,7 @@ public class GamePanel extends JPanel {
 		 */
 		coin1 = ImageIO.read(getClass().getResource("coin1.png"));
 		coin3 = ImageIO.read(getClass().getResource("coin3.png"));
-		
+
 		String fName = "PossumSaltareNF.ttf";
 		InputStream is = GamePanel.class.getResourceAsStream(fName);
 		font = Font.createFont(Font.TRUETYPE_FONT, is);
@@ -67,8 +68,10 @@ public class GamePanel extends JPanel {
 		g.drawImage(currentAgeCard, 0, 780, this);
 		g.drawImage(coin1, 1700, 950, 40, 40, this);
 		g.drawImage(coin3, 1700, 1000, 40, 40, this);
-		g.drawString(": " + coin1List[(currentPlayer + 2) % 3], 1745, 1025);
-		g.drawString(": " + coin3List[(currentPlayer + 2) % 3], 1745, 1125);
+		g.drawString(":  " + coin1List[(currentPlayer + 2) % 3], 1745, 975);
+		g.drawString(":  " + coin3List[(currentPlayer + 2) % 3], 1745, 1025);
+
+		g.drawImage(stage1, 200, 1000, 210, 60, this);
 
 		// Player after (testing Player 2)
 		g.drawImage(imgList[(currentPlayer + 3) % 3], 0, 0, 960, 150, 0, 360, 1920, 720, this);
@@ -80,13 +83,10 @@ public class GamePanel extends JPanel {
 			g.drawString(":  " + coin1List[(currentPlayer + 3) % 3], 55, 35);
 			g.drawString(":  " + coin3List[(currentPlayer + 3) % 3], 55, 85);
 			g.setColor(Color.WHITE);
-		}
-		else
-		{
+		} else {
 			g.drawString(":  " + coin1List[(currentPlayer + 3) % 3], 55, 35);
 			g.drawString(":  " + coin3List[(currentPlayer + 3) % 3], 55, 85);
 		}
-		
 
 		// Player before (testing Player 3)
 		g.drawImage(imgList[(currentPlayer + 4) % 3], 960, 0, 1920, 150, 0, 360, 1920, 720, this);
@@ -98,9 +98,7 @@ public class GamePanel extends JPanel {
 			g.drawString(":  " + coin1List[(currentPlayer + 4) % 3], 1015, 35);
 			g.drawString(":  " + coin3List[(currentPlayer + 4) % 3], 1015, 85);
 			g.setColor(Color.WHITE);
-		}
-		else	
-		{
+		} else {
 			g.drawString(":  " + coin1List[(currentPlayer + 4) % 3], 1015, 35);
 			g.drawString(":  " + coin3List[(currentPlayer + 4) % 3], 1015, 85);
 		}
@@ -129,17 +127,23 @@ public class GamePanel extends JPanel {
 		currentAgeStr = "age" + i + ".png";
 		currentAgeCard = ImageIO.read(getClass().getResource(currentAgeStr));
 	}
-	
-	public void updateCoins()
-	{
+
+	public void updateCoins() {
 		int totalCoins = 0;
-		for (int i = 0; i < playerList.length; i++)
-		{
+		for (int i = 0; i < playerList.length; i++) {
 			totalCoins = playerList[i].getCoins();
-			coin3List[i] = totalCoins/3;
-			totalCoins=totalCoins-(totalCoins/3);
+			coin3List[i] = totalCoins / 3;
+			totalCoins -= totalCoins / 3;
 			coin1List[i] = totalCoins;
 		}
+	}
+
+	public void updateWonderEffects() throws IOException {
+		String wonderName = playerList[(currentPlayer + 2) % 3].getWonder().getName();
+		stage1 = ImageIO.read(new File("/wonder_effects/" + wonderName + "/Stage1.jpg"));
+		// stage1 = ImageIO.read(getClass().getResource(wonderName + "Stage1.jpg"));
+		stage2 = ImageIO.read(getClass().getResource(wonderName + "Stage2.jpg"));
+		stage3 = ImageIO.read(getClass().getResource(wonderName + "Stage3.jpg"));
 	}
 
 }
