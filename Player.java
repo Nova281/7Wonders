@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.Set;
 import static java.lang.System.*;
@@ -178,62 +179,71 @@ public class Player {
 		return resources;
 	}
 	//PLEASE DONT REMOVE THIS METHOD A.K.A Check
-	private boolean check(ArrayList<String> list)
+	private boolean check(ArrayList<String> cost)
 	{
-
-		boolean ret = true;
-		TreeMap<String, Integer> res = new TreeMap<String, Integer>();
-		for(int i = 0; i < list.size(); i++)
-		{
-			if(res.get(list.get(i)) == null)
-			{
-				res.put(list.get(i),1);
-			}
-			else
-			{
-				int num = res.get(list.get(i));
-				res.put(list.get(i), (num+1));
-			}
-		}
-		Set<String> keys = res.keySet();
-		for(String key : keys)
-		{
-			int no = res.get(key) - resources.get(key);
-			if(no > 0)
-			{
-				res.put(key,no);
-				ret = false;
-			}
-			else if(no <= 0 && ret == true)
-			{
-				ret = true;
-			}
-		}
-		keys = res.keySet();
-		ArrayList<String> re = new ArrayList<String>();
-		for(String key : keys)
-		{
-			for(int i = 0; i < res.get(key); i++)
-			{
-				re.add(key);
-			}
-		}
-		for(ArrayList<String> cho : choiceRes)
-		{
-			String resour = re.get(0);
-			if(cho.contains(resour))
-			{
-				re.remove(0);
-			}
-		}
-		if(re.size() == 0)
-		{
-			ret = true;
+		//check through normal resources
+		if(cost.size() == 1 && cost.get(0).equals(" "))
 			return true;
+		TreeMap<String, Integer> res = new TreeMap<String, Integer>();
+		for(String k: resources.keySet())
+			res.put(k, resources.get(k));
+		for(int i = cost.size()-1; i >= 0; i--) {
+			String resource = cost.get(i);
+			if(res.containsKey(resource)) {
+				int numRes = res.get(cost.get(i))-1;
+				cost.remove(i);
+				if(numRes == 0)
+					res.remove(resource);
+				else
+					res.put(resource, numRes);
+			}
+		}
+		
+		//check through choice resources;
+		if(cost.size() > 0 && cost.size() <= choiceRes.size()) {
+			ArrayList<String> c = new ArrayList<String>();
+			ArrayList<ArrayList<String>> combinations = new ArrayList<>();
+			createCombo(c, 0, "");
+			String[] a;
+			for(String k: c) {
+				a = k.split(";");
+				ArrayList<String> b = new ArrayList<>();
+				for(int i = 1; i < a.length; i++)
+					b.add(a[i]);
+				combinations.add(b);
+			}
+			if(combinations.contains(cost))
+				return true;
+			else {
+				for(ArrayList<String> k: combinations) {
+					for(int i = cost.size()-1; i >= 0; i--)
+						if(k.contains(cost.get(i))) {
+							cost.remove(i);
+							k.remove(i);
+						}
+					if(cost.size() == 0)
+						return true;
+				}
+			}
+			return false;
 		}
 		else
-			return false;
+			return true;
 	}
+	
+	//used for check
+	private void createCombo(ArrayList<String> combinations, int runs, String current) {
+	    if (runs == choiceRes.size()) {
+	        combinations.add(current);
+	        return;
+	    }
+	    for (int i = 0; i < choiceRes.get(runs).size(); i++) {
+	        createCombo(combinations, runs + 1, current + ";" + choiceRes.get(runs).get(i));
+	    }
+	}
+	
+	public ArrayList<ArrayList<String>> getChoiceRes() { return choiceRes; }
+	
 	public int getMP()
 	{
 		return mp;
@@ -291,43 +301,44 @@ public class Player {
 	public String toString() { return cards.toString(); }
 	public int getWP() { return warPoints; }
 	public Wonder getWonder() { return wonder; }
-	public void trade(Player one, Player two, ArrayList<String> re)
-	{
-		TreeMap<String,Integer> res = new TreeMap<String,Integer>();
-		for(int i = 0; i < re.size(); i++)
-		{
-			if(res.containsKey(re.get(i)))
-			{
-				int num = res.get(re.get(i));
-				res.put(re.get(i),(num+1));
-			}
-			else
-				res.put(re.get(i),1);
-		}
-		TreeMap<String, Integer> on = one.getResources();
-		TreeMap<String, Integer> to = two.getResources();
-		int not = num - to.get(key);
-		Set<String> keys = res.keySet();
-		for(String key : keys)
-		{
-			int num = res.get(key);
-			int non = num - on.get(key);
-			if(non <= 0)
-			{
-				if(coins >= (num * 2))
-				{
-					if(key.equals("wood") || key.equals("ore") || key.equals("stone") || key.equals("clay"))
-					{
-						if(brownLeft == true)
-						{
-							int cos = num;
-							one.addCoins(cos);
-							coins -= cos
-						}
-				}
-			}
-		}
-	}
+//	public void trade(Player one, Player two, ArrayList<String> re)
+//	{
+//		TreeMap<String,Integer> res = new TreeMap<String,Integer>();
+//		for(int i = 0; i < re.size(); i++)
+//		{
+//			if(res.containsKey(re.get(i)))
+//			{
+//				int num = res.get(re.get(i));
+//				res.put(re.get(i),(num+1));
+//			}
+//			else
+//				res.put(re.get(i),1);
+//		}
+//		TreeMap<String, Integer> on = one.getResources();
+//		TreeMap<String, Integer> to = two.getResources();
+//		int not = num - to.get(key);
+//		Set<String> keys = res.keySet();
+//		for(String key : keys)
+//		{
+//			int num = res.get(key);
+//			int non = num - on.get(key);
+//			if(non <= 0)
+//			{
+//				if(coins >= (num * 2))
+//				{
+//					if(key.equals("wood") || key.equals("ore") || key.equals("stone") || key.equals("clay"))
+//					{
+//						if(brownLeft == true)
+//						{
+//							int cos = num;
+//							one.addCoins(cos);
+//							coins -= cos;
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
 	public int getV()
 	{
 		return vp;
