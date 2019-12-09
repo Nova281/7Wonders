@@ -1,29 +1,27 @@
-public class Rhodos extends Wonder 	
-{
+public class Rhodos extends Wonder {
 	private String name, resource;
-	public Rhodos()
-	{
-		super();
+
+	public Rhodos() {
+		super("Rhodos", "ore");
 		name = "Rhodos";
 		resource = "ore";
 	}
-	
-	public String getResWonder(int stage)
-	{
-		if(stage == 1)
+
+	public String getResWonder(int stage) {
+		if (stage == 1)
 			return "wood wood";
-		else if(stage == 2)
+		else if (stage == 2)
 			return "clay clay";
 		else
 			return "ore ore ore ore";
 	}
-	
-	public String getPhase2()
-	{
+
+	public String getPhase2() {
 		return "add 2 shields";
 	}
-	public String getName()
-	{
+
+	public String getName() {
 		return name;
 	}
+
 }
