@@ -6,24 +6,14 @@ public class Main {
 		//graphics
 		GameState gs = new GameState(); //will be in graphics, just do graphics.getGameState();
 		gs.deal();
-		out.println("Original");
 		for(int i = 1; i < 4; i++) {
-			out.print("Player " + i + ": ");
+			out.println("Player " + gs.getPlayer(i).getPlayerNum() + ": ");
 			gs.printPlayerHand(i);
+			out.println("Wonder: ");
+			out.println(gs.getPlayer(i).getWonder());
 		}
-		//gs.setWonder(graphics.getWonderChoice()); do this in graphics
-		gs.passCards();
-		out.println("Original after passing");
-		for(int i = 1; i < 4; i++) {
-			out.print("Player " + i + ": ");
-			gs.printPlayerHand(i);
-		}
-		gs.nextAge();
-		out.println("original next age");
-		for(int i = 1; i < 4; i++) {
-			out.print("Player " + i + ": ");
-			gs.printPlayerHand(i);
-		}
+		
+		
 	}
 
 }

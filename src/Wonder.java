@@ -40,4 +40,6 @@ public class Wonder {
 	public void setPhase(int stage) {
 		phases.put(stage, true);
 	}
+	
+	public String toString() { return name; }
 }
