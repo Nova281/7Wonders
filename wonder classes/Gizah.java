@@ -18,9 +18,9 @@ public class Gizah extends Wonder
 			return "stone stone stone stone";
 	}
 	
-	public String getPhase2()
+	public int getPhase2()
 	{
-		return "5 victory points";
+		return 5;
 	}	
 	public String getName()
 	{
