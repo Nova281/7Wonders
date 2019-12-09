@@ -1,4 +1,3 @@
-package graphicClasses;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,14 +9,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
-import cardClasses.Card;
-import playerClasses.Player;
-import wonderClasses.Wonder;
 
 public class GamePanel extends JPanel {
 
@@ -217,19 +214,26 @@ public class GamePanel extends JPanel {
 			coin3List[i] = totalCoins / 3;
 			totalCoins -= coin3List[i] * 3;
 			coin1List[i] = totalCoins;
+			totalCoins = 0;
 		}
+		System.out.println(Arrays.toString(coin3List));
+		System.out.println(Arrays.toString(coin1List));
 	}
 
-	/*
-	 * public void setWonderEffects() throws IOException { String wonderName =
-	 * playerList[(currentPlayer + 2) % 3].getWonder().getName(); // stage1 =
-	 * ImageIO.read(new File("/wonder_effects/" + wonderName + // "/Stage1.jpg"));
-	 * for (int i = 0; i < imgList1.length; i++) { imgList1[i] = ImageIO
-	 * .read(getClass().getResource("/wonder_effects/" + wonderName + "Stage" + (i +
-	 * 1) + ".jpg"));
-	 * 
-	 * } }
-	 */
+	
+	 public void setWonderEffects() throws IOException { 
+		 String wonderName = playerList[(currentPlayer + 2) % 3].getWonder().getName(); 
+		 // stage1 = ImageIO.read(new File("/wonder_effects/" + wonderName + // "/Stage1.jpg"));
+	 for (int i = 0; i < imgList1.length; i++) { 
+		 imgList1[i] = ImageIO.read(getClass().getResource("/wonder_effects/" + wonderName + "Stage" + (i + 1) + ".jpg"));
+	  }
+	 }
+	 
+	 public void updatePlayerHand(LinkedHashMap<Player, ArrayList<Card>> playerMap)
+	 {
+		 for (Map.Entry<Player, ArrayList<Card>> entry : playerMap>
+	 }
+	 
 
 	/*
 	 * public void updateCurrentHand() throws IOException { ArrayList<Card>

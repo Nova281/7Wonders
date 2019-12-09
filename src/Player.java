@@ -371,9 +371,9 @@ public class Player {
 				}
 			}
 		}
-		else if(wonder.getName().equals("Halikarnassos"))
+		else if(wonder.getName().equals("Halicarnassus"))
 		{
-			Halikarnassos alex = (Halikarnassos)wonder;
+			Halicarnassus alex = (Halicarnassus)wonder;
 			String[] array = alex.getResWonder(stage).split(" ");
 			ArrayList<String> res = new ArrayList<String>();
 			for(int i = 0; i < array.length; i++)

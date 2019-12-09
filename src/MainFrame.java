@@ -1,24 +1,25 @@
-package graphicClasses;
+
 
 import java.awt.Dimension;
 import java.awt.FontFormatException;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import javax.swing.JFrame;
 
-import boardClasses.GameState;
-import playerClasses.Player;
+
 
 public class MainFrame extends JFrame {
 	private GameState gs;
 	private GamePanel panel;
 	private Player[] playerList;
 
-	public MainFrame(String title, Player[] playerList) throws IOException, FontFormatException {
+	public MainFrame(String title) throws IOException, FontFormatException {
 		super(title);
 		gs = new GameState();
-		setupGraphics(playerList);
+		//setupGraphics(playerList);
 
 	}
 
@@ -33,10 +34,10 @@ public class MainFrame extends JFrame {
 		 * three.setWonder(wonderAr.get(6));
 		 */
 		panel.setWonderImages(playerList);
+		panel.setWonderEffects();
 		panel.updateCurrentBoard(1);
 		panel.updateCurrentAge(1);
 		panel.updateCoins();
-		// panel.setWonderEffects();
 		add(panel);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(true);
@@ -57,6 +58,10 @@ public class MainFrame extends JFrame {
 	public void updateCurrentAge(int i) throws IOException {
 		panel.updateCurrentAge(i);
 		repaint();
+	}
+	public void updatePlayerCards(LinkedHashMap<Player, ArrayList<Card>> playerMap)
+	{
+		panel.updatePlayerHand(playerMap);
 	}
 
 }

@@ -1,20 +1,10 @@
-package graphicClasses;
+
 
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import cardClasses.BlueCard;
-import cardClasses.GreenCard;
-import playerClasses.Player;
-import wonderClasses.Alexandria;
-import wonderClasses.Babylon;
-import wonderClasses.Ephesus;
-import wonderClasses.Gizah;
-import wonderClasses.Halicarnassus;
-import wonderClasses.Olympia;
-import wonderClasses.Rhodos;
-import wonderClasses.Wonder;
+
 
 public class Runner {
 	public static void main(String[] args) throws IOException, FontFormatException {
@@ -38,25 +28,25 @@ public class Runner {
 		one.setWonder(wonderAr.remove((int) (Math.random() * wonderAr.size())));
 		two.setWonder(wonderAr.remove((int) (Math.random() * wonderAr.size())));
 		three.setWonder(wonderAr.remove((int) (Math.random() * wonderAr.size())));
-		one.addCoins(2);
 		BlueCard altar = new BlueCard("Altar", "blue", "1", " ", "Temple", " ");
 		BlueCard palace = new BlueCard("Palace;blue;3;glass, papyrus, cloth, clay, wood, ore, stone; ; ");
 		BlueCard pantheon = new BlueCard("Pantheon;blue;3;clay, clay, ore, papyrus, cloth, glass; ;Temple");
 		BlueCard pantheon1 = new BlueCard("Pantheon;blue;3;clay, clay, ore, papyrus, cloth, glass; ;Temple");
 		GreenCard academy = new GreenCard("Academy;green;3;stone, stone, stone, glass; ;School");
+		ResourceCard stone = new ResourceCard("Stone Pit;brown;1; ; ; ");
 		one.addCard(altar);
 		one.addCard(academy);
 		one.addCard(palace);
 		one.addCard(pantheon);
 		one.addCard(pantheon1);
-		two.addCoins(1);
-		three.addCoins(5);
+		one.addCard(stone);
 		Player[] playerAr = { one, two, three };
 
-		MainFrame f = new MainFrame("Seven Wonders", playerAr);
-		f.updateCurrentAge(2);
-		f.updateCurrentPlayer(two);
-		f.updatePlayerCoins();
+		MainFrame f = new MainFrame("Seven Wonders");
+		f.setupGraphics(playerAr);
+		//f.updateCurrentAge(2);
+		//f.updateCurrentPlayer(two);
+		//f.updatePlayerCoins();
 
 	}
 }
