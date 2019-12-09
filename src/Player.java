@@ -371,7 +371,7 @@ public class Player {
 				}
 			}
 		}
-		else if(wonder.getName().equals("Halicarnassus"))
+		else if(wonder.getName().equals("Halikarnassos"))
 		{
 			Halikarnassos alex = (Halikarnassos)wonder;
 			String[] array = alex.getResWonder(stage).split(" ");
