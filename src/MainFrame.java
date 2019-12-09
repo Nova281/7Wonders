@@ -23,7 +23,7 @@ public class MainFrame extends JFrame {
 
 	}
 
-	public void setupGraphics(Player[] playerList) throws IOException, FontFormatException {
+	public void setupGraphics(Player[] playerList, LinkedHashMap<Player, ArrayList<Card>> playerMap) throws IOException, FontFormatException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize.width, screenSize.height);
@@ -38,6 +38,7 @@ public class MainFrame extends JFrame {
 		panel.updateCurrentBoard(1);
 		panel.updateCurrentAge(1);
 		panel.updateCoins();
+		panel.updatePlayerHand(playerMap);
 		add(panel);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(true);
@@ -62,6 +63,7 @@ public class MainFrame extends JFrame {
 	public void updatePlayerCards(LinkedHashMap<Player, ArrayList<Card>> playerMap)
 	{
 		panel.updatePlayerHand(playerMap);
+		repaint();
 	}
 
 }

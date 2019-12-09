@@ -3,6 +3,7 @@
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 
 
@@ -33,17 +34,31 @@ public class Runner {
 		BlueCard pantheon = new BlueCard("Pantheon;blue;3;clay, clay, ore, papyrus, cloth, glass; ;Temple");
 		BlueCard pantheon1 = new BlueCard("Pantheon;blue;3;clay, clay, ore, papyrus, cloth, glass; ;Temple");
 		GreenCard academy = new GreenCard("Academy;green;3;stone, stone, stone, glass; ;School");
-		ResourceCard stone = new ResourceCard("Stone Pit;brown;1; ; ; ");
+		ResourceCard stone = new ResourceCard("StonePit;brown;1; ; ; ");
+		//ActionCard worker = new ActionCard("WorkersGuild;purple;3;ore, ore, clay, stone, wood; ; ");
+		RedCard barracks = new RedCard("Barracks;red;1;ore; ; ");
 		one.addCard(altar);
 		one.addCard(academy);
 		one.addCard(palace);
 		one.addCard(pantheon);
-		one.addCard(pantheon1);
 		one.addCard(stone);
+		one.addCard(barracks);
+		//one.addCard(worker);
 		Player[] playerAr = { one, two, three };
-
+		
+		ArrayList<Card> test = new ArrayList<Card>();
+		test.add(altar);
+		test.add(academy);
+		test.add(pantheon);
+		test.add(pantheon);
+		test.add(pantheon);
+		test.add(pantheon);
+		test.add(pantheon);
+		
+		LinkedHashMap<Player, ArrayList<Card>> playerMap = new LinkedHashMap<>();
+		playerMap.put(one, test);
 		MainFrame f = new MainFrame("Seven Wonders");
-		f.setupGraphics(playerAr);
+		f.setupGraphics(playerAr, playerMap);
 		//f.updateCurrentAge(2);
 		//f.updateCurrentPlayer(two);
 		//f.updatePlayerCoins();

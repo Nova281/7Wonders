@@ -28,6 +28,7 @@ public class GamePanel extends JPanel {
 	private int currentPlayer, coinOne, coinThree, width;
 	private Player[] playerList;
 	private int[] coin1List, coin3List;
+	private ArrayList<Card> tempHand;
 
 	public GamePanel() throws IOException, FontFormatException {
 		wonderList = new Wonder[3];
@@ -36,6 +37,7 @@ public class GamePanel extends JPanel {
 		playerList = new Player[3];
 		coin1List = new int[3];
 		coin3List = new int[3];
+		tempHand = new ArrayList<>();
 		currentAgeStr = "";
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		width = screenSize.width;
@@ -138,10 +140,6 @@ public class GamePanel extends JPanel {
 			e1.printStackTrace();
 		}
 
-		/*
-		 * for (int i = 0; i < hand.length; i++) { g.drawImage(hand[i], 350 + i * 30,
-		 * 250 + i * 50, 144, 220, this); }
-		 */
 		int i = 0;
 		for (Map.Entry<String, ArrayList<Card>> entry : playerList[(currentPlayer + 2) % 3].getCards().entrySet()) {
 			String key = entry.getKey();
@@ -154,7 +152,7 @@ public class GamePanel extends JPanel {
 					g.drawImage(
 							ImageIO.read(getClass()
 									.getResource("/cards/" + (value.get(j).getName()).toLowerCase() + ".png")),
-							200 + i + j * 30, 200 + j * 50, 144, 220, this);
+							0 + i + j * 30, 200 + j * 50, 144, 220, this);
 					System.out.println((350 + i + j * 30) + ", " + (200 + j * 50));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -163,23 +161,17 @@ public class GamePanel extends JPanel {
 			}
 			i += 115;
 		}
-		/*
-		 * try { int i = 0; g.drawImage(hand[i], 0 + i * 30, 0 * i + 50, 144, 220,
-		 * this); i++; } catch (Exception e) { System.out.println("Error"); }
-		 */
-		/*
-		 * ArrayList<Card> currentPlayerHand = playerList[(currentPlayer + 2) %
-		 * 3].getHand(); for (int i = 0; i < currentPlayerHand.size(); i++) {
-		 * 
-		 * g.drawImage(hand[i], 0 + i * 30, 0 + i * 50, 144, 220, this); try {
-		 * g.drawImage(ImageIO.read(getClass().getResource(currentPlayerHand.get(i) +
-		 * ".png")), 0 + i * 30, 0 + i * 50, 144, 220, this);
-		 * 
-		 * } catch (Exception e) { // TODO: handle exception
-		 * System.out.println("Error"); }
-		 * 
-		 * }
-		 */
+		int count = 0;
+		for (Card c : tempHand)
+		{
+			try {
+				g.drawImage(ImageIO.read(getClass().getResource("/cards/"+c.getName()+".png")), 300+count, 780, this);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			count += 200;
+		}
 
 	}
 
@@ -231,7 +223,7 @@ public class GamePanel extends JPanel {
 	 
 	 public void updatePlayerHand(LinkedHashMap<Player, ArrayList<Card>> playerMap)
 	 {
-		 for (Map.Entry<Player, ArrayList<Card>> entry : playerMap>
+		 tempHand = playerMap.get(playerList[(currentPlayer + 2) % 3]);
 	 }
 	 
 
