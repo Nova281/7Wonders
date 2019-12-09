@@ -54,7 +54,7 @@ public class GamePanel extends JPanel {
 		coin1 = ImageIO.read(getClass().getResource("/tokens/coin1.png"));
 		coin3 = ImageIO.read(getClass().getResource("/tokens/coin3.png"));
 
-		String fName = "PossumSaltareNF.ttf";
+		String fName = "/font/PossumSaltareNF.ttf";
 		InputStream is = GamePanel.class.getResourceAsStream(fName);
 		font = Font.createFont(Font.TRUETYPE_FONT, is);
 		font = font.deriveFont(Font.BOLD, 20);
@@ -149,9 +149,10 @@ public class GamePanel extends JPanel {
 		for (Map.Entry<String, ArrayList<Card>> entry : playerList[(currentPlayer + 2) % 3].getCards().entrySet()) {
 			String key = entry.getKey();
 			ArrayList<Card> value = entry.getValue();
+			System.out.println(value);
 			// System.out.println(value);
 			for (int j = 0; j < value.size(); j++) {
-				System.out.println((value.get(j).getName()).toLowerCase());
+
 				try {
 					g.drawImage(
 							ImageIO.read(getClass()
