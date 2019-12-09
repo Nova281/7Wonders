@@ -20,6 +20,7 @@ public class Player {
 	private Wonder wonder;
 	private int coins;
 	private int vp;
+	private int playerNum;
 
 	private int warPoints;
 	private int wins;
@@ -34,7 +35,7 @@ public class Player {
 	private boolean brownRight = false;
 	private boolean silverBoth = false; // what is this stuff
 
-	public Player() {
+	public Player(int num) {
 		vp = 0;
 		warPoints = 0;
 		wins = 0;
@@ -47,6 +48,7 @@ public class Player {
 		resources = new TreeMap<String, Integer>();
 		choiceRes = new ArrayList<>();
 		sciences = new TreeMap<String, Integer>();
+		playerNum = num;
 	}
 
 	// sets war points, takes in age and if won
@@ -286,5 +288,9 @@ public class Player {
 
 	public Wonder getWonder() {
 		return wonder;
+	}
+
+	public int getPlayerNum() {
+		return playerNum;
 	}
 }

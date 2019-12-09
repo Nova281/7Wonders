@@ -187,9 +187,8 @@ public class GamePanel extends JPanel {
 	}
 
 	// updated currentWonder onto graphics from Player
-	public void updateCurrentBoard(String playerName) throws IOException {
+	public void updateCurrentBoard(int playerNum) throws IOException {
 		for (int i = 1; i <= imgList.length; i++) {
-			int playerNum = Integer.parseInt(playerName);
 			if (i == playerNum)
 				currentPlayer = i;
 		}
@@ -221,16 +220,16 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	public void updateWonderEffects() throws IOException {
-		String wonderName = playerList[(currentPlayer + 2) % 3].getWonder().getName();
-		// stage1 = ImageIO.read(new File("/wonder_effects/" + wonderName +
-		// "/Stage1.jpg"));
-		for (int i = 0; i < imgList1.length; i++) {
-			imgList1[i] = ImageIO
-					.read(getClass().getResource("/wonder_effects/" + wonderName + "Stage" + (i + 1) + ".jpg"));
-
-		}
-	}
+	/*
+	 * public void setWonderEffects() throws IOException { String wonderName =
+	 * playerList[(currentPlayer + 2) % 3].getWonder().getName(); // stage1 =
+	 * ImageIO.read(new File("/wonder_effects/" + wonderName + // "/Stage1.jpg"));
+	 * for (int i = 0; i < imgList1.length; i++) { imgList1[i] = ImageIO
+	 * .read(getClass().getResource("/wonder_effects/" + wonderName + "Stage" + (i +
+	 * 1) + ".jpg"));
+	 * 
+	 * } }
+	 */
 
 	/*
 	 * public void updateCurrentHand() throws IOException { ArrayList<Card>

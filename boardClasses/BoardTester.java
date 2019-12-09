@@ -1,14 +1,14 @@
-import java.util.*;
-import java.io.*;
+package boardClasses;
 
-import static java.lang.System.*;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class BoardTester {
 
 	public static void main(String[] args) throws IOException {
 		Scanner input = new Scanner(System.in);
 		GameState gs = new GameState();
-		gs.run();
+		// gs.run();
 	}
 
 }
