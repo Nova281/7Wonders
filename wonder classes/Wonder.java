@@ -21,7 +21,7 @@ public class Wonder {
 	
 	public void setPhase(int stage)
 	{
-		phases.put(stage, true);
+		Phases.put(stage, true);
 	}
 	
 	public int getPhase1() {
