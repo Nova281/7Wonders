@@ -276,17 +276,174 @@ public class Player {
 	{
 		this.wonder = wonder;
 	}
-	/*public void buildWonder()
+	public void buildWonder()
 	{
-		
-	}
-	private void wonderRes(int stage)
-	{
-		if(!wonder.getPhaseState(stage))
+		int stage = 0;
+		if(wonder.getPhaseState(1) == false)
 		{
-			
+			stage = 1;
 		}
-	}*/
+		else if(wonder.getPhaseState(2) == false)
+			stage = 2;
+		else if(wonder.getPhaseState(3) == false)
+			stage = 3;
+		
+		if(wonder.getName().equals("Alexandria"))
+		{
+			Alexandria alex = (Alexandria)wonder;
+			String[] array = alex.getResWonder(stage);
+			ArrayList<String> res = new ArrayList<String>();
+			for(int i = 0; i < array.length; i++)
+			{
+				res.add(array[i]);
+			}
+			if(check(res) == true)
+			{
+				runWonder(stage);
+				if(stage == 2)
+				{
+					ArrayList<String> choi = alex.runPhase2();
+					addChoiceRes(choi);
+					wonder.setPhase(stage);
+				}
+			}
+		}
+		if(wonder.getName().equals("Babylon"))
+		{
+			Babylon alex = (Babylon)wonder;
+			String[] array = alex.getResWonder;
+			ArrayList<String> res = new ArrayList<String>();
+			for(int i = 0; i < array.length; i++)
+			{
+				res.add(array[i]);
+			}
+			if(check(res) == true)
+			{
+				runWonder(stage);
+				/*if(stage == 2)
+				{
+					ArrayList<String> choi = alex.runPhase2();
+					addChoiceRes(choi);
+					wonder.setPhase(stage);
+				}*/
+			}
+		}
+		if(wonder.getName().equals("Ephesus"))
+		{
+			Ephesus alex = (Ephesus)wonder;
+			String[] array = alex.getResWonder;
+			ArrayList<String> res = new ArrayList<String>();
+			for(int i = 0; i < array.length; i++)
+			{
+				res.add(array[i]);
+			}
+			if(check(res) == true)
+			{
+				runWonder(stage);
+				if(stage == 2)
+				{
+					int coi = alex.runPhase2();
+					addCoins(coi);
+					wonder.setPhase(stage);
+				}
+			}
+		}
+		if(wonder.getName().equals("Gizah"))
+		{
+			Gizah alex = (Gizah)wonder;
+			String[] array = alex.getResWonder;
+			ArrayList<String> res = new ArrayList<String>();
+			for(int i = 0; i < array.length; i++)
+			{
+				res.add(array[i]);
+			}
+			if(check(res) == true)
+			{
+				runWonder(stage);
+				if(stage == 2)
+				{
+					int vi = alex.runPhase2();
+					vp += vi;
+					wonder.setPhase(stage);
+				}
+			}
+		}
+		if(wonder.getName().equals("Halicarnassus"))
+		{
+			Halicarnassus alex = (Halicarnassus)wonder;
+			String[] array = alex.getResWonder;
+			ArrayList<String> res = new ArrayList<String>();
+			for(int i = 0; i < array.length; i++)
+			{
+				res.add(array[i]);
+			}
+			if(check(res) == true)
+			{
+				runWonder(stage);
+				/*if(stage == 2)
+				{
+					ArrayList<String> choi = alex.runPhase2();
+					addChoiceRes(choi);
+					wonder.setPhase(stage);
+				}*/
+			}
+		}
+		if(wonder.getName().equals("Olympia"))
+		{
+			Olympia alex = (Olympia)wonder;
+			String[] array = alex.getResWonder;
+			ArrayList<String> res = new ArrayList<String>();
+			for(int i = 0; i < array.length; i++)
+			{
+				res.add(array[i]);
+			}
+			if(check(res) == true)
+			{
+				runWonder(stage);
+				/*if(stage == 2)
+				{
+					ArrayList<String> choi = alex.runPhase2();
+					addChoiceRes(choi);
+					wonder.setPhase(stage);
+				}*/
+			}
+		}
+		if(wonder.getName().equals("Rhodos"))
+		{
+			Rhodos alex = (Rhodos)wonder;
+			String[] array = alex.getResWonder;
+			ArrayList<String> res = new ArrayList<String>();
+			for(int i = 0; i < array.length; i++)
+			{
+				res.add(array[i]);
+			}
+			if(check(res) == true)
+			{
+				runWonder(stage);
+				if(stage == 2)
+				{
+					int wa = alex.runPhase2();
+					mp += wa;
+					wonder.setPhase(stage);
+				}
+			}
+		}
+	}
+	private void runWonder(int stage)
+	{
+		if(stage == 1)
+		{
+			int num = wonder.getPhase1();
+			vp += num;
+			wonder.setPhase(stage);
+		}
+		else if(stage == 3)
+		{
+			int num = wonder.getPhase3();
+			vp += num;
+			wonder.setPhase(stage);
+		}
+	}
 	
 	public void addChoiceRes(ArrayList<String> list) {
 		choiceRes.add(list);
@@ -322,7 +479,7 @@ public class Player {
 //		{
 //			int num = res.get(key);
 //			int non = num - on.get(key);
-//			if(non <= 0)
+//			if(non <= 0
 //			{
 //				if(coins >= (num * 2))
 //				{
