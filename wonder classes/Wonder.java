@@ -4,11 +4,13 @@ public class Wonder {
 	private TreeMap<Integer, Boolean> Phases;
 	private String name, resource, effect;
 
-	public Wonder() {
+	public Wonder(String name, String resource) {
 		TreeMap<Integer, Boolean> Phases = new TreeMap<>();
 		Phases.put(1, false);
 		Phases.put(2, false);
 		Phases.put(3, false);
+		this.name = name;
+		this.resource = resource;
 	}
 
 	public String getName() {
@@ -18,12 +20,7 @@ public class Wonder {
 	public boolean getPhaseState(int stage) {
 		return Phases.get(stage);
 	}
-	
-	public void setPhase(int stage)
-	{
-		Phases.put(stage, true);
-	}
-	
+
 	public int getPhase1() {
 		return 3;
 	}

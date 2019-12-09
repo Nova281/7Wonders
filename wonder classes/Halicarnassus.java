@@ -3,9 +3,9 @@ public class Halicarnassus extends Wonder {
 	private String name, resource;
 
 	public Halicarnassus() {
-		super();
+		super("Halicarnassus", "cloth");
 		name = "Halicarnassus";
-		resource = "loom";
+		resource = "cloth";
 	}
 
 	public String getResWonder(int stage) {
@@ -14,7 +14,7 @@ public class Halicarnassus extends Wonder {
 		else if (stage == 2)
 			return "ore ore ore";
 		else
-			return "loom loom";
+			return "cloth cloth";
 	}
 
 	public String getPhase2() {
