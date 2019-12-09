@@ -18,7 +18,12 @@ public class Wonder {
 	public boolean getPhaseState(int stage) {
 		return Phases.get(stage);
 	}
-
+	
+	public void setPhase(int stage)
+	{
+		phases.put(stage, true);
+	}
+	
 	public int getPhase1() {
 		return 3;
 	}
