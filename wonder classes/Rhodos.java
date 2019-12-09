@@ -18,9 +18,9 @@ public class Rhodos extends Wonder
 			return "ore ore ore ore";
 	}
 	
-	public String getPhase2()
+	public int getPhase2()
 	{
-		return "add 2 shields";
+		return 2;
 	}
 	public String getName()
 	{
