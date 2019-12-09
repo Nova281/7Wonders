@@ -20,7 +20,7 @@ public class Alexandria extends Wonder {
 		
 	}
 	
-	public void runPhase2(Player p)
+	public ArrayList<String> runPhase2()
 	{
 		
 		ArrayList<String> list = new ArrayList<String>();
@@ -28,7 +28,7 @@ public class Alexandria extends Wonder {
 		list.add("clay");
 		list.add("wood");
 		list.add("ore");
-		p.addChoiceRes(list);
+		return list;
 	}
 
 	public String getName()
