@@ -1,27 +1,31 @@
 
-public class Babylon extends Wonder {
+public class Babylon extends Wonder 	
+{
 	private String name, resource;
-
-	public Babylon() {
-		super("Babylon", "clay");
+	public Babylon()
+	{
+		super();
 		name = "Babylon";
 		resource = "clay";
 	}
-
-	public String getResWonder(int stage) {
-		if (stage == 1)
+	
+	public String getResWonder(int stage)
+	{
+		if(stage == 1)
 			return "clay clay";
-		else if (stage == 2)
+		else if(stage == 2)
 			return "wood wood wood";
 		else
 			return "clay clay clay clay";
 	}
-
-	public String runPhase2(Player p) {
+	
+	public String runPhase2(Player p)
+	{
 		return "gain extra scientific symbol of their choice at the end of the game";
 	}
-
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 }
+	
