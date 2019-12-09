@@ -18,15 +18,22 @@ public class Alexandria extends Wonder {
 			return "clay clay clay clay";
 
 	}
+<<<<<<< HEAD
 
 	public void runPhase2(Player p) {
 
+=======
+	
+	public ArrayList<String> runPhase2()
+	{
+		
+>>>>>>> af68fc6b0cde902e35ea4e181618de5fe2943f25
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("stone");
 		list.add("clay");
 		list.add("wood");
 		list.add("ore");
-		p.addChoiceRes(list);
+		return list;
 	}
 
 	public String getName() {
