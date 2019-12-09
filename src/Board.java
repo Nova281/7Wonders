@@ -93,7 +93,7 @@ public class Board {
 	//p can be 1, 2, or 3
 	public void printPlayerHand(LinkedHashMap<Player, ArrayList<Card>> playerMap, int p) {
 		Iterator<Player> iter = playerMap.keySet().iterator();
-		Player cp = new Player();
+		Player cp = new Player(0);
 		for(int i = 0; i < p; i++)
 			cp = iter.next();
 		out.println(playerMap.get(cp));
