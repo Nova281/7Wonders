@@ -18,9 +18,9 @@ public class Ephesus extends Wonder
 		else
 			return "papyrus papyrus";
 	}
-	public String getPhase2()
+	public int getPhase2()
 	{
-		return "immediately take 9 coins from bank";
+		return 9;
 	}
 	public String getName()
 	{
