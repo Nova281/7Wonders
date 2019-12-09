@@ -64,6 +64,7 @@ public class Board {
 	
 	public void deal(LinkedHashMap<Player, ArrayList<Card>> playerMap) {
 		Collections.shuffle(deck);
+		out.println(deck);
 		Iterator<Player> iter = playerMap.keySet().iterator();
 		for(int i = 0; i < 3; i++) {
 			Player cp = iter.next();
