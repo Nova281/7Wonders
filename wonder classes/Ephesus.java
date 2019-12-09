@@ -1,11 +1,8 @@
 
 public class Ephesus extends Wonder {
-	private String name, resource;
 
 	public Ephesus() {
 		super("Ephesus", "papyrus");
-		name = "Ephesus";
-		resource = "papyrus";
 	}
 
 	public String getResWonder(int stage) {
@@ -17,11 +14,7 @@ public class Ephesus extends Wonder {
 			return "papyrus papyrus";
 	}
 
-	public String getPhase2() {
-		return "immediately take 9 coins from bank";
-	}
-
-	public String getName() {
-		return name;
+	public int runPhase2() {
+		return 9; //gives 9 coins
 	}
 }

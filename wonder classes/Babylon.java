@@ -1,11 +1,8 @@
 
 public class Babylon extends Wonder {
-	private String name, resource;
 
 	public Babylon() {
 		super("Babylon", "clay");
-		name = "Babylon";
-		resource = "clay";
 	}
 
 	public String getResWonder(int stage) {
@@ -19,9 +16,5 @@ public class Babylon extends Wonder {
 
 	public String runPhase2(Player p) {
 		return "gain extra scientific symbol of their choice at the end of the game";
-	}
-
-	public String getName() {
-		return name;
 	}
 }

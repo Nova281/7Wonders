@@ -3,9 +3,7 @@ public class Rhodos extends Wonder
 	private String name, resource;
 	public Rhodos()
 	{
-		super();
-		name = "Rhodos";
-		resource = "ore";
+		super("Rhodos", "ore");
 	}
 	
 	public String getResWonder(int stage)
@@ -18,12 +16,8 @@ public class Rhodos extends Wonder
 			return "ore ore ore ore";
 	}
 	
-	public int getPhase2()
+	public int runPhase2()
 	{
 		return 2;
-	}
-	public String getName()
-	{
-		return name;
 	}
 }

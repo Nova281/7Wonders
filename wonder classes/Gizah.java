@@ -1,11 +1,10 @@
+
 public class Gizah extends Wonder 	
 {
-	private String name, resource;
+	
 	public Gizah()
 	{
-		super();
-		name = "Gizah";
-		resource = "stone";
+		super("Gizah", "stone");
 	}
 	
 	public String getResWonder(int stage)
@@ -18,12 +17,8 @@ public class Gizah extends Wonder
 			return "stone stone stone stone";
 	}
 	
-	public int getPhase2()
+	public int runPhase2()
 	{
-		return 5;
+		return 5; //returns 5 vp
 	}	
-	public String getName()
-	{
-		return name;
-	}
 }
