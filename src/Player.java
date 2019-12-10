@@ -145,7 +145,7 @@ public class Player {
 				{
 					re.add(array[i]);
 				}
-				choiceRes.add(re);
+				addChoiceRes(re);
 			}
 			else if(c.getEffect().equals("clay stone ore wood"))
 			{
@@ -157,15 +157,20 @@ public class Player {
 				}
 				choiceRes.add(re);
 			}
+			else if(c.getEffect().equals("Brown 1"))
+			{
+				int num = getBrownNum() + p1.getBrownNum() + p2.getBrownNum();
+				addCoins(num);
+			}
 			else if(c.getEffect().equals("1 brown"))
 			{
-				int num = cards.get("brown").size();
+				int num = getBrownNum();
 				coins += num;
 				vp += num;
 			}
 			else if(c.getEffect().equals("1 gold"))
 			{
-				int num = cards.get("gold").size();
+				int num = getGoldNum();
 				coins += num;
 				vp += num;
 			}
@@ -180,6 +185,71 @@ public class Player {
 					num++;
 				coins += (3 * num);
 				vp += num;
+			}
+			else if(c.getName().equals("Workers Guild"))
+			{
+				int num = p1.getBrownNum() + p2.getBrownNum();
+				addVP(num);
+			}
+			else if(c.getName().equals("Craftsmens Guild"))
+			{
+				int num = p1.getSilverNum() + p2.getSilverNum();
+				addVP(num * 2);
+			}
+			else if(c.getName().equals("Traders Guild"))
+			{
+				int num = p1.getGoldNum() + p2.getGoldNum();
+				addVP(num);
+			}
+			else if(c.getName().equals("Philosophers Guild"))
+			{
+				int num = p1.getGreenNum() + p2.getGreenNum();
+				addVP(num);
+			}
+			else if(c.getName().equals("Spies Guild"))
+			{
+				int num = p1.getRedNum() + p2.getRedNum();
+				addVP(num);
+			}
+			else if(c.getName().equals("Strategists Guild"))
+			{
+				int num = p1.getLosses() + p2.getLosses();
+				addVP(num);
+			}
+			else if(c.getName().equals("Shipowners Guild"))
+			{
+				int num = getPurpleNum() + getBrownNum() + getSilverNum();
+				addVP(num);
+			}
+			else if(c.getName().equals("Magistrates Guild"))
+			{
+				int num = p1.getBlueNum() + p2.getBlueNum();
+				addVP(num);
+			}
+			else if(c.getName().equals("Builders Guild"))
+			{
+				int num = 0;
+				if(wonder.getPhaseState(1) == true)
+					num++;
+				else if(wonder.getPhaseState(2) == true)
+					num++;
+				else if(wonder.getPhaseState(3) == true)
+					num++;
+				Wonder wonderr = p1.getWonder();
+				if(wonderr.getPhaseState(1) == true)
+					num++;
+				else if(wonderr.getPhaseState(2) == true)
+					num++;
+				else if(wonderr.getPhaseState(3) == true)
+					num++;
+				Wonder wonderrr = p2.getWonder();
+				if(wonderrr.getPhaseState(1) == true)
+					num++;
+				else if(wonderrr.getPhaseState(2) == true)
+					num++;
+				else if(wonderrr.getPhaseState(3) == true)
+					num++;
+				addVP(num);
 			}
 		}
 	}
@@ -652,4 +722,16 @@ public class Player {
 	public LinkedHashMap<String, ArrayList<Card>> getCards() { return cards; }
 	
 	public int getPlayerNum() { return playerNum; }
+	public void setLeft() { brownLeft = true;}
+	public void setRight() { brownRight = true; }
+	public void setBoth() { silverBoth = true; }
+	public int getLosses() { return loss; }
+	public int getBrownNum() { return cards.get("brown").size(); }
+	public int getSilverNum() { return cards.get("silver").size(); }
+	public int getGoldNum() { return cards.get("gold").size(); }
+	public int getGreenNum() { return cards.get("green").size(); }
+	public int getRedNum() { return cards.get("red").size(); }
+	public int getBlueNum() { return cards.get("blue").size(); }
+	public void addVP(int num) { vp+= num; }
+	public int getPurpleNum() { return cards.get("purple").size(); }
 }
