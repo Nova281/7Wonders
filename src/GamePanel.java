@@ -34,6 +34,7 @@ public class GamePanel extends JPanel {
 		imgList = new BufferedImage[3];
 		imgList1 = new BufferedImage[3];
 		this.playerList = playerList;
+		System.out.println(playerList);
 		coin1List = new int[3];
 		coin3List = new int[3];
 		tempHand = new ArrayList<>();
@@ -162,7 +163,7 @@ public class GamePanel extends JPanel {
 		}
 
 		int count = 0;
-		for (Card c : tempHand) {
+		/*for (Card c : tempHand) {
 			try {
 				g.drawImage(ImageIO.read(getClass().getResource("/cards/" + c.getName() + ".png")), 300 + count, 780,
 						this);
@@ -171,7 +172,7 @@ public class GamePanel extends JPanel {
 				e.printStackTrace();
 			}
 			count += 200;
-		}
+		}*/
 
 	}
 
@@ -184,10 +185,10 @@ public class GamePanel extends JPanel {
 	}
 
 	// receive list of players & get each player's wonder name to set image
-	public void setWonderImages(LinkedHashMap<Player, ArrayList<Card>> linkedHashMap) throws IOException {
-		int i = 0;
-		for (Map.Entry<Player, ArrayList<Card>> entry : linkedHashMap.entrySet()) {
-			Player p = entry.getKey();
+	public void setWonderImages(ArrayList<Player> playerList2) throws IOException {
+
+		for (int i = 0; i < playerList2.size(); i++) {
+			Player p = playerList2.get(i);
 			imgList[i] = ImageIO.read(getClass().getResource("/wonder_boards/" + p.getWonder().getName() + ".jpg"));
 			i++;
 		}
@@ -214,16 +215,18 @@ public class GamePanel extends JPanel {
 		String wonderName = playerList.get((currentPlayer + 2) % 3).getWonder().getName();
 		// stage1 = ImageIO.read(new File("/wonder_effects/" + wonderName + //
 		// "/Stage1.jpg"));
-		for (int i = 0; i < imgList1.length; i++) {
+		for (int i = 0; i < 3; i++) {
 			imgList1[i] = ImageIO
 					.read(getClass().getResource("/wonder_effects/" + wonderName + "Stage" + (i + 1) + ".jpg"));
+			System.out.println(wonderName);
+	
 		}
 	}
 
-	public void updatePlayerHand(LinkedHashMap<Player, ArrayList<Card>> playerMap) {
-		tempHand = playerMap.get(playerList.get((currentPlayer + 2) % 3));
+	public void updatePlayerHand(ArrayList<Card> arrayList) {
+		tempHand = arrayList;
 	}
-
+	// putting together classes
 	/*
 	 * public void updateCurrentHand() throws IOException { ArrayList<Card>
 	 * currentPlayerHand = playerList.get((currentPlayer + 2) % 3).getHand(); hand =

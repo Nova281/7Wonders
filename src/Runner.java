@@ -23,7 +23,7 @@ public class Runner {
 		 * one.addCard(worker);
 		 */
 
-		MainFrame f = new MainFrame("Seven Wonders");
+		MainFrame f = new MainFrame("Seven Wonders", gs);
 
 		// f.updateCurrentAge(2);
 		// f.updateCurrentPlayer(two);

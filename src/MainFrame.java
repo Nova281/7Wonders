@@ -17,30 +17,33 @@ public class MainFrame extends JFrame implements MouseListener {
 	private GamePanel panel;
 	private ArrayList<Player> playerList;
 
-	public MainFrame(String title) throws IOException, FontFormatException {
+	public MainFrame(String title, GameState gs) throws IOException, FontFormatException {
 		super(title);
-		addMouseListener(new MouseAdapter());
-		gs = new GameState();
+		//addMouseListener(new MouseAdapter());
+		this.gs = gs;
 		playerList = new ArrayList<>();
-		setupGraphics(gs);
+		Player[] playerAr = gs.getPlayers();
+		for (int i = 0; i < playerAr.length; i++)
+		{
+			playerList.add(playerAr[i]);
+		}
+		setupGraphics(playerList);
 
 	}
 
-	public void setupGraphics(GameState gs) throws IOException, FontFormatException {
+	public void setupGraphics(ArrayList<Player> playerList2) throws IOException, FontFormatException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize.width, screenSize.height);
-		for (Map.Entry<Player, ArrayList<Card>> entry : gs.getPlayerMap().entrySet()) {
-			playerList.add(entry.getKey());
-		}
-		panel = new GamePanel(playerList);
 
-		panel.setWonderImages(gs.getPlayerMap());
+		panel = new GamePanel(playerList2);
+
+		panel.setWonderImages(playerList2);
 		panel.setWonderEffects();
-		panel.updateCurrentBoard((gs.getTurn() + 2) % 3 + 1);
-		panel.updateCurrentAge(gs.getAge());
+		panel.updateCurrentBoard(1);
+		panel.updateCurrentAge(1/*gs.getAge()*/);
 		panel.updateCoins();
-		panel.updatePlayerHand(gs.getPlayerMap());
+		panel.updatePlayerHand(gs.getHand(1));
 		add(panel);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(true);
@@ -63,8 +66,8 @@ public class MainFrame extends JFrame implements MouseListener {
 		repaint();
 	}
 
-	public void updatePlayerCards(LinkedHashMap<Player, ArrayList<Card>> playerMap) {
-		panel.updatePlayerHand(playerMap);
+	public void updatePlayerCards(ArrayList<Card> cardList) {
+		panel.updatePlayerHand(cardList);
 		repaint();
 	}
 
