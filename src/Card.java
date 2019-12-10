@@ -98,16 +98,20 @@ public abstract class Card implements Comparable {
 	
 	public String toString() { 
 		String cos = "";
-		for(int i = 0; i < cost.size()-1; i++)
-			cos+=cost.get(i) + ", ";
-		cos+=cost.get(cost.size()-1);
-		String ch = "";
-		for(int i = 0; i < chain.size()-1; i++)
-			ch+=chain.get(i) + ", ";
-		ch+=chain.get(chain.size()-1);
-		String fc = "";
-		for(int i = 0; i < freeCard.size()-1; i++)
-			fc+=freeCard.get(i) + ", ";
-		fc+=freeCard.get(freeCard.size()-1);
-		return name + ";" + color + ";" + age + ";" + cos + ";" + ch + ";" + fc; }
+		if(cost.size() == 1 && cost.get(0).equals(" "))
+			cos = "nothing";
+		else {
+			for(int i = 0; i < cost.size()-1; i++)
+				cos+=cost.get(i) + ", ";
+			cos+=cost.get(cost.size()-1);
+		}
+//		String ch = "";
+//		for(int i = 0; i < chain.size()-1; i++)
+//			ch+=chain.get(i) + ", ";
+//		ch+=chain.get(chain.size()-1);
+//		String fc = "";
+//		for(int i = 0; i < freeCard.size()-1; i++)
+//			fc+=freeCard.get(i) + ", ";
+//		fc+=freeCard.get(freeCard.size()-1);
+		return name + " - Cost: " + cos/* + ";" + color + ";" + age + ";" + cos + ";" + ch + ";" + fc */; }
 }
