@@ -11,6 +11,8 @@ public class GameState {
 	private Board board;
 	private LinkedHashMap<Player, ArrayList<Card>> players;
 	
+	private Player currentPlayer;
+	
 	public GameState() {
 		board = new Board();
 		age = 0;
@@ -36,6 +38,7 @@ public class GameState {
 			players.put(new Player(i), new ArrayList<Card>());
 			getPlayer(i).setWonder(wonderArr.remove((int) (Math.random() * wonderArr.size())));
 		}
+		currentPlayer = getPlayer(1);
 		nextAge();
 	}
 	//playerNum can be 1, 2, or 3
@@ -98,6 +101,15 @@ public class GameState {
 	public void wageWar() {
 		board.wageWar(players.keySet(), age);
 	}
+	
+	public void setCurrentPlayer(int playerNum) {
+		currentPlayer = getPlayer(playerNum);
+	}
+	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
 	
 //	public boolean buildWonder(int playerNum) {
 //		return getPlayer(playerNum).buildWonder();
