@@ -47,7 +47,7 @@ public class GameState {
 	}
 	//playerNum can be 1, 2, or 3
 	public Player[] getPlayers() { return players; }
-	public ArrayList<Card> getHand() { return playerHands.get(currentPlayer); }
+	public ArrayList<Card> getHand(int playerNum) { return playerHands.get(players[playerNum-1]); }
 	public Player getLeftPlayer() {  return left; }
 	public Player getRightPlayer() {  return right; }
 	public int getAge() { return age; }
