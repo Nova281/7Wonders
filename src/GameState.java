@@ -13,7 +13,7 @@ public class GameState {
 	
 	public GameState() {
 		board = new Board();
-		age = 1;
+		age = 0;
 		players = new LinkedHashMap<>();
 		
 		Alexandria a = new Alexandria();
@@ -36,7 +36,7 @@ public class GameState {
 			players.put(new Player(i), new ArrayList<Card>());
 			getPlayer(i).setWonder(wonderArr.remove((int) (Math.random() * wonderArr.size())));
 		}
-		
+		nextAge();
 	}
 	//playerNum can be 1, 2, or 3
 	public void setWonder(int playerNum, Wonder wonder) {
@@ -53,7 +53,6 @@ public class GameState {
 	
 	public void printPlayerHand(int playerNum) {
 		out.println(players.get(getPlayer(playerNum)));
-		//out.println(players.get(getPlayer(playerNum)));
 	}
 	
 	public Board getBoard() { return board; }
@@ -95,6 +94,10 @@ public class GameState {
 	public int getAge() { return age; }
 	
 	public LinkedHashMap<Player, ArrayList<Card>> getPlayerMap() { return players; }
+	
+	public void wageWar() {
+		board.wageWar(players.keySet(), age);
+	}
 	
 //	public boolean buildWonder(int playerNum) {
 //		return getPlayer(playerNum).buildWonder();
