@@ -23,7 +23,7 @@ public class Player {
 	private TreeMap<String, Integer> resources;
 	private ArrayList<ArrayList<String>> choiceRes;
 	private int mp; //military points
-	private TreeMap<String,Integer> sciences;
+	private TreeMap<String, Integer> sciences;
 	
 	private boolean brownLeft = false;
 	private boolean brownRight = false;
@@ -45,6 +45,9 @@ public class Player {
 		choiceRes = new ArrayList<>();
 		sciences = new TreeMap<String,Integer>();
 	}
+	
+	public TreeMap<String, Integer> getSciences() { return sciences; }
+	
 	//sets war points, takes in age and if won
 	public void wageWar(int age, Player p)
 	{
@@ -286,9 +289,10 @@ public class Player {
 					res.put(resource, numRes);
 			}
 		}
-		
 		//check through choice resources;
-		if(cost.size() > 0 && cost.size() <= choiceRes.size()) {
+		if(cost.size() > choiceRes.size())
+			return false;
+		else if(cost.size() > 0) {
 			//ArrayList<String> c = new ArrayList<String>();
 			ArrayList<String> strCombos = new ArrayList<>();
 			ArrayList<ArrayList<String>> combinations = new ArrayList<>();
@@ -301,21 +305,20 @@ public class Player {
 					temp.add(a[i]);
 				combinations.add(temp);
 			}
-			if(combinations.contains(cost))
+			if(combinations.contains(cost))				
 				return true;
 			else {
 				for(ArrayList<String> k: combinations) {
 					for(int i = cost.size()-1; i >= 0; i--)
-						if(k.contains(cost.get(i))) {
+						if(k.contains(cost.get(i)))
 							k.remove(i);
-						}
 					if(k.size() == 0)
 						return true;
 				}
 			}
 			return false;
 		}
-		else
+		else 
 			return true;
 	}
 	
@@ -377,142 +380,74 @@ public class Player {
 			stage = 3;
 		else
 			return;
+		runWonder(stage);
 		if(wonder.getName().equals("Alexandria"))
 		{
 			Alexandria alex = (Alexandria)wonder;
-			String[] array = alex.getResWonder(stage).split(" ");
-			ArrayList<String> res = new ArrayList<String>();
-			for(int i = 0; i < array.length; i++)
+			if(stage == 2)
 			{
-				res.add(array[i]);
-			}
-			if(check(res) == true)
-			{
-				runWonder(stage);
-				if(stage == 2)
-				{
-					ArrayList<String> choi = alex.runPhase2();
-					addChoiceRes(choi);
-					wonder.setPhase(stage);
-				}
+				ArrayList<String> choi = alex.runPhase2();
+				addChoiceRes(choi);
+				wonder.setPhase(stage);
 			}
 		}
 		else if(wonder.getName().equals("Babylon"))
 		{
-			Babylon alex = (Babylon)wonder;
-			String[] array = alex.getResWonder(stage).split(" ");
-			ArrayList<String> res = new ArrayList<String>();
-			for(int i = 0; i < array.length; i++)
+			Babylon b = (Babylon)wonder;
+			/*if(stage == 2)
 			{
-				res.add(array[i]);
-			}
-			if(check(res) == true)
-			{
-				runWonder(stage);
-				/*if(stage == 2)
-				{
-					ArrayList<String> choi = alex.runPhase2();
-					addChoiceRes(choi);
-					wonder.setPhase(stage);
-				}*/
-			}
+				ArrayList<String> choi = b.runPhase2();
+				addChoiceRes(choi);
+				wonder.setPhase(stage);
+			}*/
 		}
 		else if(wonder.getName().equals("Ephesus"))
 		{
-			Ephesus alex = (Ephesus)wonder;
-			String[] array = alex.getResWonder(stage).split(" ");
-			ArrayList<String> res = new ArrayList<String>();
-			for(int i = 0; i < array.length; i++)
+			Ephesus e = (Ephesus)wonder;
+			runWonder(stage);
+			if(stage == 2)
 			{
-				res.add(array[i]);
-			}
-			if(check(res) == true)
-			{
-				runWonder(stage);
-				if(stage == 2)
-				{
-					int coi = alex.runPhase2();
-					addCoins(coi);
-					wonder.setPhase(stage);
-				}
+				int coi = e.runPhase2();
+				addCoins(coi);
+				wonder.setPhase(stage);
 			}
 		}
 		else if(wonder.getName().equals("Gizah"))
 		{
-			Gizah alex = (Gizah)wonder;
-			String[] array = alex.getResWonder(stage).split(" ");
-			ArrayList<String> res = new ArrayList<String>();
-			for(int i = 0; i < array.length; i++)
+			Gizah g = (Gizah)wonder;
+			if(stage == 2)
 			{
-				res.add(array[i]);
-			}
-			if(check(res) == true)
-			{
-				runWonder(stage);
-				if(stage == 2)
-				{
-					vp += alex.runPhase2();
-					wonder.setPhase(stage);
-				}
+				vp += g.runPhase2();
+				wonder.setPhase(stage);
 			}
 		}
 		else if(wonder.getName().equals("Halicarnassus"))
 		{
-			Halikarnassos alex = (Halikarnassos)wonder;
-			String[] array = alex.getResWonder(stage).split(" ");
-			ArrayList<String> res = new ArrayList<String>();
-			for(int i = 0; i < array.length; i++)
+			Halikarnassos h = (Halikarnassos)wonder;
+			/*if(stage == 2)
 			{
-				res.add(array[i]);
-			}
-			if(check(res) == true)
-			{
-				runWonder(stage);
-				/*if(stage == 2)
-				{
-					ArrayList<String> choi = alex.runPhase2();
-					addChoiceRes(choi);
-					wonder.setPhase(stage);
-				}*/
-			}
+				ArrayList<String> choi = h.runPhase2();
+				addChoiceRes(choi);
+				wonder.setPhase(stage);
+			}*/
 		}
 		else if(wonder.getName().equals("Olympia"))
 		{
-			Olympia alex = (Olympia)wonder;
-			String[] array = alex.getResWonder(stage).split(" ");
-			ArrayList<String> res = new ArrayList<String>();
-			for(int i = 0; i < array.length; i++)
+			Olympia o = (Olympia)wonder;
+			/*if(stage == 2)
 			{
-				res.add(array[i]);
-			}
-			if(check(res) == true)
-			{
-				runWonder(stage);
-				/*if(stage == 2)
-				{
-					ArrayList<String> choi = alex.runPhase2();
-					addChoiceRes(choi);
-					wonder.setPhase(stage);
-				}*/
-			}
+				ArrayList<String> choi = o.runPhase2();
+				addChoiceRes(choi);
+				wonder.setPhase(stage);
+			}*/
 		}
 		else if(wonder.getName().equals("Rhodos"))
 		{
 			Rhodos alex = (Rhodos)wonder;
-			String[] array = alex.getResWonder(stage).split(" ");
-			ArrayList<String> res = new ArrayList<String>();
-			for(int i = 0; i < array.length; i++)
+			if(stage == 2)
 			{
-				res.add(array[i]);
-			}
-			if(check(res) == true)
-			{
-				runWonder(stage);
-				if(stage == 2)
-				{
-					mp += alex.runPhase2();
-					wonder.setPhase(stage);
-				}
+				mp += alex.runPhase2();
+				wonder.setPhase(stage);
 			}
 		}
 	}
@@ -542,7 +477,7 @@ public class Player {
 			sciences.put(s, 1);
 	}
 	
-	public String toString() { return cards.toString(); }
+	public String toString() { return Integer.toString(playerNum); }
 	public int getWP() { return warPoints; }
 	public Wonder getWonder() { return wonder; }
 	public boolean trade(Player left, Player right, ArrayList<String> cost)
@@ -698,6 +633,24 @@ public class Player {
 			return true;
 		return false;
 	}
+	
+	public boolean canBuildWonder() {
+		int stage = 0;
+		if(wonder.getPhaseState(1) == false)
+			stage = 1;
+		else if(wonder.getPhaseState(2) == false)
+			stage = 2;
+		else if(wonder.getPhaseState(3) == false)
+			stage = 3;
+		else
+			return false;
+		String[] array = wonder.getResWonder(stage).split(" ");
+		ArrayList<String> res = new ArrayList<>();
+		for(String k: array)
+			res.add(k);
+		return check(res);
+	}
+	
 	public LinkedHashMap<String, ArrayList<Card>> getCards() { return cards; }
 	
 	public int getPlayerNum() { return playerNum; }
