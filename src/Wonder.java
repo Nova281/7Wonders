@@ -1,18 +1,20 @@
 import java.util.TreeMap;
 
-public class Wonder {
+public abstract class Wonder {
 	private TreeMap<Integer, Boolean> phases;
 	private String name, resource, effect;
 
 	public Wonder(String name, String resource) {
-		TreeMap<Integer, Boolean> Phases = new TreeMap<>();
-		Phases.put(1, false);
-		Phases.put(2, false);
-		Phases.put(3, false);
+		phases = new TreeMap<>();
+		phases.put(1, false);
+		phases.put(2, false);
+		phases.put(3, false);
 		this.name = name;
 		this.resource = resource;
 	}
-
+	
+	public abstract String getResWonder(int stage);
+	
 	public String getName() {
 		return name;
 	}
