@@ -18,24 +18,20 @@ public class ActionCard extends Card{
 		if(getAge() == 1)
 		{
 			if(getName().equals("East Trading Post"))
-			{
 				effect = "right 1";
-			}
 			else if(getName().equals("West Trading Post"))
-			{
 				effect = "left 1";
-			}
 			else if(getName().equals("Marketplace"))
-			{
 				effect = "both 1";
-			}
 		}
 		else if(getAge() == 2)
 		{
 			if(getName().equals("Vineyard"))
 				effect = "Brown 1";
 			else if(getName().equals("Forum"))
+			{
 				effect = "loom glass papyrus";
+			}
 			else if(getName().equals("Caravansery"))
 				effect = "clay stone ore wood";
 		}
