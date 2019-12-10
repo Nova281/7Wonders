@@ -480,6 +480,153 @@ public class Player {
 	public String toString() { return Integer.toString(playerNum); }
 	public int getWP() { return warPoints; }
 	public Wonder getWonder() { return wonder; }
+	
+	public boolean canTrade(Player left, Player right, ArrayList<String> cost)
+	{
+		int tempCoins = coins;
+		String[] brown = {"wood", "stone", "ore", "clay"};
+		ArrayList<String> brownList = (ArrayList<String>) Arrays.asList(brown);
+		ActionCard ETP = (new ActionCard("East Trading Post;gold;1; ;Forum; "));
+		ActionCard WTP = (new ActionCard("West Trading Post;gold;1; ;Forum; "));
+		ActionCard market = (new ActionCard("Marketplace;gold;1; ;Caravansery; "));
+		
+		int rBLeft = 0, rSLeft = 0, rBRight = 0, rSRight = 0;
+		for(int i = cost.size()-1; i >= 0; i--) {
+			String r = cost.get(i);
+			if(left.hasResource(r)) {
+				cost.remove(r);
+				if(brownList.contains(r))
+					rBLeft++;
+				else
+					rSLeft++;
+			}
+			else if(right.hasResource(r)) {
+				cost.remove(r);
+				if(brownList.contains(r))
+					rBRight++;
+				else
+					rSRight++;
+			}
+		}
+		if(cost.size() == 0 ) {
+			if(left.hasCard(WTP)) //need to fix cantrade and trade
+				left.addCoins(rBLeft);
+			else
+				left.addCoins(rBLeft*2);
+			if(left.hasCard(market))
+				left.addCoins(rSLeft);
+			else
+				left.addCoins(rSLeft*2);
+			if(right.hasCard(ETP))
+				right.addCoins(tempRRB);
+			else
+				right.addCoins(tempRRB*2);
+			if(right.hasCard(market))
+				right.addCoins(tempRRS);
+			else
+				right.addCoins(tempRRS*2);
+			return true;
+
+		}
+		//check through left choice res
+		ArrayList<ArrayList<String>> leftChoice = left.getChoiceRes();
+		ArrayList<String> strCombos = new ArrayList<>();
+		ArrayList<ArrayList<String>> combos = new ArrayList<>();
+		createCombo(leftChoice, strCombos, 0, "");
+		String[] a;
+		for(String k: strCombos) {
+			ArrayList<String> temp = new ArrayList<>();
+			a = k.split(";");
+			for(int i = 1; i < a.length; i++)
+				temp.add(a[i]);
+			combos.add(temp);
+		}
+		int tempLRB, tempLRS, smallLRB = 0, smallLRS = 0; //leftremovedbrown/silver
+		ArrayList<String> small = new ArrayList<>(cost);
+		for(ArrayList<String> k: combos) {
+			tempLRB = rBLeft;
+			tempLRS = rSLeft;
+			for(int i = cost.size()-1; i >= 0; i--)
+				if(k.contains(cost.get(i))) {
+					if(brownList.contains(k.remove(i))) 
+						tempLRB++;
+					else
+						tempLRS++;
+				}
+			if(k.size() == 0) {
+				if(left.hasCard(WTP)) 
+					left.addCoins(tempLRB);
+				else
+					left.addCoins(tempLRB*2);
+				if(left.hasCard(market))
+					left.addCoins(tempLRS);
+				else
+					left.addCoins(tempLRS*2);
+				if(right.hasCard(ETP))
+					right.addCoins(rBRight);
+				else
+					right.addCoins(rBRight*2);
+				if(right.hasCard(market))
+					right.addCoins(rSRight);
+				else
+					right.addCoins(rSRight*2);
+				return true;
+			}
+			else if(k.size() < small.size()) {
+				small = k;
+				smallLRB = tempLRB;
+				smallLRS = tempLRS;
+			}
+		}
+		cost = small;
+		rBLeft = smallLRB;
+		rSLeft = smallLRS;
+		//check through right choice res
+		ArrayList<ArrayList<String>> rightChoice = right.getChoiceRes();
+		strCombos = new ArrayList<>();
+		combos = new ArrayList<>();
+		createCombo(rightChoice, strCombos, 0, "");
+		for(String k: strCombos) {
+			ArrayList<String> temp = new ArrayList<>();
+			a = k.split(";");
+			for(int i = 1; i < a.length; i++)
+				temp.add(a[i]);
+			combos.add(temp);
+		}
+		int tempRRB, tempRRS; //leftremovedbrown/silver
+		for(ArrayList<String> k: combos) {
+			tempRRB = rBRight;
+			tempRRS = rSRight;
+			for(int i = cost.size()-1; i >= 0; i--)
+				if(k.contains(cost.get(i))) {
+					if(brownList.contains(k.remove(i))) 
+						tempRRB++;
+					else
+						tempRRS++;
+				}
+			if(k.size() == 0) {
+				if(left.hasCard(WTP)) 
+					left.addCoins(rBLeft);
+				else
+					left.addCoins(rBLeft*2);
+				if(left.hasCard(market))
+					left.addCoins(rSLeft);
+				else
+					left.addCoins(rSLeft*2);
+				if(right.hasCard(ETP))
+					right.addCoins(tempRRB);
+				else
+					right.addCoins(tempRRB*2);
+				if(right.hasCard(market))
+					right.addCoins(tempRRS);
+				else
+					right.addCoins(tempRRS*2);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean trade(Player left, Player right, ArrayList<String> cost)
 	{
 		String[] brown = {"wood", "stone", "ore", "clay"};
