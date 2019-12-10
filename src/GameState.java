@@ -1,24 +1,23 @@
-import static java.lang.System.out;
-
-import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import static java.lang.System.*;
+
+import java.io.IOException;
 
 public class GameState {
-
-	private int age, turn;
-	private Board board;
-	private LinkedHashMap<Player, ArrayList<Card>> players;
-
-	private Player currentPlayer;
-
+	
+	private int age;
+	private Player currentPlayer, left, right;
+	private LinkedHashMap<Player, ArrayList<Card>> playerHands;
+	private Player[] players;
+	private int playerNum;
+	
 	public GameState() {
-		board = new Board();
-		age = 1;
-		turn = 1;
-		players = new LinkedHashMap<>();
-
+		age = 0;
+		players = new Player[3];
+		playerHands = new LinkedHashMap<Player, ArrayList<Card>>();
+		//assigns wonder
 		Alexandria a = new Alexandria();
 		Babylon b = new Babylon();
 		Ephesus e = new Ephesus();
@@ -34,101 +33,80 @@ public class GameState {
 		wonderArr.add(h);
 		wonderArr.add(o);
 		wonderArr.add(r);
-
-		for (int i = 1; i < 4; i++) {
-			players.put(new Player(), new ArrayList<Card>());
-			getPlayer(i).setWonder(wonderArr.remove((int) (Math.random() * wonderArr.size())));
+		
+		for(int i = 0; i < 3; i++) {
+			players[i] = new Player(i+1);
+			players[i].setWonder(wonderArr.remove((int) (Math.random() * wonderArr.size())));
+			playerHands.put(players[i], new ArrayList<Card>());
 		}
-		currentPlayer = getPlayer(1);
-		// nextAge();
+		//assigns wonder^
+		currentPlayer = players[0];
+		playerNum = 1;
+		left = players[1]; //player 2
+		right = players[2]; //player 3
 	}
-
-	// playerNum can be 1, 2, or 3
-	public void setWonder(int playerNum, Wonder wonder) {
-		Player p = getPlayer(playerNum);
-		p.setWonder(wonder);
-	}
-
-	public void deal() {
-		board.deal(players);
-//		board.printPlayerHand(players, 1);
-//		board.printPlayerHand(players, 2);
-//		board.printPlayerHand(players, 3);
-	}
-
-	public void printPlayerHand(int playerNum) {
-		out.println(players.get(getPlayer(playerNum)));
-	}
-
-	public Board getBoard() {
-		return board;
-	}
-
-	// playerNum can be 1, 2, 3
-	public Player getPlayer(int playerNum) {
-		Iterator<Player> iter = players.keySet().iterator();
-		Player p = new Player();
-		for (int i = 0; i < playerNum; i++)
-			p = iter.next();
-		return p;
-	}
-
-	// playerNum can be 1, 2, 3
-	public void discard(int playerNum, Card choice) {
-		Player p = getPlayer(playerNum);
-		board.discard(p, players.get(p), choice);
-	}
-
-	public void build(int playerNum, Card choice) {
-		Player p = getPlayer(playerNum);
-		board.build(p, players.get(p), choice);
-	}
-
-	public void sacrifice(int playerNum, Card choice) {
-		Player p = getPlayer(playerNum);
-		board.sacrifice(p, players.get(p), choice);
-	}
-
-	public void passCards() {
-		players = board.passCards(age, players);
-	}
-
-	public int nextAge() {
-		for (int i = 1; i < 4; i++)
-			players.put(getPlayer(i), new ArrayList<>());
-		try {
-			board.createDeck(++age);
-		} catch (IOException e) {
+	//playerNum can be 1, 2, or 3
+	public Player[] getPlayers() { return players; }
+	public ArrayList<Card> getHand() { return playerHands.get(currentPlayer); }
+	public Player getLeftPlayer() {  return left; }
+	public Player getRightPlayer() {  return right; }
+	public int getAge() { return age; }
+	public ArrayList<Card> getCurrentHand() {  return playerHands.get(currentPlayer); }
+	public Player getCurrentPlayer() { return currentPlayer; }
+	public LinkedHashMap<Player, ArrayList<Card>> getPlayerHands() { return playerHands; }
+	public Player getPlayer(int playerNum) { return players[playerNum-1]; }
+	public int getCurrentPlayerNum() { return playerNum; }
+	
+//	public void updateState(Player cp, int a, LinkedHashMap<Player, ArrayList<Card>> ph) {
+//		currentPlayer = cp;
+//		age = a;
+//		playerHands = ph;
+//		playerNum = cp.getPlayerNum();
+//		if(playerNum == 1) {
+//			left = players[3];
+//			right = players[2];
+//		}
+//		else if(playerNum == 2) {
+//			left = players[1];
+//			right = players[3];
+//		}
+//		else {
+//			left = players[2];
+//			right = players[1];
+//		}
+//	}	
+	public void updateState(Player cp) {
+		currentPlayer = cp;
+		playerNum = cp.getPlayerNum();
+		if(playerNum == 1) {
+			left = players[3];
+			right = players[2];
 		}
-		board.deal(players);
-		return age;
+		else if(playerNum == 2) {
+			left = players[1];
+			right = players[3];
+		}
+		else {
+			left = players[2];
+			right = players[1];
+		}
 	}
-
-	public int getAge() {
-		return age;
+	public void updateState(int age) {
+		this.age = age;
 	}
-
-	public LinkedHashMap<Player, ArrayList<Card>> getPlayerMap() {
-		return players;
+	public void updateState(LinkedHashMap<Player, ArrayList<Card>> ph) {
+		playerHands = ph;
 	}
-
-	public void wageWar() {
-		// board.wageWar(players.keySet(), age);
+	public void updateState(ArrayList<Card> hand) {
+		playerHands.put(currentPlayer, hand);
 	}
-
-	public void setCurrentPlayer(int playerNum) {
-		currentPlayer = getPlayer(playerNum);
+	
+	public void nextTurn() {
+		//out.println(left + " " + currentPlayer + " " + right);
+		Player tempCP = currentPlayer;
+		currentPlayer = left;
+		left = right;
+		right = tempCP;
+		//out.println(left + " " + currentPlayer + " " + right);
 	}
-
-	public Player getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	public int getTurn() {
-		return turn;
-	}
-
-//	public boolean buildWonder(int playerNum) {
-//		return getPlayer(playerNum).buildWonder();
-//	}
 }
