@@ -110,13 +110,10 @@ public class Board {
 		gs.getCurrentPlayer().addCoins(3);
 		gs.getCurrentHand().remove(c);
 	}
-	public boolean build(Card c) {
-		if(gs.getCurrentPlayer().canBuild(c)) {
-			gs.getCurrentPlayer().addCard(c, gs.getLeftPlayer(), gs.getRightPlayer());
-			gs.getPlayerHands().remove(c);
-			return true;
-		}
-		return false;
+	public void build(Card c) {
+		gs.getCurrentPlayer().addCard(c, gs.getLeftPlayer(), gs.getRightPlayer());
+		gs.getPlayerHands().remove(c);
+
 	}
 	public boolean sacrifice(Card c) {
 		if(gs.getCurrentPlayer().canBuildWonder()) {
@@ -167,6 +164,7 @@ public class Board {
 	public void runTurn(Scanner input) {
 		Player cp = gs.getCurrentPlayer();
 		ArrayList<Card> ch = gs.getCurrentHand();
+		out.println("----------------------");
 		out.println("This is your current hand:\n" + ch);
 		out.println("These are your cards:\n" + cp.getCards());
 		out.println("----------------------");
@@ -175,24 +173,35 @@ public class Board {
 		if(choice == 1) {
 			out.println("Which card would you like to build? (Enter number: 0,1,2...)");
 			int bc = input.nextInt();
-			if(build(ch.get(bc)))
+			if(cp.canBuild(ch.get(bc))) {
+				build(ch.get(bc));
 				System.out.println("These are your cards: " + cp.getCards());
+			}
+			else if(cp.canBuildWithTrade(gs.getLeftPlayer(), gs.getRightPlayer(), ch.get(bc).getCost())) {
+				out.println("In order to build this you must trade with other players. Would you like to Trade? (Y/N)");
+				if(input.next().equalsIgnoreCase("y")) {
+					cp.trade(gs.getLeftPlayer(), gs.getRightPlayer(), ch.get(bc).getCost());
+					build(ch.get(bc));
+				}
+				else
+					runTurn(input);					
+			}
 			else {
 				out.println("You cannot do this, choose another option.");
 				runTurn(input);
 			}
 		}
 		else if(choice == 2) {
-			out.println("Which card would you like to sacrifice? (Enter number: 0,1,2...)");
+			out.println("Which card would you like to sacrifice to build a wonder? (Enter number: 0,1,2...)");
 			int sc = input.nextInt();
 			if(sacrifice(ch.get(sc))) {
 				String built = "";
 				if(cp.getWonder().getPhaseState(1))
 					built+="Phase 1 ";
 				if(cp.getWonder().getPhaseState(2))
-					built+="Phase 2 ";
+					built+=", Phase 2 ";
 				if(cp.getWonder().getPhaseState(3))
-					built+="Phase 3 ";
+					built+=", and Phase 3";
 				if(built.length() == 0)
 					built = "nothing";
 				out.println("You have built " + built + ".");
