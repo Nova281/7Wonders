@@ -1,9 +1,9 @@
-Clay Pit;brown;1; ; ; 
+Clay Pit;brown;1;coin; ; 
 Clay Pool;brown;1; ; ; 
 Lumber Yard;brown;1; ; ; 
 Ore Vein;brown;1; ; ; 
 Stone Pit;brown;1; ; ; 
-Timber Yard;brown;1; ; ; 
+Timber Yard;brown;1;coin; ; 
 Glassworks;silver;1; ; ; 
 Loom;silver;1; ; ; 
 Press;silver;1; ; ; 
