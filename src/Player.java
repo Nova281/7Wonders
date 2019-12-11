@@ -27,7 +27,7 @@ public class Player {
 	
 	private boolean brownLeft = false;
 	private boolean brownRight = false;
-	private boolean silverBoth = false; //what is this stuff
+	private boolean hasMarket = false; //what is this stuff
 	
 	
 	public Player(int num) {
@@ -139,7 +139,7 @@ public class Player {
 			else if(c.getEffect().equals("left 1"))
 				brownLeft = true;
 			else if(c.getEffect().equals("both 1"))
-				silverBoth = true;
+				hasMarket = true;
 			else if(c.getEffect().equals("loom glass papyrus"))
 			{
 				String[] array = c.getEffect().split(" ");
@@ -485,101 +485,89 @@ public class Player {
 	{
 		String[] brown = {"wood", "stone", "ore", "clay"};
 		ArrayList<String> brownList = (ArrayList<String>) Arrays.asList(brown);
-		ActionCard ETP = (new ActionCard("East Trading Post;gold;1; ;Forum; "));
-		ActionCard WTP = (new ActionCard("West Trading Post;gold;1; ;Forum; "));
-		ActionCard market = (new ActionCard("Marketplace;gold;1; ;Caravansery; "));
 		
-		int rBLeft = 0, rSLeft = 0, rBRight = 0, rSRight = 0;
+		int coinCost = 0;
 		for(int i = cost.size()-1; i >= 0; i--) {
 			String r = cost.get(i);
 			if(left.hasResource(r)) {
 				cost.remove(r);
-				if(brownList.contains(r))
-					rBLeft++;
-				else
-					rSLeft++;
+				if(brownList.contains(r)) {
+					if(brownLeft)
+						coinCost++;
+					else 
+						coinCost+=2;
+				}
+				else {
+					if(hasMarket)
+						coinCost++;
+					else
+						coinCost+=2;
+				}
 			}
 			else if(right.hasResource(r)) {
 				cost.remove(r);
-				if(brownList.contains(r))
-					rBRight++;
-				else
-					rSRight++;
+				if(brownList.contains(r)) {
+					if(brownRight)
+						coinCost++;
+					else
+						coinCost+=2;
+				}
+				else {
+					if(hasMarket)
+						coinCost++;
+					else
+						coinCost+=2;
+				}
 			}
 		}
-		if(cost.size() == 0) {
-			if(left.hasCard(WTP)) 
-				left.addCoins(rBLeft);
-			else
-				left.addCoins(rBLeft*2);
-			if(left.hasCard(market))
-				left.addCoins(rSLeft);
-			else
-				left.addCoins(rSLeft*2);
-			if(right.hasCard(ETP))
-				right.addCoins(rBRight);
-			else
-				right.addCoins(rBRight*2);
-			if(right.hasCard(market))
-				right.addCoins(rSRight);
-			else
-				right.addCoins(rSRight*2);
+		if(cost.size() == 0 && coins - coinCost >= 0)
 			return true;
-		}
 		
 		//check through left choice res
+		//creates possible combinations
 		ArrayList<ArrayList<String>> leftChoice = left.getChoiceRes();
 		ArrayList<String> strCombos = new ArrayList<>();
 		ArrayList<ArrayList<String>> combos = new ArrayList<>();
 		createCombo(leftChoice, strCombos, 0, "");
-		String[] a;
+		String[] arr;
 		for(String k: strCombos) {
 			ArrayList<String> temp = new ArrayList<>();
-			a = k.split(";");
-			for(int i = 1; i < a.length; i++)
-				temp.add(a[i]);
+			arr = k.split(";");
+			for(int i = 1; i < arr.length; i++)
+				temp.add(arr[i]);
 			combos.add(temp);
 		}
-		int tempLRB, tempLRS, smallLRB = 0, smallLRS = 0; //leftremovedbrown/silver
+		//creates possible combinations^
+		int tempCC = coinCost, smallCC = 0;
 		ArrayList<String> small = new ArrayList<>(cost);
 		for(ArrayList<String> k: combos) {
-			tempLRB = rBLeft;
-			tempLRS = rSLeft;
+			tempCC = coinCost;
 			for(int i = cost.size()-1; i >= 0; i--)
 				if(k.contains(cost.get(i))) {
-					if(brownList.contains(k.remove(i))) 
-						tempLRB++;
-					else
-						tempLRS++;
+					String r = k.remove(i);
+					if(brownList.contains(r)) {
+						if(brownLeft)
+							tempCC++;
+						else 
+							tempCC+=2;
+					}
+					else {
+						if(hasMarket)
+							tempCC++;
+						else
+							tempCC+=2;
+					}
 				}
-			if(k.size() == 0) {
-				if(left.hasCard(WTP)) 
-					left.addCoins(tempLRB);
-				else
-					left.addCoins(tempLRB*2);
-				if(left.hasCard(market))
-					left.addCoins(tempLRS);
-				else
-					left.addCoins(tempLRS*2);
-				if(right.hasCard(ETP))
-					right.addCoins(rBRight);
-				else
-					right.addCoins(rBRight*2);
-				if(right.hasCard(market))
-					right.addCoins(rSRight);
-				else
-					right.addCoins(rSRight*2);
+			if(k.size() == 0 && coins-coinCost >= 0) {
 				return true;
 			}
 			else if(k.size() < small.size()) {
 				small = k;
-				smallLRB = tempLRB;
-				smallLRS = tempLRS;
+				smallCC = tempCC;
 			}
 		}
 		cost = small;
-		rBLeft = smallLRB;
-		rSLeft = smallLRS;
+		coinCost = smallCC;
 		//check through right choice res
 		ArrayList<ArrayList<String>> rightChoice = right.getChoiceRes();
 		strCombos = new ArrayList<>();
@@ -587,40 +575,36 @@ public class Player {
 		createCombo(rightChoice, strCombos, 0, "");
 		for(String k: strCombos) {
 			ArrayList<String> temp = new ArrayList<>();
-			a = k.split(";");
-			for(int i = 1; i < a.length; i++)
-				temp.add(a[i]);
+			arr = k.split(";");
+			for(int i = 1; i < arr.length; i++)
+				temp.add(arr[i]);
 			combos.add(temp);
 		}
-		int tempRRB, tempRRS; //leftremovedbrown/silver
+		tempCC = coinCost;
 		for(ArrayList<String> k: combos) {
-			tempRRB = rBRight;
-			tempRRS = rSRight;
+			tempCC = coinCost;
 			for(int i = cost.size()-1; i >= 0; i--)
 				if(k.contains(cost.get(i))) {
-					if(brownList.contains(k.remove(i))) 
-						tempRRB++;
-					else
-						tempRRS++;
+					String r = k.remove(i);
+					if(brownList.contains(r)) {
+						if(brownRight)
+							tempCC++;
+						else 
+							tempCC+=2;
+					}
+					else {
+						if(hasMarket)
+							tempCC++;
+						else
+							tempCC+=2;
+					}
 				}
 			if(k.size() == 0) {
-				if(left.hasCard(WTP)) 
-					left.addCoins(rBLeft);
+				coinCost = tempCC;
+				if(coins-coinCost >= 0)
+					return true;
 				else
-					left.addCoins(rBLeft*2);
-				if(left.hasCard(market))
-					left.addCoins(rSLeft);
-				else
-					left.addCoins(rSLeft*2);
-				if(right.hasCard(ETP))
-					right.addCoins(tempRRB);
-				else
-					right.addCoins(tempRRB*2);
-				if(right.hasCard(market))
-					right.addCoins(tempRRS);
-				else
-					right.addCoins(tempRRS*2);
-				return true;
+					return false;
 			}
 		}
 		return false;
@@ -630,133 +614,98 @@ public class Player {
 	{
 		String[] brown = {"wood", "stone", "ore", "clay"};
 		ArrayList<String> brownList = (ArrayList<String>) Arrays.asList(brown);
-		ActionCard ETP = (new ActionCard("East Trading Post;gold;1; ;Forum; "));
-		ActionCard WTP = (new ActionCard("West Trading Post;gold;1; ;Forum; "));
-		ActionCard market = (new ActionCard("Marketplace;gold;1; ;Caravansery; "));
 		
-		int rBLeft = 0, rSLeft = 0, rBRight = 0, rSRight = 0;
+		int lb = 0, ls = 0, rb = 0, rs = 0;
 		for(int i = cost.size()-1; i >= 0; i--) {
-			String r = cost.get(i);
-			if(left.hasResource(r)) {
-				cost.remove(r);
-				if(brownList.contains(r))
-					rBLeft++;
-				else
-					rSLeft++;
+			if(left.hasResource(cost.get(i))) {
+				String r = cost.remove(i);
+				if(brownList.contains(r)) {
+					if(brownLeft)
+						lb++;
+					else 
+						lb+=2;
+				}
+				else {
+					if(hasMarket)
+						ls++;
+					else
+						ls+=2;
+				}
 			}
-			else if(right.hasResource(r)) {
-				cost.remove(r);
-				if(brownList.contains(r))
-					rBRight++;
-				else
-					rSRight++;
+			else if(right.hasResource(cost.get(i))) {
+				String r = cost.remove(i);
+				if(brownList.contains(r)) {
+					if(brownRight)
+						rb++;
+					else 
+						rb+=2;
+				}
+				else {
+					if(hasMarket)
+						rs++;
+					else
+						rs+=2;
+				}
 			}
 		}
 		if(cost.size() == 0) {
-			if(brownLeft) {
-				left.addCoins(rBLeft);
-				coins-=rBLeft;
-			}
-			else {
-				left.addCoins(rBLeft*2);
-				coins-=(rBLeft*2);
-			}
-			if(silverBoth) {
-				left.addCoins(rSLeft);
-				coins-=rSLeft;
-			}
-			else {
-				left.addCoins(rSLeft*2);
-				coins-=(rSLeft*2);
-			}
-			if(brownRight) {
-				right.addCoins(rBRight);
-				coins-=rBRight;
-			}
-			else {
-				right.addCoins(rBRight*2);
-				coins-=(rBRight*2);
-			}
-			if(silverBoth) {
-				right.addCoins(rSRight);
-				coins-=rSRight;
-			}
-			else {
-				right.addCoins(rSRight*2);
-				coins-=(rSRight*2);
-			}
+			right.addCoins(rb+rs);
+			left.addCoins(lb+ls);
+			coins-=(rb+rs+lb+ls);
 			return; //worked
 		}
 		
 		//check through left choice res
+		//creates combos
 		ArrayList<ArrayList<String>> leftChoice = left.getChoiceRes();
 		ArrayList<String> strCombos = new ArrayList<>();
 		ArrayList<ArrayList<String>> combos = new ArrayList<>();
 		createCombo(leftChoice, strCombos, 0, "");
-		String[] a;
+		String[] arr;
 		for(String k: strCombos) {
 			ArrayList<String> temp = new ArrayList<>();
-			a = k.split(";");
-			for(int i = 1; i < a.length; i++)
-				temp.add(a[i]);
+			arr = k.split(";");
+			for(int i = 1; i < arr.length; i++)
+				temp.add(arr[i]);
 			combos.add(temp);
 		}
-		int tempLRB, tempLRS, smallLRB = 0, smallLRS = 0; //leftremovedbrown/silver
+		//creates combos^
+		int tempLB, tempLS, smallLB = 0, smallLS = 0; //leftremovedbrown/silver
 		ArrayList<String> small = new ArrayList<>(cost);
 		for(ArrayList<String> k: combos) {
-			tempLRB = rBLeft;
-			tempLRS = rSLeft;
+			tempLB = lb;
+			tempLS = ls;
 			for(int i = cost.size()-1; i >= 0; i--)
 				if(k.contains(cost.get(i))) {
-					if(brownList.contains(k.remove(i))) 
-						tempLRB++;
-					else
-						tempLRS++;
+					String r = k.remove(i);
+					if(brownList.contains(r)) {
+						if(brownLeft)
+							tempLB++;
+						else 
+							tempLB+=2;
+					}
+					else {
+						if(hasMarket)
+							tempLS++;
+						else
+							tempLS+=2;
+					}
 				}
 			if(k.size() == 0) {
-				if(brownLeft) {
-					left.addCoins(rBLeft);
-					coins-=rBLeft;
-				}
-				else {
-					left.addCoins(rBLeft*2);
-					coins-=(rBLeft*2);
-				}
-				if(silverBoth) {
-					left.addCoins(rSLeft);
-					coins-=rSLeft;
-				}
-				else {
-					left.addCoins(rSLeft*2);
-					coins-=(rSLeft*2);
-				}
-				if(brownRight) {
-					right.addCoins(rBRight);
-					coins-=rBRight;
-				}
-				else {
-					right.addCoins(rBRight*2);
-					coins-=(rBRight*2);
-				}
-				if(silverBoth) {
-					right.addCoins(rSRight);
-					coins-=rSRight;
-				}
-				else {
-					right.addCoins(rSRight*2);
-					coins-=(rSRight*2);
-				}
+				left.addCoins(tempLB + tempLS);
+				right.addCoins(rb+rs);
+				coins-=(tempLB+tempLS+rb+rs);
 				return; //worked
 			}
 			else if(k.size() < small.size()) {
 				small = k;
-				smallLRB = tempLRB;
-				smallLRS = tempLRS;
+				smallLB = tempLB;
+				smallLS = tempLS;
 			}
 		}
 		cost = small;
-		rBLeft = smallLRB;
-		rSLeft = smallLRS;
+		lb = smallLB;
+		ls = smallLS;
 		//check through right choice res
 		ArrayList<ArrayList<String>> rightChoice = right.getChoiceRes();
 		strCombos = new ArrayList<>();
@@ -764,55 +713,36 @@ public class Player {
 		createCombo(rightChoice, strCombos, 0, "");
 		for(String k: strCombos) {
 			ArrayList<String> temp = new ArrayList<>();
-			a = k.split(";");
-			for(int i = 1; i < a.length; i++)
-				temp.add(a[i]);
+			arr = k.split(";");
+			for(int i = 1; i < arr.length; i++)
+				temp.add(arr[i]);
 			combos.add(temp);
 		}
-		int tempRRB, tempRRS; //leftremovedbrown/silver
+		int tempRB, tempRS; //leftremovedbrown/silver
+		small = new ArrayList<>(cost);
 		for(ArrayList<String> k: combos) {
-			tempRRB = rBRight;
-			tempRRS = rSRight;
+			tempRB = rb;
+			tempRS = rs;
 			for(int i = cost.size()-1; i >= 0; i--)
 				if(k.contains(cost.get(i))) {
-					if(brownList.contains(k.remove(i))) 
-						tempRRB++;
-					else
-						tempRRS++;
+					String r = k.remove(i);
+					if(brownList.contains(r)) {
+						if(brownRight)
+							tempRB++;
+						else 
+							tempRB+=2;
+					}
+					else {
+						if(hasMarket)
+							tempRS++;
+						else
+							tempRS+=2;
+					}
 				}
 			if(k.size() == 0) {
-				if(brownLeft) {
-					left.addCoins(rBLeft);
-					coins-=rBLeft;
-				}
-				else {
-					left.addCoins(rBLeft*2);
-					coins-=(rBLeft*2);
-				}
-				if(silverBoth) {
-					left.addCoins(rSLeft);
-					coins-=(rSLeft);
-				}
-				else {
-					left.addCoins(rSLeft*2);
-					coins-=(rSLeft*2);
-				}
-				if(brownRight) {
-					right.addCoins(tempRRB);
-					coins-=tempRRB;
-				}
-				else {
-					right.addCoins(tempRRB*2);
-					coins-=(tempRRB*2);
-				}
-				if(silverBoth) {
-					right.addCoins(tempRRS);
-					coins-=(tempRRS);
-				}
-				else {
-					right.addCoins(tempRRS*2);
-					coins-=tempRRS;
-				}
+				left.addCoins(lb + ls);
+				right.addCoins(tempRB + tempRS);
+				coins-=(tempRB+tempRS+lb+ls);
 				return; //worked
 			}
 		}
@@ -849,7 +779,7 @@ public class Player {
 	public int getPlayerNum() { return playerNum; }
 	public void setLeft() { brownLeft = true;}
 	public void setRight() { brownRight = true; }
-	public void setBoth() { silverBoth = true; }
+	public void setBoth() { hasMarket = true; }
 	public int getLosses() { return loss; }
 	public int getBrownNum() { return cards.get("brown").size(); }
 	public int getSilverNum() { return cards.get("silver").size(); }
