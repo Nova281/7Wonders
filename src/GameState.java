@@ -42,6 +42,7 @@ public class GameState {
 		playerNum = 1;
 		currentPlayer.setLeft(players[1]); // player 2
 		currentPlayer.setRight(players[2]); // player 3
+		setEnd(false);
 	}
 
 	// playerNum can be 1, 2, or 3
@@ -84,41 +85,7 @@ public class GameState {
 	public int getCurrentPlayerNum() {
 		return playerNum;
 	}
-
-//	public void updateState(Player cp, int a, LinkedHashMap<Player, ArrayList<Card>> ph) {
-//		currentPlayer = cp;
-//		age = a;
-//		playerHands = ph;
-//		playerNum = cp.getPlayerNum();
-//		if(playerNum == 1) {
-//			left = players[3];
-//			right = players[2];
-//		}
-//		else if(playerNum == 2) {
-//			left = players[1];
-//			right = players[3];
-//		}
-//		else {
-//			left = players[2];
-//			right = players[1];
-//		}
-//	}	
-//	public void updateState(Player cp) {
-//		currentPlayer = cp;
-//		playerNum = cp.getPlayerNum();
-//		if(playerNum == 1) {
-//			currentPlayer.setLeft(players[3]);
-//			currentPlayer.setRight(players[2]);
-//		}
-//		else if(playerNum == 2) {
-//			currentPlayer.setLeft(players[1]);
-//			currentPlayer.setRight(players[3]);
-//		}
-//		else {
-//			currentPlayer.setLeft(players[2]);
-//			currentPlayer.setRight(players[1]);
-//		}
-//	}
+	
 	public void updateState(int age) {
 		this.age = age;
 	}
