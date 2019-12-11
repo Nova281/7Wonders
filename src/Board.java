@@ -220,18 +220,6 @@ public class Board {
 			out.println("You now have " + cp.getCoins() + " coins.");
 		}
 	}
-	public int score(Player p) {
-		int score = 0;
-		score+=p.getVP()+p.getMP();
-		score+=p.getCoins()/3;
-		//phases accounted for in player
-		int num1 = p.getSciences().get("math");
-		int num2 = p.getSciences().get("literature");
-		int num3 = p.getSciences().get("engineering");
-		score+=7*Math.min(num1, Math.min(num1, num2));
-		score+=Math.pow(num1, 2) + Math.pow(num2, 2) + Math.pow(num3, 2);
-		return score;
-	}
 	public void run() {
 		Scanner input = new Scanner(System.in);
 		for(int x = 1; x < 4; x++) {
@@ -260,16 +248,27 @@ public class Board {
 			wageWar();
 			nextAge();
 		}
-		int p1Score = score(gs.getPlayer(1));
-		int p2Score = score(gs.getPlayer(2));
-		int p3Score = score(gs.getPlayer(3));
-		out.println("Player 1 ended with a score of " + p1Score);
-		out.println("Player 2 ended with a score of " + p2Score);
-		out.println("Player 3 ended with a score of " + p3Score);
-		int big = Math.max(p1Score, Math.max(p2Score, p3Score));
-		if(p1Score == big)
+		LinkedHashMap<Integer, String> scores = new LinkedHashMap<>();
+		int p1Score = gs.getPlayer(1).score();
+		int p2Score = gs.getPlayer(2).score();
+		int p3Score = gs.getPlayer(3).score();
+		scores.put(p1Score, "1");
+		scores.put(p2Score, "2");
+		scores.put(p3Score, "3");
+		int win = Math.max(p1Score, Math.max(p2Score, p3Score));
+		int third = Math.min(p1Score, Math.min(p2Score, p3Score));
+		int second = 0;
+		for(int s: scores.keySet())
+			if(s!=win && s!=third)
+				second = s;
+		out.println("First Place: Player " + scores.get(win) + " Score: " + win);
+		out.println("Second Place: Player " + scores.get(second) + " Score: " + second);
+		out.println("Third Place: Player " + scores.get(third) + " Score: " + third);
+		
+		
+		if(p1Score == win)
 			out.println("Player 1 wins!");
-		else if(p2Score == big)
+		else if(p2Score == win)
 			out.println("Player 2 wins!");
 		else
 			out.println("Player 3 wins!");
