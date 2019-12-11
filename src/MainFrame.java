@@ -15,25 +15,20 @@ public class MainFrame extends JFrame {
 	public MainFrame(String title, GameState gs) throws IOException, FontFormatException {
 		super(title);
 		this.gs = gs;
-		playerList = new ArrayList<>();
-		Player[] playerAr = gs.getPlayers();
-		for (int i = 0; i < playerAr.length; i++) {
-			playerList.add(playerAr[i]);
-		}
-		setupGraphics(playerList);
+		setupGraphics();
 
 	}
 
-	public void setupGraphics(ArrayList<Player> playerList2) throws IOException, FontFormatException {
+	public void setupGraphics() throws IOException, FontFormatException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize.width, screenSize.height);
 
 		panel = new GamePanel(gs);
 
-		panel.setWonderImages(playerList2);
+		panel.setWonderImages();
 		panel.updateCurrentBoard(gs.getCurrentPlayer());
-		panel.updateCurrentAge(1/* gs.getAge() */);
+		panel.updateCurrentAge(gs.getAge());
 		panel.updateCoins();
 		panel.updatePlayerHand(gs.getCurrentHand());
 		add(panel);
@@ -41,6 +36,14 @@ public class MainFrame extends JFrame {
 		setResizable(true);
 		pack();
 		setVisible(true);
+	}
+
+	public void updateGraphics() throws IOException {
+		panel.updateCurrentBoard(gs.getCurrentPlayer());
+		panel.updateCurrentAge(gs.getAge());
+		panel.updateCoins();
+		panel.updatePlayerHand(gs.getCurrentHand());
+		repaint();
 	}
 
 	public void updateCurrentPlayer(Player p) throws IOException {
