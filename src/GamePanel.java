@@ -30,12 +30,13 @@ public class GamePanel extends JPanel implements MouseListener {
 	private ArrayList<Player> playerList;
 	private int[] coin1List, coin3List;
 	private ArrayList<Card> tempHand;
-	private Player currentP;
+	private ArrayList<Integer> xCoord;
 
 	public GamePanel(GameState gs) throws IOException, FontFormatException {
+		addMouseListener(this);
 		playerList = new ArrayList<>();
+		xCoord = new ArrayList<>();
 		this.gs = gs;
-		currentP = null;
 		wonderList = new Wonder[3];
 		imgList = new BufferedImage[3];
 		imgList1 = new BufferedImage[3];
@@ -176,6 +177,7 @@ public class GamePanel extends JPanel implements MouseListener {
 			try {
 				g.drawImage(ImageIO.read(getClass().getResource("/cards/" + c.getName() + ".png")), 300 + count, 780,
 						this);
+				xCoord.add(300 + count);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -228,6 +230,10 @@ public class GamePanel extends JPanel implements MouseListener {
 		}
 	}
 
+	public void updatePlayerHand(ArrayList<Card> arrayList) {
+		tempHand = arrayList;
+	}
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		int x = e.getX();
@@ -235,18 +241,22 @@ public class GamePanel extends JPanel implements MouseListener {
 
 		int size = tempHand.size();
 		System.out.println(x + ", " + y);
-		if ((x >= 300 && x <= 480) && (y >= 780 && y <= 1080)) {
-			gs.getCurrentPlayer().addCard(tempHand.remove(0), gs.getRightPlayer(), gs.getLeftPlayer());
-			gs.updateState(gs.getLeftPlayer());
-			repaint();
-			System.out.println("Worked");
-
+		int cardIndex = 0;
+		for (int i = 0; i < xCoord.size(); i++) {
+			if ((x >= xCoord.get(i) && x <= xCoord.get(i) + 180) && (y >= 780 && y <= 1080)) {
+				gs.getCurrentPlayer().addCard(tempHand.remove(i), gs.getRightPlayer(), gs.getLeftPlayer());
+				gs.nextTurn();
+				updatePlayerHand(gs.getCurrentHand());
+				try {
+					updateCurrentBoard(gs.getCurrentPlayer());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				repaint();
+			}
 		}
 
-	}
-
-	public void updatePlayerHand(ArrayList<Card> arrayList) {
-		tempHand = arrayList;
 	}
 
 	@Override
