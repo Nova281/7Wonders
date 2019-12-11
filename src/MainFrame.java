@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
 		panel.updateCurrentBoard(gs.getCurrentPlayer());
 		panel.updateCurrentAge(gs.getAge());
 		panel.updateCoins();
-		panel.updatePlayerHand(gs.getCurrentHand());
+		panel.updatePlayerHand();
 		add(panel);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(true);
@@ -42,7 +42,7 @@ public class MainFrame extends JFrame {
 		panel.updateCurrentBoard(gs.getCurrentPlayer());
 		panel.updateCurrentAge(gs.getAge());
 		panel.updateCoins();
-		panel.updatePlayerHand(gs.getCurrentHand());
+		panel.updatePlayerHand();
 		repaint();
 	}
 
@@ -61,8 +61,8 @@ public class MainFrame extends JFrame {
 		repaint();
 	}
 
-	public void updatePlayerCards(ArrayList<Card> cardList) {
-		panel.updatePlayerHand(cardList);
+	public void updatePlayerCards() {
+		panel.updatePlayerHand();
 		repaint();
 	}
 

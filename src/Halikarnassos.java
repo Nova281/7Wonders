@@ -3,7 +3,7 @@ public class Halikarnassos extends Wonder
 {
 	public Halikarnassos()
 	{
-		super("Halikarnassos", "loom");
+		super("Halikarnassos", "cloth");
 	}
 	
 	public String getResWonder(int stage)

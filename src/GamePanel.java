@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements MouseListener {
 			System.out.println(p.getWonder().getName());
 		coin1List = new int[3];
 		coin3List = new int[3];
-		tempHand = new ArrayList<>();
+		tempHand = gs.getCurrentHand();
 		currentAgeStr = "";
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize.width, screenSize.height);
@@ -69,15 +69,15 @@ public class GamePanel extends JPanel implements MouseListener {
 		font = Font.createFont(Font.TRUETYPE_FONT, is);
 		font = font.deriveFont(Font.BOLD, 20);
 
-		endScreen = ImageIO.read(getClass().getResource("/wonder_boards/endscreen.png"));
-		scroll = ImageIO.read(getClass().getResource("/tokens/scroll.png"));
+		//endScreen = ImageIO.read(getClass().getResource("/wonder_boards/endscreen.png"));
+		//scroll = ImageIO.read(getClass().getResource("/tokens/scroll.png"));
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (gs.ifEnd() == true) {
-			g.drawImage(endScreen, 0, 0, 1920, 1080, this);
-			g.drawImage(scroll, width / 2, height / 2, this);
+			//g.drawImage(endScreen, 0, 0, 1920, 1080, this);
+			//g.drawImage(scroll, width / 2, height / 2, this);
 
 		}
 		// current Player
@@ -302,6 +302,7 @@ public class GamePanel extends JPanel implements MouseListener {
 		Player[] playerList = gs.getPlayers();
 		for (int i = 0; i < playerList.length; i++) {
 			Player p = playerList[i];
+			System.out.println(p.getWonder().getName());
 			imgList[i] = ImageIO.read(getClass().getResource("/wonder_boards/" + p.getWonder().getName() + ".jpg"));
 		}
 
@@ -324,8 +325,8 @@ public class GamePanel extends JPanel implements MouseListener {
 		}
 	}
 
-	public void updatePlayerHand(ArrayList<Card> arrayList) {
-		tempHand = arrayList;
+	public void updatePlayerHand() {
+		tempHand = gs.getCurrentHand();
 	}
 
 	@Override

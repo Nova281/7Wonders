@@ -28,14 +28,13 @@ public class GameState {
 		wonderArr.add(b);
 		wonderArr.add(e);
 		wonderArr.add(g);
-		wonderArr.add(h);
-		wonderArr.add(o);
 		wonderArr.add(r);
-
+		wonderArr.add(o);
+		wonderArr.add(h);
+		
 		for (int i = 0; i < 3; i++) {
 			players[i] = new Player(i + 1);
 			players[i].setWonder(wonderArr.remove((int) (Math.random() * wonderArr.size())));
-			playerHands.put(players[i], new ArrayList<Card>());
 		}
 		// assigns wonder^
 		currentPlayer = players[0];
