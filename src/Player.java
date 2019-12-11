@@ -189,81 +189,84 @@ public class Player {
 				coins += (3 * num);
 				vp += num;
 			}
-			else if(c.getName().equals("Workers Guild"))
-			{
-				int num = p1.getBrownNum() + p2.getBrownNum();
-				addVP(num);
-			}
-			else if(c.getName().equals("Craftsmens Guild"))
-			{
-				int num = p1.getSilverNum() + p2.getSilverNum();
-				addVP(num * 2);
-			}
-			else if(c.getName().equals("Traders Guild"))
-			{
-				int num = p1.getGoldNum() + p2.getGoldNum();
-				addVP(num);
-			}
-			else if(c.getName().equals("Philosophers Guild"))
-			{
-				int num = p1.getGreenNum() + p2.getGreenNum();
-				addVP(num);
-			}
-			else if(c.getName().equals("Spies Guild"))
-			{
-				int num = p1.getRedNum() + p2.getRedNum();
-				addVP(num);
-			}
-			else if(c.getName().equals("Strategists Guild"))
-			{
-				int num = p1.getLosses() + p2.getLosses();
-				addVP(num);
-			}
-			else if(c.getName().equals("Shipowners Guild"))
-			{
-				int num = getPurpleNum() + getBrownNum() + getSilverNum();
-				addVP(num);
-			}
-			else if(c.getName().equals("Magistrates Guild"))
-			{
-				int num = p1.getBlueNum() + p2.getBlueNum();
-				addVP(num);
-			}
-			else if(c.getName().equals("Builders Guild"))
-			{
-				int num = 0;
-				if(wonder.getPhaseState(1) == true)
-					num++;
-				else if(wonder.getPhaseState(2) == true)
-					num++;
-				else if(wonder.getPhaseState(3) == true)
-					num++;
-				Wonder wonderr = p1.getWonder();
-				if(wonderr.getPhaseState(1) == true)
-					num++;
-				else if(wonderr.getPhaseState(2) == true)
-					num++;
-				else if(wonderr.getPhaseState(3) == true)
-					num++;
-				Wonder wonderrr = p2.getWonder();
-				if(wonderrr.getPhaseState(1) == true)
-					num++;
-				else if(wonderrr.getPhaseState(2) == true)
-					num++;
-				else if(wonderrr.getPhaseState(3) == true)
-					num++;
-				addVP(num);
-			}
+//			else if(c.getName().equals("Workers Guild"))
+//			{
+//				int num = p1.getBrownNum() + p2.getBrownNum();
+//				addVP(num);
+//			}
+//			else if(c.getName().equals("Craftsmens Guild"))
+//			{
+//				int num = p1.getSilverNum() + p2.getSilverNum();
+//				addVP(num * 2);
+//			}
+//			else if(c.getName().equals("Traders Guild"))
+//			{
+//				int num = p1.getGoldNum() + p2.getGoldNum();
+//				addVP(num);
+//			}
+//			else if(c.getName().equals("Philosophers Guild"))
+//			{
+//				int num = p1.getGreenNum() + p2.getGreenNum();
+//				addVP(num);
+//			}
+//			else if(c.getName().equals("Spies Guild"))
+//			{
+//				int num = p1.getRedNum() + p2.getRedNum();
+//				addVP(num);
+//			}
+//			else if(c.getName().equals("Strategists Guild"))
+//			{
+//				int num = p1.getLosses() + p2.getLosses();
+//				addVP(num);
+//			}
+//			else if(c.getName().equals("Shipowners Guild"))
+//			{
+//				int num = getPurpleNum() + getBrownNum() + getSilverNum();
+//				addVP(num);
+//			}
+//			else if(c.getName().equals("Magistrates Guild"))
+//			{
+//				int num = p1.getBlueNum() + p2.getBlueNum();
+//				addVP(num);
+//			}
+//			else if(c.getName().equals("Builders Guild"))
+//			{
+//				int num = 0;
+//				if(wonder.getPhaseState(1) == true)
+//					num++;
+//				else if(wonder.getPhaseState(2) == true)
+//					num++;
+//				else if(wonder.getPhaseState(3) == true)
+//					num++;
+//				Wonder wonderr = p1.getWonder();
+//				if(wonderr.getPhaseState(1) == true)
+//					num++;
+//				else if(wonderr.getPhaseState(2) == true)
+//					num++;
+//				else if(wonderr.getPhaseState(3) == true)
+//					num++;
+//				Wonder wonderrr = p2.getWonder();
+//				if(wonderrr.getPhaseState(1) == true)
+//					num++;
+//				else if(wonderrr.getPhaseState(2) == true)
+//					num++;
+//				else if(wonderrr.getPhaseState(3) == true)
+//					num++;
+//				addVP(num);
+//			}
 		}
 	}
 	
 	public boolean canBuild(Card card)
 	{
 		ArrayList<String> list = card.getCost();
-		if(check(list) == true)
+		for(String k: card.getFree())
+			for(String c: cards.keySet())
+				if(k.equals(c))
+					return true;
+		if(check(list))
 			return true;
-		else
-			return false;
+		return false;
 	}
 	public TreeMap<String,Integer> getResources()
 	{
@@ -275,6 +278,11 @@ public class Player {
 		//check through normal resources
 		if(cost.size() == 1 && cost.get(0).equals(" "))
 			return true;
+		if(cost.size() == 1 && cost.get(0).equals("coin"))
+			if(coins-1 >= 0)
+				return true;
+			else
+				return false;
 		TreeMap<String, Integer> res = new TreeMap<String, Integer>();
 		for(String k: resources.keySet())
 			res.put(k, resources.get(k));
@@ -481,7 +489,67 @@ public class Player {
 	public int getWP() { return warPoints; }
 	public Wonder getWonder() { return wonder; }
 	
-	public boolean canTrade(Player left, Player right, ArrayList<String> cost)
+	public boolean canBuildWithTrade(Player left, Player right, ArrayList<String> cost) {
+		//check through normal resources
+		if(cost.size() == 1 && cost.get(0).equals(" "))
+			return true;
+		if(cost.size() == 1 && cost.get(0).equals("coin"))
+			if(coins-1 >= 0)
+				return true;
+			else
+				return false;
+		TreeMap<String, Integer> res = new TreeMap<String, Integer>();
+		for(String k: resources.keySet())
+			res.put(k, resources.get(k));
+		for(int i = cost.size()-1; i >= 0; i--) {
+			String resource = cost.get(i);
+			if(res.containsKey(resource)) {
+				int numRes = res.get(cost.get(i))-1;
+				cost.remove(i);
+				if(numRes == 0)
+					res.remove(resource);
+				else
+					res.put(resource, numRes);
+			}
+		}
+		//check through choice resources;
+		if(cost.size() > choiceRes.size())
+			return false;
+		else if(cost.size() > 0) {
+			//ArrayList<String> c = new ArrayList<String>();
+			ArrayList<String> strCombos = new ArrayList<>();
+			ArrayList<ArrayList<String>> combinations = new ArrayList<>();
+			createCombo(choiceRes, strCombos, 0, "");
+			String[] a;
+			for(String k: strCombos) {
+				ArrayList<String> temp = new ArrayList<>();
+				a = k.split(";");
+				for(int i = 1; i < a.length; i++)
+					temp.add(a[i]);
+				combinations.add(temp);
+			}
+			ArrayList<String> small = new ArrayList<>(cost);
+			if(combinations.contains(cost))				
+				return true;
+			else {
+				for(ArrayList<String> k: combinations) {
+					for(int i = cost.size()-1; i >= 0; i--)
+						if(k.contains(cost.get(i)))
+							k.remove(i);
+					if(k.size() == 0)
+						return true;
+					else if(k.size() < small.size())
+						small = k;
+				}
+				cost = small;
+			}
+			return canTrade(left, right, cost);
+		}
+		else
+			return true;
+	}
+	
+	private boolean canTrade(Player left, Player right, ArrayList<String> cost)
 	{
 		String[] brown = {"wood", "stone", "ore", "clay"};
 		ArrayList<String> brownList = (ArrayList<String>) Arrays.asList(brown);
@@ -612,6 +680,18 @@ public class Player {
 
 	public void trade(Player left, Player right, ArrayList<String> cost)
 	{
+		
+		if(cost.size() == 1 && cost.get(0).equals(" "))
+			return;
+		if(cost.size() == 1 && cost.get(0).equals("coin"))
+			if(coins-1 >= 0) {
+				coins--;
+				return;
+			}
+			else {
+				return;
+			}
+		
 		String[] brown = {"wood", "stone", "ore", "clay"};
 		ArrayList<String> brownList = (ArrayList<String>) Arrays.asList(brown);
 		
