@@ -1,12 +1,13 @@
+import java.util.LinkedHashMap;
 
 public class Olympia extends Wonder {
-	private String name, resource;
-
+	
+	private LinkedHashMap<Integer, Boolean> builtFree;
 	public Olympia() {
 		super("Olympia", "wood");
-		name = "Olympia";
-		resource = "wood";
-
+		builtFree = new LinkedHashMap<>();
+		for(int i = 1; i < 4; i++)
+			builtFree.put(i, true);
 	}
 
 	public String getResWonder(int stage) {
@@ -17,12 +18,15 @@ public class Olympia extends Wonder {
 		else
 			return "ore ore";
 	}
-
-	public String getPhase2() {
-		return "once per age, build structure of choice for free";
+	
+	public void makePhase2(int age) {
+		for(int i = age; i < 4; i++)
+			builtFree.put(i, false);
 	}
-
-	public String getName() {
-		return name;
+	public void use(int age) {
+		builtFree.put(age, true);
+	}
+	public boolean hasUsedFree(int age) {
+		return builtFree.get(age);
 	}
 }
