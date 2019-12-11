@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import java.util.TreeMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
@@ -10,6 +8,7 @@ import static java.lang.System.*;
 
 public class Player {
 	
+	private Player left, right;
 	private LinkedHashMap<String, ArrayList<Card>> cards;
 	private Wonder wonder;
 	private int coins;
@@ -44,21 +43,27 @@ public class Player {
 		resources = new TreeMap<String,Integer>();
 		choiceRes = new ArrayList<>();
 		sciences = new TreeMap<String,Integer>();
+		sciences.put("math" , 0);
+		sciences.put("literature", 0);
+		sciences.put("engineering", 0);
 	}
 	
 	public TreeMap<String, Integer> getSciences() { return sciences; }
-	
+	public Player getLeft() { return left; }
+	public Player getRight() { return right; }
+	public void setLeft(Player p) { left = p; }
+	public void setRight(Player p) { right = p; }
 	//sets war points, takes in age and if won
-	public void wageWar(int age, Player p)
+	public int wageWar(int age)
 	{
-		if(p.getMP() > mp) {
+		if(left.getMP() > mp) {
 			loss++;
 			warPoints-=1;
-			p.setWar(age, true);
-			return;
+			left.setWar(age, true);
+			return left.getPlayerNum();
 		}
-		else if(p.getMP() == mp)
-			return;
+		else if(left.getMP() == mp)
+			return 0;
 		else if(age == 1)
 			warPoints += 1;
 		else if(age == 2)
@@ -66,7 +71,8 @@ public class Player {
 		else
 			warPoints += 5;
 		wins++;
-		p.setWar(age, false);
+		left.setWar(age, false);
+		return playerNum;
 	}
 	
 	private void setWar(int age, boolean win) {
@@ -120,10 +126,7 @@ public class Player {
 		{
 			GreenCard c = (GreenCard) card;
 			String science = c.getScience();
-			if(cards.containsKey(science))
-				sciences.put(science, (sciences.get(science) + 1));
-			else
-				sciences.put(science, 1);
+			sciences.put(science, (sciences.get(science) + 1));
 		}
 		else if(color.equals("blue"))
 		{
@@ -140,17 +143,7 @@ public class Player {
 				brownLeft = true;
 			else if(c.getEffect().equals("both 1"))
 				hasMarket = true;
-			else if(c.getEffect().equals("loom glass papyrus"))
-			{
-				String[] array = c.getEffect().split(" ");
-				ArrayList<String> re = new ArrayList<String>();
-				for(int i = 0; i < array.length; i++)
-				{
-					re.add(array[i]);
-				}
-				addChoiceRes(re);
-			}
-			else if(c.getEffect().equals("clay stone ore wood"))
+			else if(c.getName().equals("Forum") || c.getName().equals("Caravansery"))
 			{
 				String[] array = c.getEffect().split(" ");
 				ArrayList<String> re = new ArrayList<String>();
@@ -351,6 +344,10 @@ public class Player {
 	public boolean hasCard(Card card)
 	{
 		String cardName = card.getName();
+		return hasCard(cardName);
+	}
+	public boolean hasCard(String cardName)
+	{
 		Set<String> keys = cards.keySet();
 		boolean has = false;
 		for(String key: keys)
@@ -376,6 +373,7 @@ public class Player {
 	public void setWonder(Wonder wonder)
 	{
 		this.wonder = wonder;
+		resources.put(wonder.getResource(), 1);
 	}
 	public void buildWonder()
 	{
@@ -489,7 +487,7 @@ public class Player {
 	public int getWP() { return warPoints; }
 	public Wonder getWonder() { return wonder; }
 	
-	public boolean canBuildWithTrade(Player left, Player right, ArrayList<String> cost) {
+	public boolean canBuildWithTrade(ArrayList<String> cost) {
 		//check through normal resources
 		if(cost.size() == 1 && cost.get(0).equals(" "))
 			return true;
@@ -543,13 +541,13 @@ public class Player {
 				}
 				cost = small;
 			}
-			return canTrade(left, right, cost);
+			return canTrade(cost);
 		}
 		else
 			return true;
 	}
 	
-	private boolean canTrade(Player left, Player right, ArrayList<String> cost)
+	private boolean canTrade(ArrayList<String> cost)
 	{
 		String[] brown = {"wood", "stone", "ore", "clay"};
 		ArrayList<String> brownList = (ArrayList<String>) Arrays.asList(brown);
@@ -678,7 +676,7 @@ public class Player {
 		return false;
 	}
 
-	public void trade(Player left, Player right, ArrayList<String> cost)
+	public void trade(ArrayList<String> cost)
 	{
 		
 		if(cost.size() == 1 && cost.get(0).equals(" "))
@@ -869,4 +867,18 @@ public class Player {
 	public int getBlueNum() { return cards.get("blue").size(); }
 	public void addVP(int num) { vp+= num; }
 	public int getPurpleNum() { return cards.get("purple").size(); }
+	
+	public int score() {
+		int score = 0;
+		score+=vp+mp;
+		score+=(coins/3);
+		//phases accounted for in player
+		
+		int num1 = sciences.get("math");
+		int num2 = sciences.get("literature");
+		int num3 = sciences.get("engineering");
+		score+=(7*Math.min(num1, Math.min(num1, num2)));
+		score+=(Math.pow(num1, 2) + Math.pow(num2, 2) + Math.pow(num3, 2));
+		return score;
+	}
 }
