@@ -26,7 +26,7 @@ public class Player {
 	
 	private boolean brownLeft = false;
 	private boolean brownRight = false;
-	private boolean hasMarket = false; //what is this stuff
+	private boolean hasMarket = false;
 	
 	
 	public Player(int num) {
@@ -91,7 +91,7 @@ public class Player {
 		}
 	}
 	
-	public void addCard(Card card, Player p1, Player p2)
+	public void addCard(Card card)
 	{
 		String color = card.getColor();
 		ArrayList<Card> crd = cards.get(color);
@@ -153,100 +153,18 @@ public class Player {
 				}
 				choiceRes.add(re);
 			}
-			else if(c.getEffect().equals("Brown 1"))
+			else if(c.getName().equals("Haven"))
+				coins += getBrownNum();
+			else if(c.getName().equals("Lighthouse"))
+				coins += getGoldNum();
+			else if(c.getName().equals("Arena"))
 			{
-				int num = getBrownNum() + p1.getBrownNum() + p2.getBrownNum();
-				addCoins(num);
+				int numPhases = 0;
+				for(int i = 1; i < 4; i++)
+					if(wonder.getPhaseState(i))
+						numPhases++;
+				coins += (3 * numPhases);
 			}
-			else if(c.getEffect().equals("1 brown"))
-			{
-				int num = getBrownNum();
-				coins += num;
-				vp += num;
-			}
-			else if(c.getEffect().equals("1 gold"))
-			{
-				int num = getGoldNum();
-				coins += num;
-				vp += num;
-			}
-			else if(c.getEffect().equals("3 1 wonder"))
-			{
-				int num = 0;
-				if(wonder.getPhaseState(1) == true)
-					num++;
-				else if(wonder.getPhaseState(2) == true)
-					num++;
-				else if(wonder.getPhaseState(3) == true)
-					num++;
-				coins += (3 * num);
-				vp += num;
-			}
-//			else if(c.getName().equals("Workers Guild"))
-//			{
-//				int num = p1.getBrownNum() + p2.getBrownNum();
-//				addVP(num);
-//			}
-//			else if(c.getName().equals("Craftsmens Guild"))
-//			{
-//				int num = p1.getSilverNum() + p2.getSilverNum();
-//				addVP(num * 2);
-//			}
-//			else if(c.getName().equals("Traders Guild"))
-//			{
-//				int num = p1.getGoldNum() + p2.getGoldNum();
-//				addVP(num);
-//			}
-//			else if(c.getName().equals("Philosophers Guild"))
-//			{
-//				int num = p1.getGreenNum() + p2.getGreenNum();
-//				addVP(num);
-//			}
-//			else if(c.getName().equals("Spies Guild"))
-//			{
-//				int num = p1.getRedNum() + p2.getRedNum();
-//				addVP(num);
-//			}
-//			else if(c.getName().equals("Strategists Guild"))
-//			{
-//				int num = p1.getLosses() + p2.getLosses();
-//				addVP(num);
-//			}
-//			else if(c.getName().equals("Shipowners Guild"))
-//			{
-//				int num = getPurpleNum() + getBrownNum() + getSilverNum();
-//				addVP(num);
-//			}
-//			else if(c.getName().equals("Magistrates Guild"))
-//			{
-//				int num = p1.getBlueNum() + p2.getBlueNum();
-//				addVP(num);
-//			}
-//			else if(c.getName().equals("Builders Guild"))
-//			{
-//				int num = 0;
-//				if(wonder.getPhaseState(1) == true)
-//					num++;
-//				else if(wonder.getPhaseState(2) == true)
-//					num++;
-//				else if(wonder.getPhaseState(3) == true)
-//					num++;
-//				Wonder wonderr = p1.getWonder();
-//				if(wonderr.getPhaseState(1) == true)
-//					num++;
-//				else if(wonderr.getPhaseState(2) == true)
-//					num++;
-//				else if(wonderr.getPhaseState(3) == true)
-//					num++;
-//				Wonder wonderrr = p2.getWonder();
-//				if(wonderrr.getPhaseState(1) == true)
-//					num++;
-//				else if(wonderrr.getPhaseState(2) == true)
-//					num++;
-//				else if(wonderrr.getPhaseState(3) == true)
-//					num++;
-//				addVP(num);
-//			}
 		}
 	}
 	
@@ -874,11 +792,75 @@ public class Player {
 		score+=(coins/3);
 		//phases accounted for in player
 		
+
 		int num1 = sciences.get("math");
 		int num2 = sciences.get("literature");
 		int num3 = sciences.get("engineering");
+		if(hasCard("Scientists Guild")) {
+			if(Math.min(num1, Math.min(num2, num3)) == num1)
+				num1++;
+			else if(Math.min(num1, Math.min(num2, num3)) == num2)
+				num2++;
+			else
+				num3++;
+		}
 		score+=(7*Math.min(num1, Math.min(num1, num2)));
 		score+=(Math.pow(num1, 2) + Math.pow(num2, 2) + Math.pow(num3, 2));
+		
+		if(hasCard("Haven"))
+			score+=getBrownNum();
+		if(hasCard("LightHouse"))
+			score+=getGoldNum();
+		if(hasCard("Arena")) {
+			int numPhases = 0;
+			for(int i = 1; i < 4; i++)
+				if(wonder.getPhaseState(i))
+					numPhases++;
+			score+=numPhases;
+		}
+		if(hasCard("Workers Guild")) {
+			score+=left.getBrownNum();
+			score+=right.getBrownNum();
+		}
+		if(hasCard("Craftsmens Guild")) {
+			score+=left.getSilverNum();
+			score+=right.getSilverNum();
+		}
+		if(hasCard("Traders Guild")) {
+			score+=left.getGoldNum();
+			score+=right.getGoldNum();
+		}
+		if(hasCard("Philosophers Guild")) {
+			score+=left.getGreenNum();
+			score+=right.getGreenNum();
+		}
+		if(hasCard("Spies Guild")) {
+			score+=left.getRedNum();
+			score+=right.getRedNum();
+		}
+		if(hasCard("Strategists Guild")) {
+			score+=left.getLosses();
+			score+=right.getLosses();
+		}
+		if(hasCard("Shipowners Guild"))
+			score+=getBrownNum()+getSilverNum()+getPurpleNum();
+		if(hasCard("Magistrates Guild")) {
+			score+=left.getBlueNum();
+			score+=right.getBlueNum();
+		}
+		if(hasCard("Builders Guild")) {
+			int numPhases = 0;
+			for(int i = 1; i < 4; i++)
+				if(wonder.getPhaseState(i))
+					numPhases++;
+			for(int i = 1; i < 4; i++)
+				if(left.getWonder().getPhaseState(i))
+					numPhases++;
+			for(int i = 1; i < 4; i++)
+				if(right.getWonder().getPhaseState(i))
+					numPhases++;
+			score+=numPhases;
+		}
 		return score;
 	}
 }
