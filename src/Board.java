@@ -9,12 +9,15 @@ import static java.lang.System.*;
 
 public class Board {
 	
-	private ArrayList<Card> deck = new ArrayList<>();
+	private ArrayList<Card> deck;
+	private ArrayList<Card> discard;
 	private MainFrame mf;
 	private GameState gs;
 	private boolean vineyard;
 	
 	public Board() {
+		deck = new ArrayList<>();
+		discard = new ArrayList<>();
 		gs = new GameState();
 		nextAge();
 	}
@@ -102,6 +105,7 @@ public class Board {
 	
 	public void discard(Card c) {
 		gs.getCurrentPlayer().addCoins(3);
+		discard.add(c);
 		gs.getCurrentHand().remove(c);
 	}
 	public void build(Card c) {
@@ -116,7 +120,10 @@ public class Board {
 		if(gs.getCurrentPlayer().canBuildWonder()) {
 			LinkedHashMap<Player, ArrayList<Card>> ph = gs.getPlayerHands();
 			ph.remove(c);
-			gs.getCurrentPlayer().buildWonder();
+			if(gs.getCurrentPlayer().getWonder().getName().equals("Halikarnassos"))
+				gs.getCurrentPlayer().addCard(gs.getCurrentPlayer().buildWonder(discard));
+			else
+				gs.getCurrentPlayer().buildWonder();
 			gs.updateState(ph);
 			return true;
 		}
@@ -179,6 +186,36 @@ public class Board {
 				System.out.println("These are your cards: " + gs.getCurrentPlayer().getCards());
 				return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
 			}
+			else if(gs.getCurrentPlayer().canBuildWithTrade(bc.getCost()) && gs.getCurrentPlayer().getWonder().getName().equals("Olympia")) {
+				if(!((Olympia)gs.getCurrentPlayer().getWonder()).hasUsedFree(gs.getAge())) {
+					out.println("You can build this card either by trading or with Phase 2 of your Wonder (Build a card every age for free).)");
+					out.println("Would you like to trade or use your second wonder phase? (Trade/Wonder)");
+					String c2 = input.next();
+					if(c2.equalsIgnoreCase("wonder")) {
+						build(bc);
+						return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
+					}
+					else if(c2.equalsIgnoreCase("trade")){
+						gs.getCurrentPlayer().trade(bc.getCost());
+						build(bc);
+						return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
+					}
+					else {
+						out.println("Invlaid input");
+						runTurn(input);
+					}
+				}
+				else {
+					out.println("In order to build this you must trade with other players. Would you like to Trade? (Y/N)");
+					if(input.next().equalsIgnoreCase("y")) {
+						gs.getCurrentPlayer().trade(bc.getCost());
+						build(bc);
+						return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
+					}
+					else
+						runTurn(input);
+				}
+			}
 			else if(gs.getCurrentPlayer().canBuildWithTrade(bc.getCost())) {
 				out.println("In order to build this you must trade with other players. Would you like to Trade? (Y/N)");
 				if(input.next().equalsIgnoreCase("y")) {
@@ -187,7 +224,7 @@ public class Board {
 					return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
 				}
 				else
-					runTurn(input);				
+					runTurn(input);
 			}
 			else {
 				out.println("You cannot do this, choose another option.");
@@ -268,6 +305,9 @@ public class Board {
 					out.println(k);
 				passCards();
 			}
+			for(Player p: gs.getPlayerHands().keySet()) //adding last remaining card to discard pile
+				discard.add(gs.getPlayerHands().get(p).get(0));
+			
 			for(Player p: gs.getPlayers()) {
 				out.println("Player " + p.getPlayerNum() + " wages war on player " + gs.getLeftPlayer().getPlayerNum());
 				int result = p.wageWar(gs.getAge());
@@ -308,6 +348,6 @@ public class Board {
 			out.println("Player 2 wins!");
 		else
 			out.println("Player 3 wins!");
-		
+		gs.setEnd(true);
 	}
 }
