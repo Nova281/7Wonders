@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.TreeMap;
 import java.util.LinkedHashMap;
+import java.util.Scanner;
 import java.util.Set;
 import static java.lang.System.*;
 
@@ -174,7 +175,7 @@ public class Player {
 		for(String k: card.getFree())
 			for(String c: cards.keySet())
 				if(k.equals(c))
-					return true;
+					return true;			
 		if(check(list))
 			return true;
 		return false;
@@ -317,22 +318,15 @@ public class Player {
 		}
 		else if(wonder.getName().equals("Babylon"))
 		{
-			Babylon b = (Babylon)wonder;
-			/*if(stage == 2)
-			{
-				ArrayList<String> choi = b.runPhase2();
-				addChoiceRes(choi);
-				wonder.setPhase(stage);
-			}*/
+			//coded in score
+			wonder.setPhase(stage);
 		}
 		else if(wonder.getName().equals("Ephesus"))
 		{
 			Ephesus e = (Ephesus)wonder;
-			runWonder(stage);
 			if(stage == 2)
 			{
-				int coi = e.runPhase2();
-				addCoins(coi);
+				addCoins(e.runPhase2());
 				wonder.setPhase(stage);
 			}
 		}
@@ -344,36 +338,35 @@ public class Player {
 				vp += g.runPhase2();
 				wonder.setPhase(stage);
 			}
-		}
-		else if(wonder.getName().equals("Halicarnassus"))
-		{
-			Halikarnassos h = (Halikarnassos)wonder;
-			/*if(stage == 2)
-			{
-				ArrayList<String> choi = h.runPhase2();
-				addChoiceRes(choi);
-				wonder.setPhase(stage);
-			}*/
-		}
-		else if(wonder.getName().equals("Olympia"))
-		{
-			Olympia o = (Olympia)wonder;
-			/*if(stage == 2)
-			{
-				ArrayList<String> choi = o.runPhase2();
-				addChoiceRes(choi);
-				wonder.setPhase(stage);
-			}*/
-		}
+		} //Halikarnassos is a separate method, Olympia is coded in board
 		else if(wonder.getName().equals("Rhodos"))
 		{
-			Rhodos alex = (Rhodos)wonder;
+			Rhodos r = (Rhodos)wonder;
 			if(stage == 2)
 			{
-				mp += alex.runPhase2();
+				mp += r.runPhase2();
 				wonder.setPhase(stage);
 			}
 		}
+	}
+	
+	public Card buildWonder(ArrayList<Card> discard) {
+		Scanner input = new Scanner(System.in);
+		int stage = 0;
+		if(wonder.getPhaseState(1) == false)
+			stage = 1;
+		else if(wonder.getPhaseState(2) == false)
+			stage = 2;
+		else if(wonder.getPhaseState(3) == false)
+			stage = 3;
+		runWonder(stage);
+		LinkedHashMap<Integer, Card> discardMap = new LinkedHashMap<>();
+		for(int i = 0; i < discard.size(); i++)
+			discardMap.put(i, discard.get(i));
+		out.println("Discard pile: " + discard);
+		out.println("Which card would you like? (0, 1, 2...)");
+		out.println("You chose " + discard.get(input.nextInt()));
+		return discard.get(input.nextInt());
 	}
 	private void runWonder(int stage)
 	{
@@ -790,13 +783,19 @@ public class Player {
 		int score = 0;
 		score+=vp+mp;
 		score+=(coins/3);
-		//phases accounted for in player
-		
 
 		int num1 = sciences.get("math");
 		int num2 = sciences.get("literature");
 		int num3 = sciences.get("engineering");
 		if(hasCard("Scientists Guild")) {
+			if(Math.min(num1, Math.min(num2, num3)) == num1)
+				num1++;
+			else if(Math.min(num1, Math.min(num2, num3)) == num2)
+				num2++;
+			else
+				num3++;
+		}
+		if(wonder.getName().equals("Babylon") && wonder.getPhaseState(2)) {
 			if(Math.min(num1, Math.min(num2, num3)) == num1)
 				num1++;
 			else if(Math.min(num1, Math.min(num2, num3)) == num2)
