@@ -2,29 +2,22 @@
 import java.awt.Dimension;
 import java.awt.FontFormatException;
 import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import javax.swing.JFrame;
 
-public class MainFrame extends JFrame implements MouseListener {
+public class MainFrame extends JFrame {
 	private GameState gs;
 	private GamePanel panel;
 	private ArrayList<Player> playerList;
 
 	public MainFrame(String title, GameState gs) throws IOException, FontFormatException {
 		super(title);
-		//addMouseListener(new MouseAdapter());
 		this.gs = gs;
 		playerList = new ArrayList<>();
 		Player[] playerAr = gs.getPlayers();
-		for (int i = 0; i < playerAr.length; i++)
-		{
+		for (int i = 0; i < playerAr.length; i++) {
 			playerList.add(playerAr[i]);
 		}
 		setupGraphics(playerList);
@@ -36,14 +29,13 @@ public class MainFrame extends JFrame implements MouseListener {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize.width, screenSize.height);
 
-		panel = new GamePanel(playerList2);
+		panel = new GamePanel(gs);
 
 		panel.setWonderImages(playerList2);
-		panel.setWonderEffects();
-		panel.updateCurrentBoard(1);
-		panel.updateCurrentAge(1/*gs.getAge()*/);
+		panel.updateCurrentBoard(gs.getCurrentPlayer());
+		panel.updateCurrentAge(1/* gs.getAge() */);
 		panel.updateCoins();
-		panel.updatePlayerHand(gs.getHand(1));
+		panel.updatePlayerHand(gs.getCurrentHand());
 		add(panel);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(true);
@@ -51,8 +43,8 @@ public class MainFrame extends JFrame implements MouseListener {
 		setVisible(true);
 	}
 
-	public void updateCurrentPlayer(int i) throws IOException {
-		panel.updateCurrentBoard(i);
+	public void updateCurrentPlayer(Player p) throws IOException {
+		panel.updateCurrentBoard(p);
 		repaint();
 	}
 
@@ -69,34 +61,6 @@ public class MainFrame extends JFrame implements MouseListener {
 	public void updatePlayerCards(ArrayList<Card> cardList) {
 		panel.updatePlayerHand(cardList);
 		repaint();
-	}
-
-	public void mouseClicked(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
