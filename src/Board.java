@@ -12,16 +12,10 @@ public class Board {
 	private ArrayList<Card> deck = new ArrayList<>();
 	private MainFrame mf;
 	private GameState gs;
+	private boolean vineyard;
 	
 	public Board() {
 		gs = new GameState();
-//		try {
-//			mf = new MainFrame("7 Wonders");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (FontFormatException e) {
-//			e.printStackTrace();
-//		}
 		nextAge();
 	}
 	
@@ -111,9 +105,12 @@ public class Board {
 		gs.getCurrentHand().remove(c);
 	}
 	public void build(Card c) {
-		gs.getCurrentPlayer().addCard(c, gs.getLeftPlayer(), gs.getRightPlayer());
-		gs.getPlayerHands().remove(c);
-
+		gs.getCurrentPlayer().addCard(c);
+		LinkedHashMap<Player, ArrayList<Card>> hands = gs.getPlayerHands();
+		hands.remove(c);
+		gs.updateState(hands);
+		if(c.getName().equals("Vineyard"))
+				vineyard = true;
 	}
 	public boolean sacrifice(Card c) {
 		if(gs.getCurrentPlayer().canBuildWonder()) {
@@ -156,35 +153,41 @@ public class Board {
 		Player p1 = gs.getPlayer(1);
 		Player p2 = gs.getPlayer(2);
 		Player p3 = gs.getPlayer(3);
-		p1.wageWar(age, p2);
-		p2.wageWar(age, p3);
-		p3.wageWar(age, p1);
+		p1.wageWar(age);
+		p2.wageWar(age);
+		p3.wageWar(age);
 	}
 	
-	public void runTurn(Scanner input) {
-		Player cp = gs.getCurrentPlayer();
+	public String runTurn(Scanner input) {
 		ArrayList<Card> ch = gs.getCurrentHand();
+		out.println("Player " + gs.getCurrentPlayerNum() + "'s turn");
 		out.println("----------------------");
 		out.println("This is your current hand:\n" + ch);
-		out.println("These are your cards:\n" + cp.getCards());
+		out.println("----------------------");
+		out.println("These are your cards:\n" + gs.getCurrentPlayer().getCards());
+		out.println("These are your resources:\n" + gs.getCurrentPlayer().getResources());
+		out.println("These are your choice resources:\n" + gs.getCurrentPlayer().getChoiceRes());
+		out.println("You have " + gs.getCurrentPlayer().getCoins() + " coins.");
 		out.println("----------------------");
 		out.println("What would you like to do? (Enter number)\n1. Build\n2. Sacrifice\n3. Discard");
 		int choice = input.nextInt();
 		if(choice == 1) {
 			out.println("Which card would you like to build? (Enter number: 0,1,2...)");
-			int bc = input.nextInt();
-			if(cp.canBuild(ch.get(bc))) {
-				build(ch.get(bc));
-				System.out.println("These are your cards: " + cp.getCards());
+			Card bc = ch.get(input.nextInt());
+			if(gs.getCurrentPlayer().canBuild(bc)) {
+				build(bc);
+				System.out.println("These are your cards: " + gs.getCurrentPlayer().getCards());
+				return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
 			}
-			else if(cp.canBuildWithTrade(gs.getLeftPlayer(), gs.getRightPlayer(), ch.get(bc).getCost())) {
+			else if(gs.getCurrentPlayer().canBuildWithTrade(bc.getCost())) {
 				out.println("In order to build this you must trade with other players. Would you like to Trade? (Y/N)");
 				if(input.next().equalsIgnoreCase("y")) {
-					cp.trade(gs.getLeftPlayer(), gs.getRightPlayer(), ch.get(bc).getCost());
-					build(ch.get(bc));
+					gs.getCurrentPlayer().trade(bc.getCost());
+					build(bc);
+					return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
 				}
 				else
-					runTurn(input);					
+					runTurn(input);				
 			}
 			else {
 				out.println("You cannot do this, choose another option.");
@@ -196,16 +199,24 @@ public class Board {
 			int sc = input.nextInt();
 			if(sacrifice(ch.get(sc))) {
 				String built = "";
-				if(cp.getWonder().getPhaseState(1))
+				int phase = 0;
+				if(gs.getCurrentPlayer().getWonder().getPhaseState(1)) {
 					built+="Phase 1 ";
-				if(cp.getWonder().getPhaseState(2))
+					phase = 1;
+				}
+				if(gs.getCurrentPlayer().getWonder().getPhaseState(2)) {
 					built+=", Phase 2 ";
-				if(cp.getWonder().getPhaseState(3))
+					phase = 2;
+				}
+				if(gs.getCurrentPlayer().getWonder().getPhaseState(3)) {
 					built+=", and Phase 3";
+					phase = 3;
+				}
 				if(built.length() == 0)
 					built = "nothing";
 				out.println("You have built " + built + ".");
-				out.println(cp.getWonder().getPhaseState(1));
+				out.println(gs.getCurrentPlayer().getWonder().getPhaseState(1));
+				return "Player " + gs.getCurrentPlayerNum() + " sacrificed a card to build phase" + phase;
 			}
 			else {
 				out.println("You cannot do this, choose another option.");
@@ -217,11 +228,20 @@ public class Board {
 			out.println("Which card would you like to discard for 3 coins? (Enter number: 0,1,2...)");
 			int dc = input.nextInt();
 			discard(ch.get(dc));
-			out.println("You now have " + cp.getCoins() + " coins.");
+			out.println("You now have " + gs.getCurrentPlayer().getCoins() + " coins.");
+			return "Player " + gs.getCurrentPlayerNum() + " discarded a card and got 3 coins";
 		}
+		else {
+			out.println("Invalid number.");
+			runTurn(input);
+		}
+		return null;
 	}
 	public void run() {
 		Scanner input = new Scanner(System.in);
+		out.println("Player 1's wonder: " + gs.getPlayer(1).getWonder().getName());
+		out.println("Player 2's wonder: " + gs.getPlayer(2).getWonder().getName());
+		out.println("Player 3's wonder: " + gs.getPlayer(3).getWonder().getName());
 		for(int x = 1; x < 4; x++) {
 			try {
 				createDeck();
@@ -229,23 +249,39 @@ public class Board {
 				e.printStackTrace();
 			}
 			deal();
-			out.println("Player 1's wonder: " + gs.getPlayer(1).getWonder().getName());
-			out.println("Player 2's wonder: " + gs.getPlayer(2).getWonder().getName());
-			out.println("Player 3's wonder: " + gs.getPlayer(3).getWonder().getName());
-//			out.println("Age" + gs.getAge());
-//			printPlayerHand(1);
-//			printPlayerHand(2);
-//			printPlayerHand(3);
 			for(int i = 0; i < 6; i++) {
+				String[] effects = new String[3];
 				for(int j = 1; j < 4; j++) {
 					out.println("----------------------");
-					out.println("Player " + j + "'s turn");
-					runTurn(input);
+					effects[j-1] = runTurn(input);
 					gs.nextTurn();
 				}
+				if(vineyard) {
+					for(Player p: gs.getPlayers()) {
+						if(p.hasCard("Vineyard")) {
+							p.addCoins(p.getLeft().getBrownNum());
+							p.addCoins(p.getRight().getBrownNum());
+						}
+					}
+				}
+				for(String k: effects)
+					out.println(k);
 				passCards();
 			}
-			wageWar();
+			for(Player p: gs.getPlayers()) {
+				out.println("Player " + p.getPlayerNum() + " wages war on player " + gs.getLeftPlayer().getPlayerNum());
+				int result = p.wageWar(gs.getAge());
+				if(result == 0)
+					out.println("No one won");
+				else {
+					String mp = "5";
+					if(gs.getAge() == 1)
+						mp = "1";
+					else if(gs.getAge() == 2)
+						mp = "3";
+					out.println(result + " won! Gained " + mp + " military points.");
+				}
+			}
 			nextAge();
 		}
 		LinkedHashMap<Integer, String> scores = new LinkedHashMap<>();
