@@ -117,40 +117,35 @@ public class MainFrame extends JFrame implements MouseListener {
 				int cardIndex = gs.getCardIndex();
 				gs.setClickCard(true);
 				repaint();
+				if (gs.getCurrentPlayer().canBuild(gs.getCurrentHand().get(cardIndex)))
+					gs.getCurrentPlayer().addCard(gs.getCurrentHand().remove(cardIndex));
+				/*
+				 * if ((x >= gs.getXCoords().get(cardIndex) + 68 && x <=
+				 * gs.getXCoords().get(cardIndex) + 128) && (y >= 800 && y <= 846)) { {
+				 * 
+				 * // gs.passCards(); } if ((x >= gs.getXCoords().get(cardIndex) + 68 && x <=
+				 * gs.getXCoords().get(cardIndex) + 128) && (y >= 900 && y <= 946)) { if
+				 * (gs.getCurrentPlayer().canBuild(gs.getCurrentHand().get(cardIndex))) {
+				 * gs.getCurrentPlayer().addCard(gs.getCurrentHand().remove(cardIndex)); //
+				 * gs.passCards(); } }
+				 * 
+				 * if ((x >= gs.getXCoords().get(cardIndex) + 78 && x <=
+				 * gs.getXCoords().get(cardIndex) + 113) && (y >= 1000 && y <= 1042)) {
+				 * gs.getCurrentPlayer().addCoins(3); gs.getCurrentHand().remove(cardIndex); //
+				 * gs.passCards(); }
+				 */
 
-				if ((x >= gs.getXCoords().get(cardIndex) + 68 && x <= gs.getXCoords().get(cardIndex) + 128)
-						&& (y >= 800 && y <= 846)) {
-					{
-						gs.getCurrentPlayer().addCard(gs.getCurrentHand().remove(cardIndex));
-						// gs.passCards();
-					}
-					if ((x >= gs.getXCoords().get(cardIndex) + 68 && x <= gs.getXCoords().get(cardIndex) + 128)
-							&& (y >= 900 && y <= 946)) {
-						if (gs.getCurrentPlayer().canBuild(gs.getCurrentHand().get(cardIndex))) {
-							gs.getCurrentPlayer().addCard(gs.getCurrentHand().remove(cardIndex));
-							gs.getCurrentHand().remove(cardIndex);
-							// gs.passCards();
-						}
-					}
+				repaint();
 
-					if ((x >= gs.getXCoords().get(cardIndex) + 78 && x <= gs.getXCoords().get(cardIndex) + 113)
-							&& (y >= 1000 && y <= 1042)) {
-						gs.getCurrentPlayer().addCoins(3);
-						gs.getCurrentHand().remove(cardIndex);
-						// gs.passCards();
-					}
-					gs.nextTurn();
-					// updatePlayerHand(gs.getCurrentHand());
-					try {
-						updateCurrentPlayer(gs.getCurrentPlayer());
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					repaint();
-
-				}
 			}
+		}
+		gs.nextTurn();
+		// updatePlayerHand(gs.getCurrentHand());
+		try {
+			updateCurrentPlayer(gs.getCurrentPlayer());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		gs.setClickCard(false);
 		// gs.getXCoords().clear();
