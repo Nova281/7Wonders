@@ -48,22 +48,18 @@ public class MainFrame extends JFrame {
 
 	public void updateCurrentPlayer(Player p) throws IOException {
 		panel.updateCurrentBoard(p);
-		repaint();
 	}
 
 	public void updatePlayerCoins() {
 		panel.updateCoins();
-		repaint();
 	}
 
 	public void updateCurrentAge(int i) throws IOException {
 		panel.updateCurrentAge(i);
-		repaint();
 	}
 
 	public void updatePlayerCards() {
 		panel.updatePlayerHand();
-		repaint();
 	}
 
 }

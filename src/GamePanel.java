@@ -69,15 +69,16 @@ public class GamePanel extends JPanel implements MouseListener {
 		font = Font.createFont(Font.TRUETYPE_FONT, is);
 		font = font.deriveFont(Font.BOLD, 20);
 
-		//endScreen = ImageIO.read(getClass().getResource("/wonder_boards/endscreen.png"));
-		//scroll = ImageIO.read(getClass().getResource("/tokens/scroll.png"));
+		// endScreen =
+		// ImageIO.read(getClass().getResource("/wonder_boards/endscreen.png"));
+		// scroll = ImageIO.read(getClass().getResource("/tokens/scroll.png"));
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (gs.ifEnd() == true) {
-			//g.drawImage(endScreen, 0, 0, 1920, 1080, this);
-			//g.drawImage(scroll, width / 2, height / 2, this);
+			// g.drawImage(endScreen, 0, 0, 1920, 1080, this);
+			// g.drawImage(scroll, width / 2, height / 2, this);
 
 		}
 		// current Player
@@ -187,8 +188,9 @@ public class GamePanel extends JPanel implements MouseListener {
 		int count = 0;
 		for (Card c : tempHand) {
 			try {
-				g.drawImage(ImageIO.read(getClass().getResource("/cards/" + c.getName() + ".png")), 300 + count, 780,
-						this);
+				System.out.println(c.getName());
+				g.drawImage(ImageIO.read(getClass().getResource("/cards/" + c.getName().toLowerCase() + ".png")),
+						300 + count, 780, this);
 				xCoord.add(300 + count);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -343,7 +345,9 @@ public class GamePanel extends JPanel implements MouseListener {
 				repaint();
 
 				if ((x >= xCoord.get(cardIndex) + 68 && x <= xCoord.get(cardIndex) + 128) && (y >= 800 && y <= 846)) {
-					gs.getCurrentPlayer().addCard(tempHand.remove(cardIndex));
+					{
+						gs.getCurrentPlayer().addCard(tempHand.remove(cardIndex));
+					}
 					if ((x >= xCoord.get(cardIndex) + 68 && x <= xCoord.get(cardIndex) + 128)
 							&& (y >= 900 && y <= 946)) {
 						if (gs.getCurrentPlayer().canBuild(tempHand.remove(cardIndex))) {

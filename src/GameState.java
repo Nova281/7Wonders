@@ -7,12 +7,13 @@ public class GameState {
 	private Player currentPlayer;
 	private LinkedHashMap<Player, ArrayList<Card>> playerHands;
 	private Player[] players;
-	private int playerNum;
+	private int playerNum, turn;
 	private boolean endOfGame;
 
 	public GameState() {
 		setEnd(false);
-		age = 1;
+		age = 0;
+		turn = 1;
 		players = new Player[3];
 		playerHands = new LinkedHashMap<Player, ArrayList<Card>>();
 		// assigns wonder
@@ -31,9 +32,10 @@ public class GameState {
 		wonderArr.add(r);
 		wonderArr.add(o);
 		wonderArr.add(h);
-		
+
 		for (int i = 0; i < 3; i++) {
 			players[i] = new Player(i + 1);
+			playerHands.put(players[i], new ArrayList<Card>());
 			players[i].setWonder(wonderArr.remove((int) (Math.random() * wonderArr.size())));
 		}
 		// assigns wonder^
@@ -84,7 +86,7 @@ public class GameState {
 	public int getCurrentPlayerNum() {
 		return playerNum;
 	}
-	
+
 	public void updateState(int age) {
 		this.age = age;
 	}
@@ -104,7 +106,7 @@ public class GameState {
 		currentPlayer.setLeft(tempCP.getRight());
 		currentPlayer.setRight(tempCP);
 		playerNum = currentPlayer.getPlayerNum();
-
+		turn++;
 		// out.println(left + " " + currentPlayer + " " + right);
 	}
 
@@ -114,5 +116,9 @@ public class GameState {
 
 	public boolean ifEnd() {
 		return endOfGame;
+	}
+
+	public int getTurn() {
+		return turn;
 	}
 }

@@ -16,10 +16,13 @@ public class BoardGUI {
 	private ArrayList<Card> deck = new ArrayList<>();
 	private MainFrame mf;
 	private GameState gs;
+	private boolean endOfAge;
 
 	public BoardGUI() throws IOException, FontFormatException {
 		gs = new GameState();
+		nextAge();
 		mf = new MainFrame("7 Wonders", gs);
+		endOfAge = false;
 //		try {
 //			mf = new MainFrame("7 Wonders");
 //		} catch (IOException e) {
@@ -27,6 +30,7 @@ public class BoardGUI {
 //		} catch (FontFormatException e) {
 //			e.printStackTrace();
 //		}
+
 	}
 
 	public void createDeck() throws IOException {
@@ -72,8 +76,10 @@ public class BoardGUI {
 	}
 
 	public void nextAge() {
-		if (gs.getAge() == 3)
+		if (gs.getAge() == 3) {
+			endOfAge = true;
 			return;
+		}
 		LinkedHashMap<Player, ArrayList<Card>> ph = gs.getPlayerHands();
 
 		gs.updateState(gs.getAge() + 1);
@@ -218,26 +224,36 @@ public class BoardGUI {
 	}
 
 	public void run() throws IOException, FontFormatException {
-
-		for (int x = 1; x < 4; x++) {
-			try {
-				createDeck();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			deal();
-
-			for (int i = 0; i < 6; i++) {
-				for (int j = 1; j < 4; j++) {
-
-					gs.nextTurn();
+		while (gs.ifEnd() != true) {
+			mf.updateGraphics();
+			for (int a = 1; a <= 18; a++) {
+				gs.nextTurn();
+				mf.updateGraphics();
+				if (gs.getTurn() % 3 == 0) {
+					passCards();
+					mf.updateGraphics();
 				}
-				passCards();
 			}
 			wageWar();
 			nextAge();
+			mf.updateGraphics();
+			if (endOfAge == true)
+				gs.setEnd(endOfAge);
 		}
-		gs.setEnd(true);
+
+		mf.updateGraphics();
+
+		/*
+		 * for (int x = 1; x < 4; x++) { try { createDeck(); } catch (IOException e) {
+		 * e.printStackTrace(); } deal(); mf.updateGraphics(); for (int i = 0; i < 6;
+		 * i++) { for (int j = 1; j < 4; j++) {
+		 * 
+		 * gs.nextTurn(); mf.updateGraphics(); } passCards(); mf.updateGraphics(); }
+		 * 
+		 * wageWar(); nextAge(); mf.updateGraphics();
+		 * 
+		 * }
+		 */
 
 	}
 }
