@@ -6,9 +6,10 @@ public class GameState {
 	private int age;
 	private Player currentPlayer;
 	private LinkedHashMap<Player, ArrayList<Card>> playerHands;
+	private ArrayList<Integer> xCoord;
 	private Player[] players;
-	private int playerNum, turn;
-	private boolean endOfGame;
+	private int playerNum, turn, cardIndex;
+	private boolean endOfGame, clickCard, pressedDownL, pressedDownR;
 
 	public GameState() {
 		setEnd(false);
@@ -16,6 +17,7 @@ public class GameState {
 		turn = 1;
 		players = new Player[3];
 		playerHands = new LinkedHashMap<Player, ArrayList<Card>>();
+		xCoord = new ArrayList<Integer>();
 		// assigns wonder
 		Alexandria a = new Alexandria();
 		Babylon b = new Babylon();
@@ -120,5 +122,45 @@ public class GameState {
 
 	public int getTurn() {
 		return turn;
+	}
+
+	public boolean getClickCard() {
+		return clickCard;
+	}
+
+	public boolean getPressedDownL() {
+		return pressedDownL;
+	}
+
+	public boolean getPressedDownR() {
+		return pressedDownR;
+	}
+
+	public void setClickCard(Boolean b) {
+		clickCard = b;
+	}
+
+	public void setPressedDownL(Boolean b) {
+		pressedDownL = b;
+	}
+
+	public void setPressedDownR(Boolean b) {
+		pressedDownR = b;
+	}
+
+	public ArrayList<Integer> getXCoords() {
+		return xCoord;
+	}
+
+	public void addXCoord(int i) {
+		xCoord.add(i);
+	}
+
+	public void setCardIndex(int i) {
+		cardIndex = i;
+	}
+
+	public int getCardIndex() {
+		return cardIndex;
 	}
 }

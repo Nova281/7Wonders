@@ -1,6 +1,7 @@
 import static java.lang.System.out;
 
 import java.awt.FontFormatException;
+import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class BoardGUI {
 		gs = new GameState();
 		nextAge();
 		mf = new MainFrame("7 Wonders", gs);
+		mf.addMouseListener((MouseListener) this);
 		endOfAge = false;
 //		try {
 //			mf = new MainFrame("7 Wonders");
