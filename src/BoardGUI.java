@@ -227,35 +227,23 @@ public class BoardGUI {
 
 	public void run() throws IOException, FontFormatException {
 		while (gs.ifEnd() != true) {
-			mf.updateGraphics();
+
 			for (int a = 1; a <= 18; a++) {
-				gs.nextTurn();
-				mf.updateGraphics();
+
 				if (gs.getTurn() % 3 == 0) {
 					passCards();
+					gs.getXCoords().clear();
 					mf.updateGraphics();
 				}
 			}
 			wageWar();
 			nextAge();
-			mf.updateGraphics();
+
 			if (endOfAge == true)
 				gs.setEnd(endOfAge);
 		}
 
 		mf.updateGraphics();
-
-		/*
-		 * for (int x = 1; x < 4; x++) { try { createDeck(); } catch (IOException e) {
-		 * e.printStackTrace(); } deal(); mf.updateGraphics(); for (int i = 0; i < 6;
-		 * i++) { for (int j = 1; j < 4; j++) {
-		 * 
-		 * gs.nextTurn(); mf.updateGraphics(); } passCards(); mf.updateGraphics(); }
-		 * 
-		 * wageWar(); nextAge(); mf.updateGraphics();
-		 * 
-		 * }
-		 */
 
 	}
 }

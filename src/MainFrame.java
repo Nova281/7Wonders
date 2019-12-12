@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 public class MainFrame extends JFrame implements MouseListener {
 	private GameState gs;
 	private GamePanel panel;
-	private ArrayList<Player> playerList;
+	private ArrayList<Player> tempHand;
 
 	public MainFrame(String title, GameState gs) throws IOException, FontFormatException {
 		super(title);
@@ -93,10 +93,25 @@ public class MainFrame extends JFrame implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-
 		// int size = tempHand.size();
+
 		System.out.println(x + ", " + y);
-		for (int i = 0; i < gs.getXCoords().size(); i++) {
+		if ((x >= 920 && x <= 952) && (y >= 166 && y <= 177)) {
+			if (!gs.getPressedDownL())
+				gs.setPressedDownL(true);
+			else
+				gs.setPressedDownL(false);
+			repaint();
+		}
+		if ((x >= 1892 && x <= 1916) && (y >= 166 && y <= 177)) {
+			if (!gs.getPressedDownR())
+				gs.setPressedDownR(true);
+			else
+				gs.setPressedDownR(false);
+			repaint();
+		}
+		for (int i = 0; i < 7; i++) {
+			// System.out.println(gs.getXCoords());
 			if ((x >= gs.getXCoords().get(i) && x <= gs.getXCoords().get(i) + 180) && (y >= 780 && y <= 1080)) {
 				gs.setCardIndex(i);
 				int cardIndex = gs.getCardIndex();
@@ -107,12 +122,14 @@ public class MainFrame extends JFrame implements MouseListener {
 						&& (y >= 800 && y <= 846)) {
 					{
 						gs.getCurrentPlayer().addCard(gs.getCurrentHand().remove(cardIndex));
+						// gs.passCards();
 					}
 					if ((x >= gs.getXCoords().get(cardIndex) + 68 && x <= gs.getXCoords().get(cardIndex) + 128)
 							&& (y >= 900 && y <= 946)) {
 						if (gs.getCurrentPlayer().canBuild(gs.getCurrentHand().get(cardIndex))) {
 							gs.getCurrentPlayer().addCard(gs.getCurrentHand().remove(cardIndex));
 							gs.getCurrentHand().remove(cardIndex);
+							// gs.passCards();
 						}
 					}
 
@@ -120,8 +137,8 @@ public class MainFrame extends JFrame implements MouseListener {
 							&& (y >= 1000 && y <= 1042)) {
 						gs.getCurrentPlayer().addCoins(3);
 						gs.getCurrentHand().remove(cardIndex);
+						// gs.passCards();
 					}
-
 					gs.nextTurn();
 					// updatePlayerHand(gs.getCurrentHand());
 					try {
@@ -134,22 +151,10 @@ public class MainFrame extends JFrame implements MouseListener {
 
 				}
 			}
-			gs.setClickCard(false);
-			if ((x >= 920 && x <= 952) && (y >= 125 && y <= 143)) {
-				if (gs.getPressedDownL() == false)
-					gs.setPressedDownL(true);
-				else
-					gs.setPressedDownL(false);
-				repaint();
-			}
-			if ((x >= 1880 && x <= 1898) && (y >= 125 && y <= 143)) {
-				if (gs.getPressedDownR() == false)
-					gs.setPressedDownL(true);
-				else
-					gs.setPressedDownR(false);
-				repaint();
-			}
 		}
+		gs.setClickCard(false);
+		// gs.getXCoords().clear();
+
 	}
 
 }

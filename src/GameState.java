@@ -18,6 +18,8 @@ public class GameState {
 		players = new Player[3];
 		playerHands = new LinkedHashMap<Player, ArrayList<Card>>();
 		xCoord = new ArrayList<Integer>();
+		clickCard = pressedDownL = pressedDownR = false;
+
 		// assigns wonder
 		Alexandria a = new Alexandria();
 		Babylon b = new Babylon();

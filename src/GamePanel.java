@@ -160,7 +160,7 @@ public class GamePanel extends JPanel {
 							ImageIO.read(getClass()
 									.getResource("/cards/" + (value.get(j).getName()).toLowerCase() + ".png")),
 							100 + i + j * 30, 200 + j * 50, 144, 220, this);
-					System.out.println((0 + i + j * 30) + ", " + (200 + j * 50));
+					// System.out.println((0 + i + j * 30) + ", " + (200 + j * 50));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					System.out.println("Error");
@@ -168,7 +168,7 @@ public class GamePanel extends JPanel {
 			}
 
 			if (value.size() <= 2) {
-				i += 150 * value.size() * 2;
+				i += 120 * value.size() * 2;
 			} else
 				i += 300;
 
@@ -177,7 +177,7 @@ public class GamePanel extends JPanel {
 		int count = 0;
 		for (Card c : tempHand) {
 			try {
-				System.out.println(c.getName());
+				// System.out.println(c.getName());
 				g.drawImage(ImageIO.read(getClass().getResource("/cards/" + c.getName().toLowerCase() + ".png")),
 						300 + count, 780, this);
 				gs.addXCoord(300 + count);
@@ -211,8 +211,8 @@ public class GamePanel extends JPanel {
 						g.drawImage(
 								ImageIO.read(getClass()
 										.getResource("/cards/" + (value.get(b).getName()).toLowerCase() + ".png")),
-								50 + a + b * 30, 175 + b * 50, 108, 165, this);
-						System.out.println((0 + a + b * 30) + ", " + (200 + b * 50));
+								50 + a + b * 20, 175 + b * 35, 108, 165, this);
+						// System.out.println((0 + a + b * 30) + ", " + (200 + b * 50));
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						System.out.println("Error");
@@ -220,7 +220,7 @@ public class GamePanel extends JPanel {
 				}
 
 				if (value.size() <= 2) {
-					a += 75 * value.size() * 2;
+					a += 60 * value.size() * 2;
 				} else
 					a += 150;
 			}
@@ -242,8 +242,8 @@ public class GamePanel extends JPanel {
 						g.drawImage(
 								ImageIO.read(getClass()
 										.getResource("/cards/" + (value.get(b).getName()).toLowerCase() + ".png")),
-								1010 + a + b * 30, 175 + b * 50, 108, 165, this);
-						System.out.println((0 + a + b * 30) + ", " + (200 + b * 50));
+								1010 + a + b * 20, 175 + b * 35, 108, 165, this);
+						// System.out.println((0 + a + b * 30) + ", " + (200 + b * 50));
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						System.out.println("Error");
@@ -251,13 +251,14 @@ public class GamePanel extends JPanel {
 				}
 
 				if (value.size() <= 2) {
-					a += 75 * value.size() * 2;
+					a += 60 * value.size() * 2;
 				} else
 					a += 150;
 			}
 		}
 		if (gs.getClickCard() == true) {
 			try {
+				System.out.println(gs.getXCoords().get(gs.getCardIndex()) + 68);
 				g.drawImage(ImageIO.read(getClass().getResource("/tokens/card.png")),
 						gs.getXCoords().get(gs.getCardIndex()) + 68, 800, 60, 46, this);
 				g.drawImage(ImageIO.read(getClass().getResource("/tokens/pyramid.png")),
