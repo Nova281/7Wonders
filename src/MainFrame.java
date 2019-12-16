@@ -1,25 +1,21 @@
-
 import java.awt.Dimension;
 import java.awt.FontFormatException;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 public class MainFrame extends JFrame implements MouseListener {
 	private GameState gs;
 	private GamePanel panel;
-	private ArrayList<Player> tempHand;
 
 	public MainFrame(String title, GameState gs) throws IOException, FontFormatException {
 		super(title);
 		this.gs = gs;
 		setupGraphics();
 		addMouseListener(this);
-
 	}
 
 	public void setupGraphics() throws IOException, FontFormatException {
@@ -28,12 +24,8 @@ public class MainFrame extends JFrame implements MouseListener {
 		setSize(screenSize.width, screenSize.height);
 
 		panel = new GamePanel(gs);
-
-		panel.setWonderImages();
-		panel.updateCurrentBoard(gs.getCurrentPlayer());
-		panel.updateCurrentAge(gs.getAge());
-		panel.updateCoins();
-		panel.updatePlayerHand();
+		panel.updateGameState(gs);
+		
 		add(panel);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(true);
@@ -42,27 +34,8 @@ public class MainFrame extends JFrame implements MouseListener {
 	}
 
 	public void updateGraphics() throws IOException {
-		panel.updateCurrentBoard(gs.getCurrentPlayer());
-		panel.updateCurrentAge(gs.getAge());
-		panel.updateCoins();
-		panel.updatePlayerHand();
+		panel.updateGameState(gs);		
 		repaint();
-	}
-
-	public void updateCurrentPlayer(Player p) throws IOException {
-		panel.updateCurrentBoard(p);
-	}
-
-	public void updatePlayerCoins() {
-		panel.updateCoins();
-	}
-
-	public void updateCurrentAge(int i) throws IOException {
-		panel.updateCurrentAge(i);
-	}
-
-	public void updatePlayerCards() {
-		panel.updatePlayerHand();
 	}
 
 	@Override
@@ -82,7 +55,7 @@ public class MainFrame extends JFrame implements MouseListener {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -91,65 +64,99 @@ public class MainFrame extends JFrame implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		
 		int x = e.getX();
 		int y = e.getY();
+
 		// int size = tempHand.size();
-
 		System.out.println(x + ", " + y);
-		if ((x >= 920 && x <= 952) && (y >= 166 && y <= 177)) {
-			if (!gs.getPressedDownL())
-				gs.setPressedDownL(true);
-			else
-				gs.setPressedDownL(false);
-			repaint();
-		}
-		if ((x >= 1892 && x <= 1916) && (y >= 166 && y <= 177)) {
-			if (!gs.getPressedDownR())
-				gs.setPressedDownR(true);
-			else
-				gs.setPressedDownR(false);
-			repaint();
-		}
-		for (int i = 0; i < 7; i++) {
-			// System.out.println(gs.getXCoords());
-			if ((x >= gs.getXCoords().get(i) && x <= gs.getXCoords().get(i) + 180) && (y >= 780 && y <= 1080)) {
-				gs.setCardIndex(i);
-				int cardIndex = gs.getCardIndex();
-				gs.setClickCard(true);
-				repaint();
-				if (gs.getCurrentPlayer().canBuild(gs.getCurrentHand().get(cardIndex)))
-					gs.getCurrentPlayer().addCard(gs.getCurrentHand().remove(cardIndex));
-				/*
-				 * if ((x >= gs.getXCoords().get(cardIndex) + 68 && x <=
-				 * gs.getXCoords().get(cardIndex) + 128) && (y >= 800 && y <= 846)) { {
-				 * 
-				 * // gs.passCards(); } if ((x >= gs.getXCoords().get(cardIndex) + 68 && x <=
-				 * gs.getXCoords().get(cardIndex) + 128) && (y >= 900 && y <= 946)) { if
-				 * (gs.getCurrentPlayer().canBuild(gs.getCurrentHand().get(cardIndex))) {
-				 * gs.getCurrentPlayer().addCard(gs.getCurrentHand().remove(cardIndex)); //
-				 * gs.passCards(); } }
-				 * 
-				 * if ((x >= gs.getXCoords().get(cardIndex) + 78 && x <=
-				 * gs.getXCoords().get(cardIndex) + 113) && (y >= 1000 && y <= 1042)) {
-				 * gs.getCurrentPlayer().addCoins(3); gs.getCurrentHand().remove(cardIndex); //
-				 * gs.passCards(); }
-				 */
-
-				repaint();
-
+		for (int i = 0; i < gs.getXCoords().size(); i++)
+				if ((x >= gs.getXCoords().get(i) && x <= gs.getXCoords().get(i) + 180) && (y >= 780 && y <= 1080)) {
+					gs.setCardIndex(i);
+					gs.setClickCard(true);
+					gs.setClickedCard(gs.getCurrentHand().get(i));
+					System.out.println(gs.getClickedCard());
+					repaint();
+					return;
+				}
+		if(gs.isEndOfRound()) {
+			gs.resetRound();
+			try {
+				panel.updateGameState(gs);
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
+			repaint();
 		}
-		gs.nextTurn();
-		// updatePlayerHand(gs.getCurrentHand());
+		int cardIndex = gs.getCardIndex();
+		if (x >= 208 && x <= 268) {
+			if((y >= 822 && y <= 868) && gs.canBuild()) {
+				gs.getCurrentPlayer().build(gs.getCurrentHand().remove(cardIndex));
+				gs.getDiscard().add(gs.getClickedCard());
+				gs.setClickCard(false);
+				gs.setClickedCard(null);
+				gs.setPressedDownL(false);
+				gs.setPressedDownR(false);
+				gs.nextTurn();
+				repaint();
+			}
+			else if((y >= 822 && y <= 868) && gs.canBuildWithTrade()) {
+				gs.getCurrentPlayer().trade(gs.getCurrentHand().get(cardIndex));
+				gs.getCurrentPlayer().build(gs.getCurrentHand().remove(cardIndex));
+				gs.getDiscard().add(gs.getClickedCard());
+				gs.setClickCard(false);
+				gs.setClickedCard(null);
+				gs.setPressedDownL(false);
+				gs.setPressedDownR(false);
+				gs.nextTurn();
+				repaint();
+			}
+			else if (y >= 924 && y <= 970 && gs.getCurrentPlayer().canBuildWonder()) {
+				gs.getCurrentPlayer().buildWonder();
+				gs.getCurrentHand().remove(cardIndex);
+				gs.setClickCard(false);
+				gs.setClickedCard(null);
+				gs.setPressedDownL(false);
+				gs.setPressedDownR(false);
+				gs.nextTurn();
+				repaint();
+			}
+
+			else if ((x >= 220 && x <= 255) && (y >= 1027 && y <= 1065)) {
+				gs.getCurrentPlayer().addCoins(3);
+				gs.getCurrentHand().remove(cardIndex);
+				gs.getDiscard().add(gs.getClickedCard());
+				gs.setClickCard(false);
+				gs.setClickedCard(null);
+				gs.setPressedDownL(false);
+				gs.setPressedDownR(false);
+				gs.nextTurn();
+				repaint();
+			}
+			
+			
+			
+			try {
+				panel.updateGameState(gs);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			
+		}
+		if ((x >= 920 && x <= 950) && (y >= 150 && y <= 170)) {
+			gs.setPressedDownL(!gs.getPressedDownL());
+			repaint();
+		}
+		if ((x >= 1880 && x <= 1910) && (y >= 150 && y <= 170)) {
+			gs.setPressedDownR(!gs.getPressedDownR());
+			repaint();
+		}
 		try {
-			updateCurrentPlayer(gs.getCurrentPlayer());
+			panel.updateGameState(gs);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		gs.setClickCard(false);
-		// gs.getXCoords().clear();
-
 	}
 
 }

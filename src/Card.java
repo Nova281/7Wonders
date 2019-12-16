@@ -98,7 +98,7 @@ public abstract class Card implements Comparable {
 	
 	public String toString() { 
 		String cos = "";
-		if(cost.size() == 1 && cost.get(0).equals(" "))
+		if(cost.size() == 1 && cost.get(0).equals(" ") || cost.size() == 0)
 			cos = "nothing";
 		else {
 			for(int i = 0; i < cost.size()-1; i++)

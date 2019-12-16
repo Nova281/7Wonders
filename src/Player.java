@@ -180,17 +180,29 @@ public class Player {
 			return true;
 		return false;
 	}
+	
+	public void build(Card c) {
+		try {
+		if(c.getCost().get(0).equals("coin"))
+			coins--;
+		} catch(Exception e) {} //means you can build/trade
+		addCard(c);
+	}
+	
 	public TreeMap<String,Integer> getResources()
 	{
 		return resources;
 	}
 	//PLEASE DONT REMOVE THIS METHOD A.K.A Check
-	private boolean check(ArrayList<String> cost)
+	private boolean check(ArrayList<String> costR)
 	{
+		ArrayList<String> cost = new ArrayList<>();
+		for(String k: costR)
+			cost.add(k);
 		//check through normal resources
 		if(cost.size() == 1 && cost.get(0).equals(" "))
 			return true;
-		if(cost.size() == 1 && cost.get(0).equals("coin"))
+		if(cost.get(0).equals("coin"))
 			if(coins-1 >= 0)
 				return true;
 			else
@@ -210,8 +222,10 @@ public class Player {
 			}
 		}
 		//check through choice resources;
-		if(cost.size() > choiceRes.size())
+		if(cost.size() > choiceRes.size()) {
+			out.println("cost > choice");
 			return false;
+		}
 		else if(cost.size() > 0) {
 			//ArrayList<String> c = new ArrayList<String>();
 			ArrayList<String> strCombos = new ArrayList<>();
@@ -398,7 +412,10 @@ public class Player {
 	public int getWP() { return warPoints; }
 	public Wonder getWonder() { return wonder; }
 	
-	public boolean canBuildWithTrade(ArrayList<String> cost) {
+	public boolean canBuildWithTrade(ArrayList<String> cost1) {
+		ArrayList<String> cost = new ArrayList<>();
+		for(String k: cost1)
+			cost.add(k);
 		//check through normal resources
 		if(cost.size() == 1 && cost.get(0).equals(" "))
 			return true;
@@ -422,9 +439,7 @@ public class Player {
 			}
 		}
 		//check through choice resources;
-		if(cost.size() > choiceRes.size())
-			return false;
-		else if(cost.size() > 0) {
+		if(cost.size() > 0) {
 			//ArrayList<String> c = new ArrayList<String>();
 			ArrayList<String> strCombos = new ArrayList<>();
 			ArrayList<ArrayList<String>> combinations = new ArrayList<>();
@@ -458,10 +473,15 @@ public class Player {
 			return true;
 	}
 	
-	private boolean canTrade(ArrayList<String> cost)
+	private boolean canTrade(ArrayList<String> costR)
 	{
+		ArrayList<String> cost = new ArrayList<>();
+		for(String k: costR)
+			cost.add(k);
 		String[] brown = {"wood", "stone", "ore", "clay"};
-		ArrayList<String> brownList = (ArrayList<String>) Arrays.asList(brown);
+		ArrayList<String> brownList = new ArrayList<>();
+		for(String b: brown)
+			brownList.add(b);
 		
 		int coinCost = 0;
 		for(int i = cost.size()-1; i >= 0; i--) {
@@ -499,6 +519,8 @@ public class Player {
 		}
 		if(cost.size() == 0 && coins - coinCost >= 0)
 			return true;
+		else if(cost.size() == 0)
+			return false;
 		
 		//check through left choice res
 		//creates possible combinations
@@ -587,9 +609,11 @@ public class Player {
 		return false;
 	}
 
-	public void trade(ArrayList<String> cost)
+	public void trade(Card c)
 	{
-		
+		ArrayList<String> cost = new ArrayList<>();
+		for(String k: c.getCost())
+			cost.add(k);
 		if(cost.size() == 1 && cost.get(0).equals(" "))
 			return;
 		if(cost.size() == 1 && cost.get(0).equals("coin"))
@@ -602,7 +626,9 @@ public class Player {
 			}
 		
 		String[] brown = {"wood", "stone", "ore", "clay"};
-		ArrayList<String> brownList = (ArrayList<String>) Arrays.asList(brown);
+		ArrayList<String> brownList = new ArrayList<>();
+		for(String b: brown)
+			brownList.add(b);
 		
 		int lb = 0, ls = 0, rb = 0, rs = 0;
 		for(int i = cost.size()-1; i >= 0; i--) {

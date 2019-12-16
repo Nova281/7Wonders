@@ -196,7 +196,7 @@ public class Board {
 						return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
 					}
 					else if(c2.equalsIgnoreCase("trade")){
-						gs.getCurrentPlayer().trade(bc.getCost());
+						gs.getCurrentPlayer().trade(bc);
 						build(bc);
 						return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
 					}
@@ -208,7 +208,7 @@ public class Board {
 				else {
 					out.println("In order to build this you must trade with other players. Would you like to Trade? (Y/N)");
 					if(input.next().equalsIgnoreCase("y")) {
-						gs.getCurrentPlayer().trade(bc.getCost());
+						gs.getCurrentPlayer().trade(bc);
 						build(bc);
 						return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
 					}
@@ -219,7 +219,7 @@ public class Board {
 			else if(gs.getCurrentPlayer().canBuildWithTrade(bc.getCost())) {
 				out.println("In order to build this you must trade with other players. Would you like to Trade? (Y/N)");
 				if(input.next().equalsIgnoreCase("y")) {
-					gs.getCurrentPlayer().trade(bc.getCost());
+					gs.getCurrentPlayer().trade(bc);
 					build(bc);
 					return "Player " + gs.getCurrentPlayerNum() + " built " + bc;
 				}

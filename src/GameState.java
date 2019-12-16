@@ -1,5 +1,11 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.StringTokenizer;
 
 public class GameState {
 
@@ -8,18 +14,22 @@ public class GameState {
 	private LinkedHashMap<Player, ArrayList<Card>> playerHands;
 	private ArrayList<Integer> xCoord;
 	private Player[] players;
-	private int playerNum, turn, cardIndex;
-	private boolean endOfGame, clickCard, pressedDownL, pressedDownR;
+	private int playerNum, turn, cardIndex, round;
+	private int wonderArrsize;
+	private boolean endOfGame, clickCard, pressedDownL, pressedDownR, endOfRound;
+	private Card clickedCard;
+	private ArrayList<Card> discard;
 
 	public GameState() {
+		round = 0;
+		discard = new ArrayList<>();
 		setEnd(false);
 		age = 0;
 		turn = 1;
+		wonderArrsize = 5;
 		players = new Player[3];
 		playerHands = new LinkedHashMap<Player, ArrayList<Card>>();
 		xCoord = new ArrayList<Integer>();
-		clickCard = pressedDownL = pressedDownR = false;
-
 		// assigns wonder
 		Alexandria a = new Alexandria();
 		Babylon b = new Babylon();
@@ -40,16 +50,25 @@ public class GameState {
 		for (int i = 0; i < 3; i++) {
 			players[i] = new Player(i + 1);
 			playerHands.put(players[i], new ArrayList<Card>());
-			players[i].setWonder(wonderArr.remove((int) (Math.random() * wonderArr.size())));
+			players[i].setWonder(wonderArr.remove((int) (Math.random() * wonderArrsize--)));
 		}
 		// assigns wonder^
 		currentPlayer = players[0];
 		playerNum = 1;
 		currentPlayer.setLeft(players[1]); // player 2
 		currentPlayer.setRight(players[2]); // player 3
-		setEnd(false);
+		endOfGame = false;
+		endOfRound = false;
+		clickedCard = null;
+		pressedDownL = false;
+		pressedDownR = false;
+		round = 1;
 	}
-
+	
+	public ArrayList<Card> getDiscard() {
+		return discard;
+	}
+	
 	// playerNum can be 1, 2, or 3
 	public Player[] getPlayers() {
 		return players;
@@ -103,17 +122,125 @@ public class GameState {
 		playerHands.put(currentPlayer, hand);
 	}
 
+	public void resetRound() {
+		round = 1;
+		endOfRound = false;
+		nextAge();
+	}
+	
+	public void passCards() {
+		Iterator<Player> iter = playerHands.keySet().iterator();
+		ArrayList<Card> temp;
+		Player p1 = iter.next();
+		Player p2 = iter.next();
+		Player p3 = iter.next();
+		if (age == 2) {
+			temp = playerHands.get(p1);
+			playerHands.put(p1, playerHands.get(p2));
+			playerHands.put(p2, playerHands.get(p3));
+			playerHands.put(p3, temp);
+		} else {
+			temp = playerHands.get(p1);
+			playerHands.put(p1, playerHands.get(p3));
+			playerHands.put(p3, playerHands.get(p2));
+			playerHands.put(p2, temp);
+		}
+	}
+	
+	public void nextAge() {
+		if (getAge() == 3) {
+			return;
+		}
+		playerHands = new LinkedHashMap<>();
+		age++;
+		try {
+			deal(createDeck());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Card> createDeck() throws IOException {
+		ArrayList<Card> deck;
+		BufferedReader br = new BufferedReader(new FileReader("age" + age + ".txt"));
+		StringTokenizer st;
+		deck = new ArrayList<>();
+		ArrayList<ActionCard> guildCards = new ArrayList<>();
+		while (br.ready()) {
+			st = new StringTokenizer(br.readLine(), ";");
+			String name = st.nextToken();
+			String color = st.nextToken();
+			String age = st.nextToken();
+			if (color.equals("brown") || color.equals("silver") || name.equals("caravansery") || name.equals("Forum"))
+				deck.add(new ResourceCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
+			else if (color.equals("blue"))
+				deck.add(new BlueCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
+			else if (color.equals("red"))
+				deck.add(new RedCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
+			else if (color.equals("green"))
+				deck.add(new GreenCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
+			else if (color.equals("gold"))
+				deck.add(new ActionCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
+			else {
+				guildCards.add(new ActionCard(name, color, age, st.nextToken(), st.nextToken(), st.nextToken()));
+			}
+		}
+
+		if (age == 3) {
+			Collections.shuffle(guildCards);
+			for (int i = 4; i >= 0; i--)
+				guildCards.remove(i);
+			for (Card c : guildCards)
+				deck.add(c);
+		}
+		Collections.shuffle(deck);
+		return deck;
+	}
+	
+	public void deal(ArrayList<Card> deck) {
+		Collections.shuffle(deck);
+		LinkedHashMap<Player, ArrayList<Card>> ph = playerHands;
+		for (int i = 0; i < 3; i++)
+			ph.put(players[i], new ArrayList<>());
+		Iterator<Player> iter = ph.keySet().iterator();
+		for (int i = 0; i < 3; i++) {
+			Player cp = iter.next();
+			ArrayList<Card> cc = ph.get(cp);
+			for (int j = 6; j >= 0; j--) {
+				cc.add(deck.remove(j));
+				ph.put(cp, cc);
+			}
+			Collections.sort(ph.get(cp));
+		}
+		// out.println(ph);
+		updateState(ph);
+		// out.println(gs.getPlayerHands());
+	}
+	
 	public void nextTurn() {
-		// out.println(left + " " + currentPlayer + " " + right);
+		System.out.println(currentPlayer.getCards());
 		Player tempCP = currentPlayer;
 		currentPlayer = currentPlayer.getLeft();
 		currentPlayer.setLeft(tempCP.getRight());
 		currentPlayer.setRight(tempCP);
 		playerNum = currentPlayer.getPlayerNum();
 		turn++;
-		// out.println(left + " " + currentPlayer + " " + right);
+		playerNum = currentPlayer.getPlayerNum();
+		System.out.println(playerHands);
+		if(turn == 55)
+			endOfGame = true;
+		else if(turn%18 == 1)
+			endOfRound = true;
+		if(turn%3 == 1) {
+			passCards();
+			round++;
+		}
+		System.out.println(currentPlayer.getCards());
 	}
-
+	public int getRound() {
+		return round;
+	}
 	public void setEnd(boolean b) {
 		endOfGame = b;
 	}
@@ -124,6 +251,10 @@ public class GameState {
 
 	public int getTurn() {
 		return turn;
+	}
+	
+	public boolean isEndOfRound() { 
+		return endOfRound;
 	}
 
 	public boolean getClickCard() {
@@ -164,5 +295,19 @@ public class GameState {
 
 	public int getCardIndex() {
 		return cardIndex;
+	}
+	public boolean canBuild() {
+		return currentPlayer.canBuild(clickedCard);
+	}
+	public boolean canBuildWithTrade() {
+		return currentPlayer.canBuildWithTrade(clickedCard.getCost());
+	}
+	
+	public void setClickedCard(Card c) {
+		clickedCard = c;
+	}
+	
+	public Card getClickedCard() { 
+		return clickedCard;
 	}
 }
