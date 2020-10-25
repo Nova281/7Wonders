@@ -15,33 +15,19 @@ public abstract class Wonder {
 	
 	public abstract String getResWonder(int stage);
 	
-	public String getName() {
-		return name;
-	}
+	public String getName() { return name; }
 	
-	public boolean getPhaseState(int stage) {
-		return phases.get(stage);
-	}
+	public boolean getPhaseState(int stage) { return phases.get(stage); }
 
-	public int getPhase1() {
-		return 3;
-	}
+	public int getPhase1() { return 3; }
 
-	public int getPhase3() {
-		return 7;
-	}
+	public int getPhase3() { return 7; }
 
-	public String getResource() {
-		return resource;
-	}
+	public String getResource() { return resource; }
 
-	public String getEffect() {
-		return effect;
-	}
+	public String getEffect() { return effect; }
 	
-	public void setPhase(int stage) {
-		phases.put(stage, true);
-	}
+	public void setPhase(int stage) { phases.put(stage, true); }
 	
 	public String toString() { return name; }
 }
